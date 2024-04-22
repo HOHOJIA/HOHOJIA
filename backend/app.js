@@ -46,7 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/1.0/users', usersRouter);
-// app.use('/api/1.0/like', likeRouter(connection));
+app.use('/api/1.0/like', likeRouter);
 // app.use('/api/1.0/comment', commentRouter(connection));
 
 app.get('/api/1.0/test', (req, res) => {
