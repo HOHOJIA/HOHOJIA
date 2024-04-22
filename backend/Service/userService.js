@@ -1,7 +1,7 @@
 const userRepo = require('../Repository/userRepo');
 const roleRepo = require('../Repository/roleRepo');
 const errorMsg = require('../utils/errorMsg');
-const connectionPromise = require('../utils/db').connectionPromise;
+const connectionPromise = require('../config/db').connectionPromise;
 
 module.exports = {
     signUp: async (res, userIfoObj) => {
