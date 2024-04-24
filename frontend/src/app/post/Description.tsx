@@ -1,12 +1,13 @@
-import { Input, Select, SelectItem } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import IconButton from "./components/IconButton";
 import { FaPlus } from "react-icons/fa6";
 import { IoTrash, IoReorderThreeOutline } from "react-icons/io5";
 
-interface IconButtonProps {
-  icon: React.ElementType;
-}
-
-export default function Description() {
+export default function Description({
+  children,
+}: {
+  children?: React.ReactNode;
+}) {
   return (
     <div className="flex flex-wrap justify-between w-full gap-x-20 gap-y-5">
       <DescriptionInput
@@ -36,9 +37,9 @@ export default function Description() {
           />
 
           <div className="flex">
-            <IconButton icon={FaPlus} />
-            <IconButton icon={IoTrash} />
-            <IconButton icon={IoReorderThreeOutline} />
+            <IconButton icon={FaPlus} size="1.5rem" />
+            <IconButton icon={IoTrash} size="1.5rem" />
+            <IconButton icon={IoReorderThreeOutline} size="1.5rem" />
           </div>
         </div>
       </div>
@@ -63,13 +64,5 @@ function DescriptionInput({
       </p>
       <Input type="text" label={placeholder} variant="bordered" />
     </div>
-  );
-}
-
-function IconButton({ icon: Icon }: IconButtonProps) {
-  return (
-    <button type="button">
-      <Icon size="1.5rem" className="mx-2 text-gray-400 hover:text-gray-800" />
-    </button>
   );
 }

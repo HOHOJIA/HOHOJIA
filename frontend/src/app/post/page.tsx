@@ -1,7 +1,8 @@
 "use client";
 import Introduction from "./Introduction";
 import Description from "./Description";
-import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import Steps from "./Steps";
+import { Card, CardHeader, CardBody } from "@nextui-org/react";
 
 export default function Post() {
   return (
@@ -19,7 +20,9 @@ export default function Post() {
               料理細節
             </p>
             <Description />
-            <hr className="w-full h-0.5 my-8 bg-gray-200" />
+            <hr className="w-full h-0.5 mt-10 mb-2 bg-gray-200" />
+            <Steps />
+            <hr className="w-full h-0.5 mt-3 mb-2 bg-gray-200" />
           </CardBody>
         </form>
       </Card>
