@@ -2,7 +2,13 @@
 import Introduction from "./Introduction";
 import Description from "./Description";
 import Steps from "./Steps";
-import { Card, CardHeader, CardBody } from "@nextui-org/react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Textarea,
+  Button,
+} from "@nextui-org/react";
 
 export default function Post() {
   return (
@@ -13,16 +19,41 @@ export default function Post() {
             <p className="text-xl font-bold border-b-2 pb-1.5 border-black mb-1.5">
               來分享你的美味秘訣吧！
             </p>
+            {/* Introduction section */}
             <Introduction />
           </CardHeader>
+
           <CardBody className="flex-col items-start px-12 py-4">
             <p className="mb-4 text-xl font-bold border-b-2 border-black">
               料理細節
             </p>
+            {/* Description section */}
             <Description />
             <hr className="w-full h-0.5 mt-10 mb-2 bg-gray-200" />
+
+            {/* Steps section */}
             <Steps />
             <hr className="w-full h-0.5 mt-3 mb-2 bg-gray-200" />
+
+            {/* Cooking Tips section */}
+            <div className="w-full">
+              <p className="my-4 text-lg font-bold">廚神秘訣</p>
+              <Textarea
+                minRows={5}
+                label="輸入食譜描述（最多150字）"
+                variant="bordered"
+              />
+            </div>
+
+            {/* preview and submit buttons */}
+            <div className="flex justify-center w-full gap-20 my-10">
+              <Button className="text-black" color="primary" variant="ghost">
+                食譜預覽
+              </Button>
+              <Button color="primary" variant="solid">
+                發佈食譜
+              </Button>
+            </div>
           </CardBody>
         </form>
       </Card>
