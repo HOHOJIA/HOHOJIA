@@ -28,7 +28,7 @@ export default function Steps() {
             </h4>
 
             {steps.map((step, index) => (
-                <div className="flex  w-full justify-between items-stretch relative">
+                <div className="flex w-full justify-between items-stretch relative">
                     <Card
                         className="border-none pl-6 py-5 w-7/12 z-10"
                         key={index}
