@@ -13,9 +13,9 @@ export default function Introduction() {
 
   return (
     <div className="w-full">
-      <p className="text-lg font-bold my-4">介紹</p>
+      <p className="my-4 text-lg font-bold">介紹</p>
 
-      <div className="grid  grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         <Input
           className="col-span-2"
           type="text"
@@ -46,7 +46,7 @@ export default function Introduction() {
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <BiImageAdd
                 size="4rem"
-                className=" mb-2 text-gray-500 dark:text-gray-400"
+                className="mb-2 text-gray-500  dark:text-gray-400"
               />
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                 <span className="font-semibold">Click to upload</span> or drag
