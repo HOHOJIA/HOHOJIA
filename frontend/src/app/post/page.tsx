@@ -19,6 +19,7 @@ export default function Post() {
               料理細節
             </p>
             <Description />
+            <hr className="w-full h-0.5 my-8 bg-gray-200" />
           </CardBody>
         </form>
       </Card>
