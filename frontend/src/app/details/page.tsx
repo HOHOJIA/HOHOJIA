@@ -2,6 +2,7 @@ import Header from "../components/Header";
 import Banner from "../components/details/Banner";
 import Ingredients from "../components/details/Ingredients";
 import AuthorInfo from "../components/details/AuthorInfo";
+import Steps from "../components/details/Steps";
 
 export default function Details() {
     return (
@@ -14,6 +15,7 @@ export default function Details() {
                     <Ingredients />
                     <AuthorInfo />
                 </div>
+                <Steps />
             </div>
         </div>
     );

@@ -9,7 +9,7 @@ export default function Ingredients() {
     ];
 
     return (
-        <div className="flex flex-col gap-9">
+        <div className="flex flex-col gap-9 w-full">
             <div className="flex gap-16">
                 <div className="flex items-center gap-4">
                     <p className="font-bold text-md">份量</p>
@@ -21,11 +21,11 @@ export default function Ingredients() {
                 </div>
             </div>
 
-            <Card className="pl-5 pt-2.5 pr-12 pb-5">
+            <Card className="pl-6 pt-2.5 pr-12 pb-5 w-8/12">
                 <CardHeader className="text-lg font-bold underline decoration-2 underline-offset-8">
                     食材
                 </CardHeader>
-                <CardBody className="flex flex-row justify-between gap-20">
+                <CardBody className="flex flex-row justify-between">
                     <div className="flex flex-col gap-4">
                         {ingredients
                             .slice(0, ingredients.length / 2)
