@@ -22,7 +22,9 @@ export default function Ingredients() {
             </div>
 
             <Card className="pl-5 pt-2.5 pr-12 pb-5">
-                <CardHeader className="text-lg font-bold">食材</CardHeader>
+                <CardHeader className="text-lg font-bold underline decoration-2 underline-offset-8">
+                    食材
+                </CardHeader>
                 <CardBody className="flex flex-row justify-between gap-20">
                     <div className="flex flex-col gap-4">
                         {ingredients
