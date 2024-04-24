@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { Button, Input } from "@nextui-org/react";
 import { FaSearch } from "react-icons/fa";
 import { FaQuestion } from "react-icons/fa6";
-import { IoHelpOutline, IoPersonSharp } from "react-icons/io5";
+import { IoPersonSharp } from "react-icons/io5";
 import { TbBellRinging2Filled } from "react-icons/tb";
 
 export default function Header() {
