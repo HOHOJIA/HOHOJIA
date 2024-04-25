@@ -43,12 +43,15 @@ export default function Header() {
             }}
         >
             <NavbarBrand>
-                <Image
-                    alt="HOHOJIA"
-                    src="/images/logo_HOHOJIA.webp"
-                    width={150}
-                    height={150}
-                />
+                <Link href="/">
+                    <Image
+                        alt="HOHOJIA"
+                        src="/images/logo_HOHOJIA.webp"
+                        width={150}
+                        height={150}
+                        className="transition-transform duration-300 hover:scale-90"
+                    />
+                </Link>
             </NavbarBrand>
 
             <NavbarContent className="flex gap-10" justify="center">
