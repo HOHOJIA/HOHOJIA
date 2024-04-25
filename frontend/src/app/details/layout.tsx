@@ -1,7 +1,11 @@
-export default async function LoginLayout({ children }: { children: React.ReactNode }) {
+export default async function DetailsLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     return (
         <>
-            <div className="w-full overflow-y-auto scrollbar-hide">{children}</div>
+            <div className="w-full">{children}</div>
         </>
-    )
+    );
 }

@@ -22,6 +22,7 @@ export default function Header() {
     return (
         <Navbar
             maxWidth="full"
+            className="shadow-lg"
             classNames={{
                 item: [
                     "flex",
