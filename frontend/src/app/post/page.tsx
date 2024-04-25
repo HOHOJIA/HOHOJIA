@@ -46,7 +46,7 @@ export default function Post() {
             </div>
 
             {/* preview and submit buttons */}
-            <div className="flex justify-center w-full gap-20 my-10">
+            <div className="flex justify-center w-full gap-14 my-10">
               <Button className="text-black" color="primary" variant="ghost">
                 食譜預覽
               </Button>
