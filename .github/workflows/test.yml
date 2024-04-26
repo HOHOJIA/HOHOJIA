@@ -1,0 +1,21 @@
+name: Test
+on:
+  pull_request:
+    paths:
+      - 'backend/**'
+    branches:
+      - main
+      - develop
+defaults:
+  run:
+    working-directory: ./backend
+jobs:
+  Run-unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: npm install
+      - name: Run unit tests
+        run: npm test 
