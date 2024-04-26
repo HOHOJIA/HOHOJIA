@@ -23,7 +23,12 @@ export default function Introduction() {
           variant="bordered"
         />
 
-        <Select label="選擇標籤" variant="bordered">
+        <Select
+          label="選擇標籤"
+          selectionMode="multiple"
+          variant="bordered"
+          className="max-w-xs"
+        >
           {category.map((category) => (
             <SelectItem key={category.id} value={category.name}>
               {category.name}
