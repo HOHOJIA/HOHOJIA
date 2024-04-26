@@ -6,7 +6,7 @@ import Steps from "../components/details/Steps";
 import Tips from "../components/details/Tips";
 import Comments from "../components/details/Comments";
 import Footer from "../components/Footer";
-
+// 哈溜
 export default function Details() {
     return (
         <main className="">
