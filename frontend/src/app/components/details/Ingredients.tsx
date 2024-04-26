@@ -17,7 +17,7 @@ export default function Ingredients() {
                 </div>
                 <div className="flex items-center gap-4">
                     <p className="font-bold text-md">料理時間</p>
-                    <h3 className="text-4xl font-bold">30min</h3>
+                    <h3 className="text-4xl font-bold">30分鐘</h3>
                 </div>
             </div>
 
