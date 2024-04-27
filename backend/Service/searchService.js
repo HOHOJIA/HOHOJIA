@@ -3,12 +3,17 @@ const errorMsg = require("../utils/errorMsg");
 const connectionPromise = require("../config/db").connectionPromise;
 
 module.exports = {
-  searchByTitle: async (res, title) => {
+  search: async (res, type, keyword) => {
     const connection = await connectionPromise.getConnection();
     try {
       //transaction
+      let searchResult;
       await connection.beginTransaction();
-      const searchResult = await searchRepo.searchByTitle(title);
+      if (type === "title") {
+        searchResult = await searchRepo.searchByTitle(keyword);
+      } else if (type === "tag") {
+        searchResult = await searchRepo.searchByTag(keyword);
+      }
       await connection.commit();
 
       return searchResult;

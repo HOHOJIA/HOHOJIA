@@ -7,7 +7,10 @@ module.exports = {
     try {
       const { title, tag } = req.query;
       if (title) {
-        const response = await searchHandler.handleForTitle(res, title);
+        const response = await searchHandler.handle(res, "title", title);
+        res.status(200).json(response);
+      } else if (tag) {
+        const response = await searchHandler.handle(res, "tag", tag);
         res.status(200).json(response);
       }
     } catch (error) {

@@ -32,6 +32,6 @@ module.exports = {
     res.status(403).json({ error: "Sign In Failed - wrong password" });
   },
   notFound: (res) => {
-    res.status(404).json({ error: "No recipes found for the given title" });
+    res.status(404).json({ error: "No recipes found" });
   },
 };

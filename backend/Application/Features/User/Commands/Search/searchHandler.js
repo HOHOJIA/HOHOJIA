@@ -3,10 +3,10 @@ const searchService = require("../../../../../Service/searchService");
 const searchRes = require("./searchRes");
 
 module.exports = {
-  handleForTitle: async (res, title) => {
-    const searchResult = await searchService.searchByTitle(res, title);
+  handle: async (res, type, keyword) => {
+    const searchResult = await searchService.search(res, type, keyword);
     if (!searchResult || searchResult.length === 0) {
-      return errorMsg.notFound(res, "No recipes found for the given title");
+      return errorMsg.notFound(res);
     }
     let response = await searchRes.customize(searchResult);
     return response;
