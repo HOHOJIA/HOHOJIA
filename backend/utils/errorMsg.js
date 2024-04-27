@@ -8,13 +8,13 @@ module.exports = {
     res.status(500).json({ error: "Server error - query failed" });
   },
   serverError: (res) => {
-    res.status(500).json({ code: 500, error: "error" });
+    res.status(500).json({ error: "server error" });
   },
   noToken: (res) => {
     res.status(401).json({ error: "Client error - No token provided" });
   },
   unauthorized: (res) => {
-    res.status(401).json({ code: 401, error: "unauthorized" });
+    res.status(401).json({ error: "unauthorized" });
   },
   wrongToken: (res) => {
     res.status(403).json({ error: "Client error - Invalid token" });
