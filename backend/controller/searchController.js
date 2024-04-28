@@ -1,6 +1,4 @@
 const searchHandler = require("../Application/Features/User/Commands/Search/searchHandler");
-const errorMsg = require("../utils/errorMsg");
-const tool = require("../utils/tool");
 
 module.exports = {
   search: async (req, res) => {

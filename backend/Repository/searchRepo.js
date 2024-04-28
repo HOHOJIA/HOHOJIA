@@ -1,4 +1,3 @@
-const errorMsg = require("../utils/errorMsg");
 const connectionPromise = require("../config/db").connectionPromise;
 module.exports = {
   searchByTitle: async (title) => {
