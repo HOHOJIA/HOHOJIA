@@ -31,4 +31,10 @@ module.exports = {
   wrongPassword: (res) => {
     res.status(403).json({ error: "Sign In Failed - wrong password" });
   },
+  notFound: (res) => {
+    res.status(404).json({ error: "No recipes found" });
+  },
+  badRequest: (res, detailMsg = "") => {
+    res.status(400).json({ error: "Bad request", detail: detailMsg });
+  },
 };
