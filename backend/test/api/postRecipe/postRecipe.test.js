@@ -1,5 +1,8 @@
 const request = require("supertest");
 const app = require("../../../app");
+const connectionPromise = require('../../../config/db').connectionPromise;
+const fs = require('fs');
+const path = require('path');
 
 const postBody = {
     "userId": 1,
@@ -36,13 +39,36 @@ const postBody = {
 
 const invalidPostBody = {}
 
+/**
+ * Execute sql file
+ * @param {String} sqlFile
+ */
+const executeSql = async (sqlFile) => {
+    const sqls = fs.readFileSync(path.join(__dirname, sqlFile)).toString().split('\n');
+    for (const sql of sqls) {
+        if (sql.trim() !== '') {
+            await connectionPromise.query(sql.trim());
+        }
+    }
+}
+
 describe("POST /api/1.0/postRecipe", () => {
 
-    // TODO: test db or mock
-    // it("should create a recipe", async () => {
-    //     const res = await request(app).post("/api/1.0/postRecipe").send(postBody);
-    //     expect(res.statusCode).toBe(201);
-    // });
+    beforeAll(async () => {
+        console.log("setUp");
+        await executeSql('clear_test_db.sql');
+        await executeSql('init_test_db.sql');
+    })
+
+    afterAll(async () => {
+        console.log("tearDown");
+        await connectionPromise.end();
+    })
+
+    it("should create a recipe", async () => {
+        const res = await request(app).post("/api/1.0/postRecipe").send(postBody);
+        expect(res.statusCode).toBe(201);
+    });
 
     it("should receive bad request", async () => {
         const res = await request(app).post("/api/1.0/postRecipe").send(invalidPostBody);
