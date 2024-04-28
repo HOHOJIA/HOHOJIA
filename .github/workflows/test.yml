@@ -10,12 +10,14 @@ defaults:
   run:
     working-directory: ./backend
 jobs:
-  Run-unit-test:
+  Run-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install
         run: npm install
+      - name: Run testing db using docker
+        run: docker run -d -p 3307:3306 nccusoftware/testing-db
       - name: Run unit tests
         run: npm test 
