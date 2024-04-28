@@ -34,4 +34,7 @@ module.exports = {
   notFound: (res) => {
     res.status(404).json({ error: "No recipes found" });
   },
+  badRequest: (res, detailMsg = "") => {
+    res.status(400).json({ error: "Bad request", detail: detailMsg });
+  },
 };

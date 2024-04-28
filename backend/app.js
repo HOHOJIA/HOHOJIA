@@ -11,6 +11,7 @@ const cors = require("cors");
 // dotenv.config();
 
 // our handmade routers <3
+let recipeRouter = require('./routes/recipe');
 let indexRouter = require("./routes/index");
 let usersRouter = require("./routes/users");
 let likeRouter = require("./routes/like");
@@ -48,6 +49,7 @@ app.use("/", indexRouter);
 app.use("/api/1.0/users", usersRouter);
 app.use("/api/1.0/like", likeRouter);
 // app.use('/api/1.0/comment', commentRouter(connection));
+app.use('/api/1.0/postRecipe', recipeRouter); // Should we use "resource-name/api"?
 app.use("/api/1.0/search", searchRouter);
 
 app.get("/api/1.0/test", (req, res) => {
