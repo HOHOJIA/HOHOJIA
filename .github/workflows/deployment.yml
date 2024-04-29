@@ -1,0 +1,67 @@
+
+name: Deployment
+
+concurrency: production
+
+on:
+  push:
+    branches:
+      - dev/cd-pipeline #todo
+
+jobs:
+  build-push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build and push Docker image
+        run: |
+          echo "${{ secrets.DOTENV }}" >> .env
+          docker login registry.gitlab.com -u${{ secrets.GITLAB_DEPLOY_USER }} --password-stdin <<<${{ secrets.GITLAB_DEPLOY_TOKEN }}
+          docker-compose build
+          docker-compose push
+
+  create-env-files-on-ec2:
+      runs-on: ubuntu-latest
+      steps:
+      - name: executing remote ssh
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ${{ secrets.EC2_DEPLOY_PATH }}
+            echo "${{ secrets.DOTENV }}" >> .env
+            echo "${{ secrets.NGINX_CONF }}" >> nginx.conf
+
+  copy-docker-compose-file-to-ec2:
+    runs-on: ubuntu-latest
+    needs: create-env-files-on-ec2
+    steps:
+    - uses: actions/checkout@v2
+    - name: Copy file via ssh password
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_KEY }}
+        source: "docker-compose.yml"
+        target: ${{ secrets.EC2_DEPLOY_PATH }}
+
+  restart-server:
+    runs-on: ubuntu-latest
+    needs: [copy-docker-compose-file-to-ec2, create-env-files-on-ec2, build-push-image]
+    steps:
+    - name: Restart server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd ${{ secrets.EC2_DEPLOY_PATH }}
+          docker-compose down
+          docker-compose up -d
