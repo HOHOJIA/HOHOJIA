@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Input, Checkbox, Link } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF } from "react-icons/fa";
@@ -141,6 +141,15 @@ function LoginInfo() {
 }
 
 function SignupInfo() {
+  const [password, setPassword] = useState("");
+  const [pwdConfirm, setPwdConfirm] = useState("");
+  const [pwdCheck, setPwdCheck] = useState(false);
+
+  // 使用者輸入確認密碼後才進行檢查，而不是在用戶還沒有輸入確認密碼就立即觸發(pwdCheck 已經被設定為 true)
+  useEffect(() => {
+    setPwdCheck(password !== pwdConfirm && pwdConfirm !== "");
+  }, [password, pwdConfirm]);
+
   return (
     <div className="flex flex-wrap justify-center gap-5 my-5 ">
       <Input
@@ -157,15 +166,45 @@ function SignupInfo() {
         className="max-w-xs"
         size="sm"
       />
-      <PasswordBtn label="密碼" size="sm" />
-      <PasswordBtn label="再次輸入密碼" size="sm" />
+      <PasswordBtn
+        label="密碼"
+        size="sm"
+        value={password}
+        invalid={false}
+        onChanged={setPassword}
+      />
+      <PasswordBtn
+        label="再次輸入密碼"
+        size="sm"
+        value={pwdConfirm}
+        invalid={pwdCheck}
+        onChanged={setPwdConfirm}
+      />
     </div>
   );
 }
 
-function PasswordBtn({ label, size }: { label: string; size: string }) {
+function PasswordBtn({
+  label,
+  size,
+  value,
+  invalid,
+  onChanged,
+}: {
+  label: string;
+  size: string;
+  value?: string;
+  invalid?: boolean;
+  onChanged?: (value: string) => void; // onChanged 是一個接受字串參數，並且不傳回任何值的 function
+}) {
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (onChanged) {
+      onChanged(e.target.value);
+    }
+  }
 
   return (
     <Input
@@ -184,9 +223,13 @@ function PasswordBtn({ label, size }: { label: string; size: string }) {
           )}
         </button>
       }
+      value={value}
+      onChange={handleChange}
       type={isVisible ? "text" : "password"}
       size={size as "sm" | "md" | "lg"}
       className="max-w-xs"
+      isInvalid={invalid}
+      errorMessage="密碼不一致"
     />
   );
 }
