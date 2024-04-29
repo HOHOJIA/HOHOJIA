@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Input, Checkbox, Link } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF } from "react-icons/fa";
@@ -117,9 +117,6 @@ function SignBar({
 }
 
 function LoginInfo() {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const toggleVisibility = () => setIsVisible(!isVisible);
-
   return (
     <div className="flex flex-wrap justify-center gap-5 my-5 ">
       <Input
@@ -128,25 +125,8 @@ function LoginInfo() {
         variant="bordered"
         className="max-w-xs"
       />
-      <Input
-        label="密碼"
-        variant="bordered"
-        endContent={
-          <button
-            className="focus:outline-none"
-            type="button"
-            onClick={toggleVisibility}
-          >
-            {isVisible ? (
-              <AiFillEyeInvisible className="text-2xl pointer-events-none text-default-400" />
-            ) : (
-              <AiFillEye className="text-2xl pointer-events-none text-default-400" />
-            )}
-          </button>
-        }
-        type={isVisible ? "text" : "password"}
-        className="max-w-xs"
-      />
+      <PasswordBtn label="密碼" size="md" />
+
       <div className="flex justify-between w-full px-5 my-5">
         <Checkbox defaultSelected size="sm">
           <p className="text-neutral-400">記住登入資訊</p>
@@ -161,6 +141,15 @@ function LoginInfo() {
 }
 
 function SignupInfo() {
+  const [password, setPassword] = useState("");
+  const [pwdConfirm, setPwdConfirm] = useState("");
+  const [pwdCheck, setPwdCheck] = useState(false);
+
+  // 使用者輸入確認密碼後才進行檢查，而不是在用戶還沒有輸入確認密碼就立即觸發(pwdCheck 已經被設定為 true)
+  useEffect(() => {
+    setPwdCheck(password !== pwdConfirm && pwdConfirm !== "");
+  }, [password, pwdConfirm]);
+
   return (
     <div className="flex flex-wrap justify-center gap-5 my-5 ">
       <Input
@@ -177,21 +166,71 @@ function SignupInfo() {
         className="max-w-xs"
         size="sm"
       />
-      <Input
-        type="text"
+      <PasswordBtn
         label="密碼"
-        variant="bordered"
-        className="max-w-xs"
         size="sm"
+        value={password}
+        invalid={false}
+        onChanged={setPassword}
       />
-      <Input
-        type="text"
+      <PasswordBtn
         label="再次輸入密碼"
-        variant="bordered"
-        className="max-w-xs"
         size="sm"
+        value={pwdConfirm}
+        invalid={pwdCheck}
+        onChanged={setPwdConfirm}
       />
     </div>
+  );
+}
+
+function PasswordBtn({
+  label,
+  size,
+  value,
+  invalid,
+  onChanged,
+}: {
+  label: string;
+  size: string;
+  value?: string;
+  invalid?: boolean;
+  onChanged?: (value: string) => void; // onChanged 是一個接受字串參數，並且不傳回任何值的 function
+}) {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (onChanged) {
+      onChanged(e.target.value);
+    }
+  }
+
+  return (
+    <Input
+      label={label}
+      variant="bordered"
+      endContent={
+        <button
+          className="focus:outline-none"
+          type="button"
+          onClick={toggleVisibility}
+        >
+          {isVisible ? (
+            <AiFillEyeInvisible className="text-2xl pointer-events-none text-default-400" />
+          ) : (
+            <AiFillEye className="text-2xl pointer-events-none text-default-400" />
+          )}
+        </button>
+      }
+      value={value}
+      onChange={handleChange}
+      type={isVisible ? "text" : "password"}
+      size={size as "sm" | "md" | "lg"}
+      className="max-w-xs"
+      isInvalid={invalid}
+      errorMessage="密碼不一致"
+    />
   );
 }
 
