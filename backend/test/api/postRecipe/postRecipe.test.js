@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../../../app");
+const executeSql = require('../../testUtils/testUtils').executeSql;
 const connectionPromise = require('../../../config/db').connectionPromise;
-const fs = require('fs');
 const path = require('path');
 
 const postBody = {
@@ -39,25 +39,13 @@ const postBody = {
 
 const invalidPostBody = {}
 
-/**
- * Execute sql file
- * @param {String} sqlFile
- */
-const executeSql = async (sqlFile) => {
-    const sqls = fs.readFileSync(path.join(__dirname, sqlFile)).toString().split('\n');
-    for (const sql of sqls) {
-        if (sql.trim() !== '') {
-            await connectionPromise.query(sql.trim());
-        }
-    }
-}
 
 describe("POST /api/1.0/postRecipe", () => {
 
     beforeAll(async () => {
         console.log("setUp");
-        await executeSql('clear_test_db.sql');
-        await executeSql('init_test_db.sql');
+        await executeSql(path.join(__dirname, '../testData/clear_test_db.sql'));
+        await executeSql(path.join(__dirname, '../testData/init_test_db.sql'));
     })
 
     afterAll(async () => {
@@ -75,3 +63,4 @@ describe("POST /api/1.0/postRecipe", () => {
         expect(res.statusCode).toBe(400);
     });
 });
+
