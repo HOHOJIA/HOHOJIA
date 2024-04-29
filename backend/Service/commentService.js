@@ -1,14 +1,17 @@
-const likeRepo = require("../Repository/likeRepo");
+const commentRepo = require("../Repository/commentRepo");
 const errorMsg = require("../utils/errorMsg");
 const connectionPromise = require("../config/db").connectionPromise;
 
 module.exports = {
-  like: async (res, likeObj) => {
+  addComment: async (res, newCommentObj) => {
     const connection = await connectionPromise.getConnection();
     try {
       //transaction
       await connection.beginTransaction();
-      const insertResult = await likeRepo.addLike(likeObj, connection);
+      const insertResult = await commentRepo.addComment(
+        newCommentObj,
+        connection
+      );
       await connection.commit();
 
       return insertResult;

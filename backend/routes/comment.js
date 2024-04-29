@@ -1,10 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const commentController = require("../controller/commentController");
 
-module.exports = function (connection) {
-    router.post('/', (req, res) => {
-        // TODO db query
-        res.send('XXXXXXXXXXXXXXXXXX');
-    });
-    return router;
-};
+// post
+router.post("/add", commentController.addComment);
+router.post("/delete", commentController.deleteComment);
+
+module.exports = router;
