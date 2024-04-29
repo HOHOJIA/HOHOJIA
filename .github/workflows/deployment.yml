@@ -26,15 +26,18 @@ jobs:
       steps:
       - name: executing remote ssh
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          NGINX_CONF: ${{ secrets.NGINX_CONF }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           port: ${{ secrets.PORT }}
+          envs: NGINX_CONF
           script: |
             cd ${{ secrets.EC2_DEPLOY_PATH }}
             echo "${{ secrets.DOTENV }}" > .env
-            echo "${{ secrets.NGINX_CONF }}" > nginx.conf
+            echo "$NGINX_CONF" > nginx.conf
 
   copy-docker-compose-file-to-ec2:
     runs-on: ubuntu-latest
