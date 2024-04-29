@@ -3,6 +3,7 @@ version: '3.8'
 services:
 
   hohoja_backend:
+      image:  registry.gitlab.com/nccu_se_2024/tzuchiandbrothers/deployteam/backend
       build: 
         context: ./backend
         dockerfile: Dockerfile
@@ -13,6 +14,7 @@ services:
         - hohoja_network
 
   hohoja_frontend:
+      image: registry.gitlab.com/nccu_se_2024/tzuchiandbrothers/deployteam/frontend:latest
       build: 
         context: ./frontend
         dockerfile: Dockerfile
