@@ -117,9 +117,6 @@ function SignBar({
 }
 
 function LoginInfo() {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const toggleVisibility = () => setIsVisible(!isVisible);
-
   return (
     <div className="flex flex-wrap justify-center gap-5 my-5 ">
       <Input
@@ -128,25 +125,8 @@ function LoginInfo() {
         variant="bordered"
         className="max-w-xs"
       />
-      <Input
-        label="密碼"
-        variant="bordered"
-        endContent={
-          <button
-            className="focus:outline-none"
-            type="button"
-            onClick={toggleVisibility}
-          >
-            {isVisible ? (
-              <AiFillEyeInvisible className="text-2xl pointer-events-none text-default-400" />
-            ) : (
-              <AiFillEye className="text-2xl pointer-events-none text-default-400" />
-            )}
-          </button>
-        }
-        type={isVisible ? "text" : "password"}
-        className="max-w-xs"
-      />
+      <PasswordBtn label="密碼" size="md" />
+
       <div className="flex justify-between w-full px-5 my-5">
         <Checkbox defaultSelected size="sm">
           <p className="text-neutral-400">記住登入資訊</p>
@@ -177,21 +157,37 @@ function SignupInfo() {
         className="max-w-xs"
         size="sm"
       />
-      <Input
-        type="text"
-        label="密碼"
-        variant="bordered"
-        className="max-w-xs"
-        size="sm"
-      />
-      <Input
-        type="text"
-        label="再次輸入密碼"
-        variant="bordered"
-        className="max-w-xs"
-        size="sm"
-      />
+      <PasswordBtn label="密碼" size="sm" />
+      <PasswordBtn label="再次輸入密碼" size="sm" />
     </div>
+  );
+}
+
+function PasswordBtn({ label, size }: { label: string; size: string }) {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
+
+  return (
+    <Input
+      label={label}
+      variant="bordered"
+      endContent={
+        <button
+          className="focus:outline-none"
+          type="button"
+          onClick={toggleVisibility}
+        >
+          {isVisible ? (
+            <AiFillEyeInvisible className="text-2xl pointer-events-none text-default-400" />
+          ) : (
+            <AiFillEye className="text-2xl pointer-events-none text-default-400" />
+          )}
+        </button>
+      }
+      type={isVisible ? "text" : "password"}
+      size={size as "sm" | "md" | "lg"}
+      className="max-w-xs"
+    />
   );
 }
 
