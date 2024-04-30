@@ -6,7 +6,7 @@ concurrency: production
 on:
   push:
     branches:
-      - release
+      - main
 
 jobs:
   test:
