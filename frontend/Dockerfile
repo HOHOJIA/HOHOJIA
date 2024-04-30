@@ -5,5 +5,6 @@ WORKDIR /app
 COPY . .
 
 RUN npm install
+RUN npm run no-lint-build
 
-CMD npm run dev
+CMD npm run start
