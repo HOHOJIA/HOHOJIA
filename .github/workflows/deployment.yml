@@ -10,6 +10,9 @@ on:
       - release
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   build-push-image:
     runs-on: ubuntu-latest
     steps:
@@ -23,6 +26,7 @@ jobs:
           docker-compose push
 
   create-env-files-on-ec2:
+      needs: test
       runs-on: ubuntu-latest
       steps:
       - name: executing remote ssh

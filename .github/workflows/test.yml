@@ -6,6 +6,8 @@ on:
     branches:
       - main
       - develop
+  workflow_call: # 可以被其他 workflow 呼叫
+
 defaults:
   run:
     working-directory: ./backend
