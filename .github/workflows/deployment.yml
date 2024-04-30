@@ -1,12 +1,13 @@
 
 name: Deployment
 
+# 一次只能有一個 workflow 執行
 concurrency: production
 
 on:
   push:
     branches:
-      - dev/cd-pipeline #todo
+      - release
 
 jobs:
   build-push-image:
