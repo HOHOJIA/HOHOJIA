@@ -7,14 +7,16 @@ concurrency: production
 on:
   push:
     branches:
-      - release
+      - test/cd-pipeline
 
 jobs:
   test:
     uses: ./.github/workflows/test.yml
-
+    secrets: inherit
+  
   build-push-image:
-    runs-on: ubuntu-latest
+    needs: test
+    runs-on: ubuntu-latest  
     steps:
       - name: Checkout
         uses: actions/checkout@v2
