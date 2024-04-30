@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install
-RUN npm run no-lint-build
+RUN npm install && npm run no-lint-build
 
 CMD npm run start
