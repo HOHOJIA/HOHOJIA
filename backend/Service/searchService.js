@@ -1,17 +1,22 @@
-const likeRepo = require("../Repository/likeRepo");
+const searchRepo = require("../Repository/searchRepo");
 const errorMsg = require("../utils/errorMsg");
 const connectionPromise = require("../config/db").connectionPromise;
 
 module.exports = {
-  like: async (res, likeObj) => {
+  search: async (res, type, keyword) => {
     const connection = await connectionPromise.getConnection();
     try {
       //transaction
+      let searchResult;
       await connection.beginTransaction();
-      const insertResult = await likeRepo.addLike(likeObj, connection);
+      if (type === "title") {
+        searchResult = await searchRepo.searchByTitle(keyword);
+      } else if (type === "tag") {
+        searchResult = await searchRepo.searchByTag(keyword);
+      }
       await connection.commit();
 
-      return insertResult;
+      return searchResult;
     } catch (error) {
       await connection.rollback();
       console.error(error);

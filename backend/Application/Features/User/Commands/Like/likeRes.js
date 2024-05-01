@@ -1,9 +1,10 @@
 module.exports = {
-    customize: async () => {
-        const response = {
-            code: 200,
-            status: "success"
-        };
-        return response;
-    }
-}
+  customize: async () => {
+    const response = {
+      data: {
+        status: "success",
+      },
+    };
+    return response;
+  },
+};
