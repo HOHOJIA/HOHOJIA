@@ -1,4 +1,4 @@
-const tool = require('./tool');
+const tool = require('../../utils/tool');
 
 describe('Check email', () => {
     test('When given a valid email, check email should pass', async () => {
