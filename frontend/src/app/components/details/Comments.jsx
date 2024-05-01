@@ -20,8 +20,8 @@ export default function Comments() {
     ];
 
     return (
-        <div className="flex flex-col gap-9 w-7/12">
-            <h4 className="text-lg font-bold underline decoration-2 underline-offset-8 px-8">
+        <div className="flex flex-col gap-9 lg:w-7/12">
+            <h4 className="text-lg font-bold underline lg:px-8 decoration-2 underline-offset-8">
                 留言
             </h4>
 
@@ -50,7 +50,7 @@ export default function Comments() {
                 {comments.map((comment, index) => (
                     <div
                         key={index}
-                        className="flex pl-6 border-l-2 border-primary justify-between items-stretch"
+                        className="flex items-stretch justify-between pl-6 border-l-2 border-primary"
                     >
                         <div className="flex flex-col justify-between gap-12">
                             <div className="flex flex-col gap-2.5">
