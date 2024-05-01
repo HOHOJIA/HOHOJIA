@@ -52,7 +52,7 @@ export default function Footer() {
     ];
 
     return (
-        <div className="flex flex-col items-center w-full gap-8 px-6 bg-white border-yellow-300 lg:flex-row lg:justify-between lg:px-20 py-14 border-t-1">
+        <div className="flex flex-col items-center w-full gap-8 px-6 bg-white border-yellow-300 lg:gap-0 lg:flex-row lg:justify-between lg:px-24 py-14 border-t-1">
             <div className="flex flex-col items-center gap-4 lg:items-start">
                 <Image
                     alt="HOHOJIA"
@@ -60,14 +60,14 @@ export default function Footer() {
                     width={0}
                     height={0}
                     sizes="100vw"
-                    style={{ width: "55%", height: "auto" }}
+                    style={{ width: "50%", height: "auto" }}
                 />
                 <p className="text-center lg:text-start">
                     讓每一次料理都能成為一段美好食光！
                 </p>
             </div>
 
-            <div className="flex gap-12">
+            <div className="flex gap-12 lg:text-nowrap">
                 {footerContents.map((content, index) => (
                     <div
                         key={index}
