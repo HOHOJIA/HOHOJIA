@@ -52,8 +52,8 @@ export default function Footer() {
     ];
 
     return (
-        <div className="flex flex-row items-center justify-between w-full px-24 bg-white border-yellow-300 py-14 border-t-1 sm: flex-col sm: px-6 sm: items-center sm: gap-8">
-            <div className="flex flex-col gap-4 sm: items-center">
+        <div className="flex flex-col items-center w-full gap-8 px-6 bg-white border-yellow-300 lg:flex-row lg:justify-between lg:px-20 py-14 border-t-1">
+            <div className="flex flex-col items-center gap-4 lg:items-start">
                 <Image
                     alt="HOHOJIA"
                     src="/images/logo_HOHOJIA.webp"
@@ -62,14 +62,17 @@ export default function Footer() {
                     sizes="100vw"
                     style={{ width: "55%", height: "auto" }}
                 />
-                <p className="sm: text-center">
+                <p className="text-center lg:text-start">
                     讓每一次料理都能成為一段美好食光！
                 </p>
             </div>
 
             <div className="flex gap-12">
                 {footerContents.map((content, index) => (
-                    <div key={index} className="flex flex-col gap-5 sm: hidden">
+                    <div
+                        key={index}
+                        className="hidden lg:flex lg:flex-col lg:gap-5"
+                    >
                         <h4 className="font-bold underline underline-offset-8 decoration-2">
                             {content.title}
                         </h4>
@@ -86,7 +89,7 @@ export default function Footer() {
                         </div>
                     </div>
                 ))}
-                <div className="flex flex-col gap-5 sm: items-center">
+                <div className="flex flex-col items-center gap-5 lg:items-start">
                     <h4 className="font-bold underline underline-offset-8 decoration-2">
                         聯絡我們
                     </h4>
