@@ -15,7 +15,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col justify-center w-1/4 ">
+    <div className="flex flex-col justify-center w-80 ">
       {/* 登入註冊 */}
       <div className="flex justify-center">
         <SignBar
@@ -248,7 +248,7 @@ function SubmitBtn({
   onSelected: (selectState: string) => void;
 }) {
   return (
-    <div className="flex flex-wrap justify-center gap-5 px-4 mt-5">
+    <div className="flex flex-wrap justify-center gap-5  mt-5">
       <Button color="primary" size="lg" className="w-full font-medium">
         {btn}
       </Button>
