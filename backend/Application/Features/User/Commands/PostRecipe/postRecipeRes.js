@@ -3,7 +3,7 @@ module.exports = {
         return {
             data: {
                 recipeId: recipeObject.recipeId,
-                recipeLink: `/details/${recipeObject.recipeId}`
+                recipeLink: `/recipe/${recipeObject.recipeId}`
             }
         };
     }
