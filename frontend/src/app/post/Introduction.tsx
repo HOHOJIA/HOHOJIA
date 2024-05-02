@@ -46,18 +46,20 @@ export default function Introduction() {
         <div className="flex items-center justify-center w-full col-span-3">
           <label
             htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            className="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer h-52 md:h-64 bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <BiImageAdd
                 size="4rem"
-                className="mb-2 text-gray-500 dark:text-gray-400"
+                className="mb-1 text-gray-500 xl:mb-2 dark:text-gray-400"
               />
-              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
+              <p className="mb-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Click to upload
+                <span className="hidden font-normal xl:inline-block">
+                  &nbsp;or drag and drop
+                </span>
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="hidden text-xs text-gray-500 xl:block dark:text-gray-400">
                 SVG, PNG, JPG or GIF (Recommendation is 2.63:1 horizontal image,
                 1230x468px or above)
               </p>

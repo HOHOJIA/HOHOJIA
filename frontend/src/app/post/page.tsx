@@ -17,9 +17,12 @@ export default function Post() {
     <>
       <Header />
       <div className="flex justify-center w-full h-full bg-slate-50">
-        <Card shadow="md" className="w-8/12 py-4 my-12">
+        <Card
+          shadow="md"
+          className="w-full py-4 my-4 md:w-10/12 lg:w-8/12 lg:my-12"
+        >
           <form action="">
-            <CardHeader className="flex-col items-start px-12 py-4">
+            <CardHeader className="flex-col items-start px-8 py-4 sm:px-12">
               <p className="text-xl font-bold border-b-2 pb-1.5 border-black mb-1.5">
                 來分享你的美味秘訣吧！
               </p>
@@ -27,7 +30,7 @@ export default function Post() {
               <Introduction />
             </CardHeader>
 
-            <CardBody className="flex-col items-start px-12 py-4">
+            <CardBody className="flex-col items-start px-8 py-4 sm:px-12">
               <p className="mb-4 text-xl font-bold border-b-2 border-black">
                 料理細節
               </p>
@@ -50,7 +53,7 @@ export default function Post() {
               </div>
 
               {/* preview and submit buttons */}
-              <div className="flex justify-center w-full gap-14 my-10">
+              <div className="flex justify-center w-full my-10 gap-14">
                 <Button className="text-black" color="primary" variant="ghost">
                   食譜預覽
                 </Button>
