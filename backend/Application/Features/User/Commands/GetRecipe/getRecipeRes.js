@@ -21,7 +21,7 @@ module.exports = {
                 description: recipeObject.description,
                 imageUrl: recipeObject.imgUrl,
                 quantity: Number(recipeObject.quantity),
-                cookTime: Number(recipeObject.cooktime),
+                cookTime: Number(recipeObject.cookTime),
                 totalLike: Number(recipeObject.totalLike), // TODO: Database handle
                 tip: recipeObject.tip,
                 createdAt: formatTime(recipeObject.createdAt),

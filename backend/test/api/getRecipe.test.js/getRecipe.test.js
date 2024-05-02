@@ -22,6 +22,8 @@ describe("GET /api/1.0/recipe", () => {
 
         expect(res.statusCode).toBe(200);
         expect(res.body.data.recipeId).toEqual(existRecipeId);
+        expect(res.body.data.cookTime).toBe(30);
+        expect(res.body.data.quantity).toBe(4);
     });
 
     it("should not found recipe", async () => {
