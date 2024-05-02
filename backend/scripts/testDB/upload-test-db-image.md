@@ -1,4 +1,12 @@
-# Upload test DB image to docker hub
+# Test DB
+
+## Using test DB from docker
+
+```
+docker run -d -p 3306:3306 nccusoftware/testing-db
+```
+
+## Upload test DB image to docker hub
 
 1. Run `export-from-AWS-db.sh` to generate current `schema.sql`
 ```sh
