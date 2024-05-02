@@ -10,7 +10,7 @@ export default function Ingredients() {
 
     return (
         <div className="flex flex-col order-2 w-full gap-9 lg:order-1">
-            <div className="flex flex-col gap-5 lg:gap-16 lg:flex-row">
+            <div className="flex justify-between lg:gap-16 lg:justify-start">
                 <div className="flex items-center gap-3">
                     <p className="text-sm font-bold lg:text-md">份量</p>
                     <h3 className="text-2xl font-bold lg:text-4xl">4人份</h3>
