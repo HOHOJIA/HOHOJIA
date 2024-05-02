@@ -6,10 +6,10 @@ import { FaArrowRight } from 'react-icons/fa'
 
 export default function NewRecipe() {
     return (
-        <Card className="" isPressable>
+        <Card className="min-w-56 " isPressable shadow="sm">
             <Image
                 alt="Card background"
-                className="object-cover rounded-xl "
+                className="object-cover w-full rounded-xl "
                 src="/cake.png"
                 width={200}
                 height={270}

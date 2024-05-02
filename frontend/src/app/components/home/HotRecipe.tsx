@@ -6,20 +6,20 @@ import { FaArrowRight } from 'react-icons/fa'
 
 export default function HotRecipe() {
     return (
-        <Card className="py-4" isPressable>
-            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+        <Card className="py-4 min-w-72" isPressable shadow="sm">
+            <CardHeader className="flex-col items-start px-4 pt-2 pb-0">
                 <h4 className="font-bold text-large">抹茶芝麻磅蛋糕</h4>
             </CardHeader>
-            <CardBody className="overflow-visible py-2 gap-2">
+            <CardBody className="gap-2 py-2 overflow-visible">
                 <Image
                     alt="Card background"
-                    className="object-cover rounded-xl "
+                    className="object-cover w-full rounded-xl "
                     src="/cake.png"
                     width={270}
                     height={270}
                 />
-                <Button className="justify-between bg-yellow-300   py-1 px-4  rounded-xl  shadow-small  flex flex-row  items-center">
-                    <p className="font-bold text-sm text-black">看完整食譜</p>
+                <Button className="flex flex-row items-center justify-between px-4 py-1 bg-yellow-300 rounded-xl shadow-small">
+                    <p className="text-sm font-bold text-black">看完整食譜</p>
                     <FaArrowRight />
                 </Button>
             </CardBody>
