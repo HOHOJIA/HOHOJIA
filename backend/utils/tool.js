@@ -97,4 +97,8 @@ module.exports = {
     )}Z`;
     return createdAt;
   },
+  /** Conver time to YYYY-MM-DDTHH:MM:SSZ */
+  converTimeFormat: (date) => {
+    return new Date(date).toISOString().split('.')[0] + "Z";;
+  }
 };
