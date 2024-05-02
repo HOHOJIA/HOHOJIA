@@ -2,7 +2,7 @@ const formatTime = require('../../../../../utils/tool').converTimeFormat;
 module.exports = {
     customize: (recipeObject) => {
 
-        if (recipeObject.comment) {
+        if (recipeObject.comments) {
             recipeObject.comments.forEach((comment) => {
                 comment.time = formatTime(comment.time);
             });
