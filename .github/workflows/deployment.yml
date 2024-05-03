@@ -5,8 +5,10 @@ concurrency: production
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
+  # Trigger when push a tag with format v* (e.g. v1.0.0)
+  # TODO: How to add "from branch=main" AND "tag=v*"?
 
 jobs:
   test:
@@ -73,3 +75,10 @@ jobs:
         script: |
           cd ${{ secrets.EC2_DEPLOY_PATH }}
           bash restart.sh
+
+    # Create release notes
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create a Release
+      uses: softprops/action-gh-release@v2
