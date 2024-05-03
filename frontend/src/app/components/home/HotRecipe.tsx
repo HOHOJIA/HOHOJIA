@@ -6,7 +6,7 @@ import { FaArrowRight } from 'react-icons/fa'
 
 export default function HotRecipe() {
     return (
-        <Card className="py-4 min-w-72" isPressable shadow="sm">
+        <Card className="py-4 min-w-72 sm:min-w-24 md:min-w-24 lg:min-w-54 xl:min-w-72" isPressable shadow="sm">
             <CardHeader className="flex-col items-start px-4 pt-2 pb-0">
                 <h4 className="font-bold text-large">抹茶芝麻磅蛋糕</h4>
             </CardHeader>
