@@ -1,0 +1,10 @@
+{
+  "name": "hohojia",
+  "version": "0.0.0",
+  "description": "Our backend and frontend in a single package",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

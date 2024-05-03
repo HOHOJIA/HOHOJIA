@@ -4,6 +4,7 @@ let path = require("path");
 let cookieParser = require("cookie-parser");
 let logger = require("morgan");
 const cors = require("cors");
+const version = require("../package.json").version;
 
 // const bodyParser = require("body-parser");
 // const mysql = require("mysql");
@@ -56,7 +57,7 @@ app.use("/api/1.0/search", searchRouter);
 
 app.get("/api/1.0/test", (req, res) => {
   console.log("Hello~~");
-  res.send("Hello");
+  res.send("Hello, version: " + version);
 });
 
 module.exports = app;
