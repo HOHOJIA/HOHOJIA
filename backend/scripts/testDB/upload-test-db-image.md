@@ -3,7 +3,7 @@
 ## Using test DB from docker
 
 ```
-docker run -d -p 3306:3306 nccusoftware/testing-db
+docker run -d -pull -p 3307:3306 nccusoftware/testing-db
 ```
 
 ## Upload test DB image to docker hub
