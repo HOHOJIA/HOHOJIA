@@ -5,8 +5,13 @@ concurrency: production
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
+  # Trigger when push a tag with format v* (e.g. v1.0.0)
+
+# For action-gh-release
+permissions:
+  contents: write
 
 jobs:
   test:
@@ -56,7 +61,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
-        source: "docker-compose.yml"
+        source: "docker-compose.yml,.version"
         target: ${{ secrets.EC2_DEPLOY_PATH }}
 
   restart-server:
@@ -73,3 +78,16 @@ jobs:
         script: |
           cd ${{ secrets.EC2_DEPLOY_PATH }}
           bash restart.sh
+
+  # Create release notes
+  # Can do: add changelogs
+  create-release:
+    needs: [restart-server]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Create a Release
+      uses: softprops/action-gh-release@v2
+      with:
+        generate_release_notes: true 
