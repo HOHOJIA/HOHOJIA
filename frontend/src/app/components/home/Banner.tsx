@@ -4,7 +4,7 @@ import { FaSearch, FaPlus } from 'react-icons/fa'
 export default function Banner() {
     return (
         <div className="bg-[url('/Banner_phone.png')] md:bg-[url('/Banner.png')] w-full h-96 md:h-56  flex justify-center items-center bg-cover">
-            <div className="flex flex-col items-start justify-center w-full gap-4 px-4 py-6 md:items-center md:px-20 lg:px-44 2xl:px-96">
+            <div className="flex flex-col items-start justify-center w-full gap-4 px-4 xl:px-44 py-6 md:items-center md:px-20 lg:px-36 2xl:px-96">
                 <h1 className="text-xl font-bold text-white drop-shadow-lg ">
                     讓每一次料理
                     <br className="block md:hidden" />
