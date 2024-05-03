@@ -10,6 +10,7 @@ services:
       container_name: hohoja_backend_container
       env_file:
         - .env
+        - .version
       networks:
         - hohoja_network
 
@@ -21,6 +22,7 @@ services:
       container_name: hohoja_frontend_container
       env_file:
         - .env
+        - .version
       networks:
         - hohoja_network
 
