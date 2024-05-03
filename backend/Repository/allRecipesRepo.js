@@ -28,7 +28,6 @@ module.exports = {
       FROM hohoja.recipes AS recipes 
       LEFT OUTER JOIN hohoja.users AS users ON recipes.userId = users.id
       LEFT OUTER JOIN hohoja.ingredients AS ingredients ON recipes.id = ingredients.recipeId 
-      WHERE DATEDIFF(createdAt,NOW()) = 0
       GROUP BY recipes.id, recipes.title, recipes.userId, users.name
       ORDER BY recipes.createdAt DESC;`;
       const [result] = await connection.execute(sortByTimeQuery);
