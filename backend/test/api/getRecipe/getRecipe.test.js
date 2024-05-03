@@ -32,7 +32,7 @@ describe("GET /api/1.0/recipe", () => {
 
     it("should not found recipe", async () => {
         const notExistId = 2;
-        const res = await request(app).get(`/api/1.0/recipes/${notExistId}`).send({});
+        const res = await request(app).get(`/api/1.0/recipe/${notExistId}`).send({});
         expect(res.statusCode).toBe(404);
     });
 });
