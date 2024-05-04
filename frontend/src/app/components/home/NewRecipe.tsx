@@ -6,7 +6,7 @@ import { FaArrowRight } from 'react-icons/fa'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
 
-export default function NewRecipe({ image }) {
+export default function NewRecipe({ image }: { image: string }) {
     const [showOverlay, setShowOverlay] = useState(false)
 
     return (

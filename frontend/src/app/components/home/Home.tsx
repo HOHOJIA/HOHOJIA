@@ -122,11 +122,11 @@ export default function Home() {
                     className="md:hidden flex items-center justify-between w-full max-w-full xl:px-44 gap-6 py-2 pl-4 overflow-x-scroll md:pl-20 lg:pl-44 2xl:pl-96"
                     style={{ scrollbarWidth: 'thin', scrollbarColor: 'white' }}
                 >
-                    <NewRecipe />
-                    <NewRecipe />
-                    <NewRecipe />
-                    <NewRecipe />
-                    <NewRecipe />
+                    <NewRecipe image="" />
+                    <NewRecipe image="" />
+                    <NewRecipe image="" />
+                    <NewRecipe image="" />
+                    <NewRecipe image="" />
                 </div>
                 <div className="overflow-x-hidden w-full py-1 md:flex hidden">
                     <div className="relative w-auto">
