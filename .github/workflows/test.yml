@@ -32,4 +32,4 @@ jobs:
           DB_PORT: 3307
           DB_USER: root
           DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-          DB_NAME: hohoja
+          DATABASE: hohoja
