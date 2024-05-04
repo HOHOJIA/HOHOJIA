@@ -4,6 +4,7 @@ let path = require("path");
 let cookieParser = require("cookie-parser");
 let logger = require("morgan");
 const cors = require("cors");
+const version = process.env.HOHOJIA_VERSION || "version not found";
 
 // const bodyParser = require("body-parser");
 // const mysql = require("mysql");
@@ -57,7 +58,7 @@ app.use("/api/1.0/getAllRecipes", allRecipesRouter);
 
 app.get("/api/1.0/test", (req, res) => {
   console.log("Hello~~");
-  res.send("Hello");
+  res.send("Hello, version: " + version);
 });
 
 module.exports = app;

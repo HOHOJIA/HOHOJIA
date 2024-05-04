@@ -3,22 +3,26 @@ version: '3.8'
 services:
 
   hohoja_backend:
+      image:  registry.gitlab.com/nccu_se_2024/tzuchiandbrothers/deployteam/backend:latest
       build: 
         context: ./backend
         dockerfile: Dockerfile
       container_name: hohoja_backend_container
       env_file:
         - .env
+        - .version
       networks:
         - hohoja_network
 
   hohoja_frontend:
+      image: registry.gitlab.com/nccu_se_2024/tzuchiandbrothers/deployteam/frontend:latest
       build: 
         context: ./frontend
         dockerfile: Dockerfile
       container_name: hohoja_frontend_container
       env_file:
         - .env
+        - .version
       networks:
         - hohoja_network
 
