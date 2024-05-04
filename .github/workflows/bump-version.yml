@@ -1,0 +1,52 @@
+name: Bump version on main head
+# Bump version and push to the repository
+
+# 一次只能有一個 workflow 執行
+concurrency: production
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'Which type of bump for the version'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+      - name: Bump version
+        run: |
+            if [ "$INPUT_BUMP_TYPE" == "major" ]; then
+                new_version=$(echo $(grep -E -o "[0-9](.*)" .version) | awk -F. '{print $1+1".0.0"}')
+            elif [ "$INPUT_BUMP_TYPE" == "minor" ]; then
+                new_version=$(echo $(grep -E -o "[0-9](.*)" .version) | awk -F. '{print $1"."$2+1".0"}')
+            elif [ "$INPUT_BUMP_TYPE" == "patch" ]; then
+                new_version=$(echo $(grep -E -o "[0-9](.*)" .version) | awk -F. '{print $1"."$2"."$3+1}')
+            else
+                echo "Invalid option"
+                exit 1
+            fi
+            echo "New version: $new_version"
+
+            # Update version in .version
+            echo "HOHOJIA_VERSION=$new_version" > .version
+
+            # commit the change
+            git add .version
+            git commit -m "Bump version to $new_version"
+            git push
+
+            # add tag
+            git tag -a $new_version -m "Bump version to $new_version"
+            # push the tag
+            git push origin $new_version
