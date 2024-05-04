@@ -24,6 +24,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
+          ref: "test/test-release"
       - name: Bump version
         run: |
             if [ "$INPUT_BUMP_TYPE" == "major" ]; then
