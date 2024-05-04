@@ -1,0 +1,35 @@
+name: Test
+
+on:
+  pull_request:
+    paths:
+      - 'backend/**'
+    branches:
+      - main
+      - develop
+  workflow_call: # 可以被其他 workflow 呼叫
+
+defaults:
+  run:
+    working-directory: ./backend
+    
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: npm install
+      - name: Run testing db using docker
+        run: docker run -d -p 3307:3306 nccusoftware/testing-db
+      - name: Wait for db to start
+        run: sleep 10
+      - name: Run unit tests
+        run: npm test 
+        env: # Testing environment variables
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3307
+          DB_USER: root
+          DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+          DB_NAME: hohoja

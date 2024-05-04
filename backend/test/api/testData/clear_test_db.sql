@@ -1,0 +1,10 @@
+USE `hohoja`;
+SET FOREIGN_KEY_CHECKS = 0; 
+TRUNCATE TABLE `steps`;
+TRUNCATE TABLE `ingredients`;
+TRUNCATE TABLE `recipetags`;
+TRUNCATE TABLE `recipecomments`;
+TRUNCATE TABLE `recipes`;
+TRUNCATE TABLE `tags`;
+TRUNCATE TABLE `users`;
+SET FOREIGN_KEY_CHECKS = 1; 
