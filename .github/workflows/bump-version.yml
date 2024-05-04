@@ -2,7 +2,7 @@ name: Bump version on main head
 # Bump version and push to the repository
 
 # 一次只能有一個 workflow 執行
-concurrency: production
+concurrency: bump-version
 
 on:
   workflow_dispatch:
