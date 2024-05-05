@@ -1,14 +1,19 @@
-import { Input, Button, Image } from '@nextui-org/react'
+import { Input, Button, Image, Skeleton } from '@nextui-org/react'
 import { FaSearch, FaPlus } from 'react-icons/fa'
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/react'
 // import Image from 'next/image'
 import { FaArrowRight } from 'react-icons/fa'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function NewRecipe({ recipe }) {
     const [showOverlay, setShowOverlay] = useState(false)
+    const router = useRouter()
 
+    const handleClick = () => {
+        router.push(`/details`)
+    }
     return (
         <motion.div
             className="relative   rounded-xl flex justify-center items-center"
@@ -31,7 +36,12 @@ export default function NewRecipe({ recipe }) {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <Card className="h-full min-w-56 w-full  items-center justify-start flex flex-col" isPressable shadow="sm">
+            <Card
+                onPress={handleClick}
+                className="h-full min-w-56 w-full  items-center justify-start flex flex-col"
+                isPressable
+                shadow="sm"
+            >
                 <Image
                     alt="Card background"
                     className="object-cover w-full rounded-xl h-[200px] "
