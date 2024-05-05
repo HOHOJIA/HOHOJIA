@@ -9,8 +9,25 @@ import { FaArrowRight } from 'react-icons/fa'
 import { animate, motion, useMotionValue } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import useMeasure from 'react-use-measure'
+const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN
 
 export default function Home() {
+    // const res = fetch(`/api/home`)
+    const [hotRecipe, setHotRecipe] = useState([])
+    const [newRecipe, setNewRecipe] = useState([])
+
+    useEffect(() => {
+        const fetchHotRecipes = async () => {
+            const res = await fetch(`${apiDomain}/getAllRecipes?sort=like`)
+            setHotRecipe(await res.json())
+        }
+        const fetchNewRecipes = async () => {
+            const res = await fetch(`${apiDomain}/getAllRecipes?sort=time`)
+            setNewRecipe(await res.json())
+        }
+        fetchHotRecipes()
+        fetchNewRecipes()
+    }, [])
     const catergory = [
         {
             name: '肉類',
@@ -105,11 +122,11 @@ export default function Home() {
                     </Button>
                 </div>
                 <div className="flex items-center justify-between w-full max-w-full gap-6 px-0 py-2 pl-4 xl:px-44 overflow-x-scroll 2xl:px-96 md:px-20 lg:px-36 md:overflow-x-visible">
-                    {/* {FakeDate.map((item, index) => ( */}
-                    <HotRecipe />
-                    <HotRecipe />
-                    <HotRecipe />
-                    {/* // ))} */}
+                    {hotRecipe?.data?.recipes.slice(0, 3).map((item, index) => (
+                        <div key={index} className="h-full">
+                            <HotRecipe recipe={item} />
+                        </div>
+                    ))}
                 </div>
                 <div className="flex flex-row justify-between w-full px-4 mt-6 text-xl font-bold md:px-20 xl:px-44  lg:px-36 2xl:px-96">
                     <p>最新分享食譜</p>
@@ -122,11 +139,7 @@ export default function Home() {
                     className="md:hidden flex items-center justify-between w-full max-w-full xl:px-44 gap-6 py-2 pl-4 overflow-x-scroll md:pl-20 lg:pl-44 2xl:pl-96"
                     style={{ scrollbarWidth: 'thin', scrollbarColor: 'white' }}
                 >
-                    <NewRecipe image="" />
-                    <NewRecipe image="" />
-                    <NewRecipe image="" />
-                    <NewRecipe image="" />
-                    <NewRecipe image="" />
+                    {newRecipe?.data?.recipes.map((item, index) => <NewRecipe recipe={item} key={index} />)}
                 </div>
                 <div className="overflow-x-hidden w-full py-1 md:flex hidden">
                     <div className="relative w-auto">
@@ -143,9 +156,7 @@ export default function Home() {
                                 setDuration(FAST_DURATION)
                             }}
                         >
-                            {[...images, ...images].map((item, idx) => (
-                                <NewRecipe image={`${item}`} key={idx} />
-                            ))}
+                            {newRecipe?.data?.recipes.map((item, index) => <NewRecipe recipe={item} key={index} />)}
                         </motion.div>{' '}
                     </div>
                 </div>

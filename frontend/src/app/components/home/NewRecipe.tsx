@@ -1,18 +1,18 @@
-import { Input, Button } from '@nextui-org/react'
+import { Input, Button, Image } from '@nextui-org/react'
 import { FaSearch, FaPlus } from 'react-icons/fa'
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/react'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { FaArrowRight } from 'react-icons/fa'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
 
-export default function NewRecipe({ image }: { image: string }) {
+export default function NewRecipe({ recipe }) {
     const [showOverlay, setShowOverlay] = useState(false)
 
     return (
         <motion.div
             className="relative   rounded-xl flex justify-center items-center"
-            key={image}
+            key={recipe?.recipeId}
             onHoverStart={() => setShowOverlay(true)}
             onHoverEnd={() => setShowOverlay(false)}
         >
@@ -31,16 +31,16 @@ export default function NewRecipe({ image }: { image: string }) {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <Card className="min-w-56 " isPressable shadow="sm">
+            <Card className="h-full min-w-56 w-full  items-center justify-start flex flex-col" isPressable shadow="sm">
                 <Image
                     alt="Card background"
-                    className="object-cover w-full rounded-xl "
-                    src="/cake.png"
-                    width={200}
-                    height={270}
+                    className="object-cover w-full rounded-xl h-[200px] "
+                    src={recipe?.imgUrl}
+                    width={300}
+                    height={200}
                 />
                 <CardFooter>
-                    <h5 className="font-bold ">抹茶芝麻磅蛋糕</h5>
+                    <h5 className="font-bold ">{recipe?.title}</h5>
                 </CardFooter>
             </Card>
         </motion.div>
