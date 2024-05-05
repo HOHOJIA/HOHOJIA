@@ -2,7 +2,7 @@ name: Bump version on main head
 # Bump version and push to the repository
 
 # 一次只能有一個 workflow 執行
-concurrency: production
+concurrency: bump_version
 
 on:
   workflow_dispatch:
@@ -22,10 +22,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GHPAT_PJ }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
+          token: ${{ secrets.GHPAT_PJ }}
       - name: Bump version
         run: |
             INPUT_BUMP_TYPE="${{ github.event.inputs.bump_type }}"
@@ -45,12 +48,12 @@ jobs:
             # Update version in .version
             echo "HOHOJIA_VERSION=$new_version" > .version
 
+            git config --global user.name 'your best doge from github action'
+            git config --global user.email 'hohojia_gh_action@users.noreply.github.com'
+
             # Add v to the version
             new_version=v$new_version
-            # Setup git
-            git config --global user.name 'Bot from github action'
-            git config --global user.email 'hohojia_gh_action@users.noreply.github.com'
-            
+
             # commit the change
             git add .version
             git commit -m "Bump version to $new_version"
