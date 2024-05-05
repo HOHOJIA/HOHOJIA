@@ -4,13 +4,14 @@ const executeSql = require('../../testUtils/testUtils').executeSql;
 const connectionPromise = require('../../../config/db').connectionPromise;
 const path = require('path');
 
+
 describe("GET /api/1.0/recipe", () => {
 
     beforeAll(async () => {
         await executeSql(path.join(__dirname, '../testData/clear_test_db.sql'));
         await executeSql(path.join(__dirname, './testData/init_test_db.sql'));
     })
-
+    
     afterAll(async () => {
         await connectionPromise.end();
     })

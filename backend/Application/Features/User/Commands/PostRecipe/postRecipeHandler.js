@@ -48,7 +48,6 @@ module.exports = {
             errorMsg.badRequest(res, 'Invalid post body fromat');
             return;
         }
-
         const insertResult = await recipeService.postRecipe(res, recipeObj);
         if (!insertResult) return; // Error msg response has already been handled in postRecipe
 
