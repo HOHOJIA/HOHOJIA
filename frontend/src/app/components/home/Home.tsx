@@ -10,9 +10,14 @@ import { animate, motion, useMotionValue } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import useMeasure from 'react-use-measure'
 import RecipeSkeleton from './RecipeSkeleton'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN
 
 export default function Home() {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const pathname = usePathname()
     // const res = fetch(`/api/home`)
     const [hotRecipe, setHotRecipe] = useState([])
     const [newRecipe, setNewRecipe] = useState([])
@@ -98,6 +103,14 @@ export default function Home() {
 
         return controls?.stop
     }, [rerender, xTranslation, duration, width])
+
+    const handleClickTag = (tag) => {
+        const current = new URLSearchParams(Array.from(searchParams.entries()))
+        current.set('search', tag)
+        const search = current.toString()
+        const query = search ? `?${search}` : ''
+        router.push(`${pathname}search${query}`)
+    }
     return (
         <div>
             <Banner />
@@ -105,9 +118,9 @@ export default function Home() {
                 <div className="flex items-center justify-between w-full max-w-full gap-6 px-4 py-1 overflow-x-scroll xl:px-44 2xl:px-96 md:px-20 lg:px-36 md:overflow-x-hidden">
                     {catergory.map((item, index) => (
                         <Button
+                            onPress={() => handleClickTag(item.name)}
                             className="p-8 font-bold bg-white shadow "
                             size="lg"
-                            // variant="shadow"
                             key={index}
                             startContent={<div className="w-full p-2 bg-yellow-300 rounded-full">{item.icon}</div>}
                         >
