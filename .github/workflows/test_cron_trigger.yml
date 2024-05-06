@@ -1,0 +1,13 @@
+name: Test Workflow
+
+on:
+  schedule:
+    # Every 5 minutes (for testing purposes)
+    - cron: "*/5 * * * *"
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test step
+        run: echo "The workflow triggered successfully."
