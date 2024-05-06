@@ -1,7 +1,9 @@
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 
-require('dotenv').config();
+require("dotenv").config({
+    path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
+  });
 const {
     AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY,
