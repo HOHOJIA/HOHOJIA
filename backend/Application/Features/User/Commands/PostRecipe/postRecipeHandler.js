@@ -43,7 +43,7 @@ module.exports = {
      * @returns {Promise<respone>} or {null} if error
      */
     handle: async (req, res) => {
-        const recipeObj = recipeObjFromPost(req.body); // TODO: check
+        const recipeObj = recipeObjFromPost(req.body);
         if (!recipeObj) {
             errorMsg.badRequest(res, 'Invalid post body fromat');
             return;

@@ -126,7 +126,7 @@ module.exports = {
 
             // TODO: recipeCount?
             const [authorResult] = await connection.query(
-                `SELECT U.id AS userId, U.name AS name, U.avatar AS avatarUrl, U.receivedLike AS receivedLike
+                `SELECT U.id AS userId, U.name AS name, U.avatar AS avatarUrl, U.receivedLike AS receivedLike, U.recipeCount AS recipeCount
                 FROM users AS U
                 WHERE U.id = ?`,
                 [recipeObject.userId]
