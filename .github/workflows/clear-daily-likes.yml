@@ -2,8 +2,8 @@ name: Clear Daily Likes
 
 on:
   schedule:
-    # At 18:00 UTC every day(for testing)
-    - cron: "0 18 * * *"
+    # At 18:10 Taipei Time (10:10 UTC) every day
+    - cron: "10 10 * * *"
 
 jobs:
   clear_likes:
