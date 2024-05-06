@@ -2,12 +2,29 @@ import { Input } from "@nextui-org/react";
 import IconButton from "./components/IconButton";
 import { FaPlus } from "react-icons/fa6";
 import { IoTrash, IoReorderThreeOutline } from "react-icons/io5";
+import { useState } from "react";
 
 export default function Description({
   children,
 }: {
   children?: React.ReactNode;
 }) {
+  const [ingredients, setIngredients] = useState([{ id: 1 }]);
+
+  function handleAddIngredient() {
+    const newIngredient = { id: ingredients.length + 1 };
+    setIngredients([...ingredients, newIngredient]);
+  }
+
+  function handleDelIngredient(id: number) {
+    if (ingredients.length > 1) {
+      setIngredients((ingredients) =>
+        ingredients.filter((ingredient) => ingredient.id !== id)
+      );
+    } //else if (ingredients.length === 1) {
+    // }
+  }
+
   return (
     <div className="flex flex-wrap justify-between w-full gap-5 sm:gap-x-20 sm:gap-y-5">
       <DescriptionInput
@@ -22,26 +39,36 @@ export default function Description({
       />
       <div className="hidden w-full sm:block">
         <p className="my-4 text-lg font-bold">食材&nbsp;</p>
-        <div className="flex items-center ">
-          <Input
-            className="w-6/12 mr-4"
-            type="text"
-            label="食材名稱"
-            variant="bordered"
-          />
-          <Input
-            className="w-4/12 mx-4"
-            type="text"
-            label="份量"
-            variant="bordered"
-          />
+        {ingredients.map((ingredient) => (
+          <div className="flex items-center my-4" key={ingredient.id}>
+            <Input
+              className="w-6/12 mr-4"
+              type="text"
+              label="食材名稱"
+              variant="bordered"
+            />
+            <Input
+              className="w-4/12 mx-4"
+              type="text"
+              label="份量"
+              variant="bordered"
+            />
 
-          <div className="flex">
-            <IconButton icon={FaPlus} size="1.5rem" />
-            <IconButton icon={IoTrash} size="1.5rem" />
-            <IconButton icon={IoReorderThreeOutline} size="1.5rem" />
+            <div className="flex">
+              <IconButton
+                icon={FaPlus}
+                size="1.5rem"
+                onClick={handleAddIngredient}
+              />
+              <IconButton
+                icon={IoTrash}
+                size="1.5rem"
+                onClick={() => handleDelIngredient(ingredient.id)}
+              />
+              <IconButton icon={IoReorderThreeOutline} size="1.5rem" />
+            </div>
           </div>
-        </div>
+        ))}
       </div>
       <div className="w-full sm:hidden">
         <p className="my-4 text-lg font-bold">食材&nbsp;</p>

@@ -3,19 +3,46 @@ import { Textarea } from "@nextui-org/react";
 import IconButton from "./components/IconButton";
 import { FaPlus } from "react-icons/fa6";
 import { IoTrash, IoReorderThreeOutline } from "react-icons/io5";
+import { useState } from "react";
 
 export default function Steps() {
+  const [steps, setSteps] = useState([{ id: 1 }]);
+
+  function handleAddStep() {
+    const newStep = { id: steps.length + 1 };
+    setSteps([...steps, newStep]);
+  }
+
+  function handleDelStep(id: number) {
+    if (steps.length > 1) {
+      setSteps((steps) => steps.filter((step) => step.id !== id));
+    }
+  }
+
   return (
     <div className="w-full">
       <p className="my-4 text-lg font-bold">步驟</p>
-      <EachOfStep order={1} />
-      <EachOfStep order={2} />
-      <EachOfStep order={3} />
+      {steps.map((step, index) => (
+        <EachOfStep
+          order={index + 1}
+          key={step.id}
+          onClickAdd={handleAddStep}
+          onClickDel={() => handleDelStep(step.id)}
+        />
+      ))}
     </div>
   );
 }
 
-function EachOfStep({ order }: { order: number }) {
+function EachOfStep({
+  order,
+  onClickAdd,
+  onClickDel,
+}: {
+  order: number;
+  onClickAdd: () => void;
+  onClickDel: () => void;
+}) {
   return (
     <div className="flex flex-wrap mt-5 mb-12 h-28">
       {/* icon */}
@@ -23,9 +50,9 @@ function EachOfStep({ order }: { order: number }) {
         <div className="flex justify-center w-1/6 text-2xl font-medium bg-yellow-300 rounded-lg sm:hidden">
           {order}
         </div>
-        <div className="">
-          <IconButton icon={FaPlus} size="1.2rem" />
-          <IconButton icon={IoTrash} size="1.2rem" />
+        <div>
+          <IconButton icon={FaPlus} size="1.2rem" onClick={onClickAdd} />
+          <IconButton icon={IoTrash} size="1.2rem" onClick={onClickDel} />
           <IconButton icon={IoReorderThreeOutline} size="1.2rem" />
         </div>
       </div>
