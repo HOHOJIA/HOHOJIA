@@ -22,7 +22,7 @@ module.exports = {
             const recipeId = result.insertId;
 
             // Insert tags 
-            // TODO: New tag handle?
+            // TODO: New tag insert handle?
             const selectTagIdsSql = 'SELECT `id` FROM `tags` WHERE `name` IN (?)';
             // Somehow execute() does not working with buck insert, so use query()
             // https://github.com/sidorares/node-mysql2/issues/830
