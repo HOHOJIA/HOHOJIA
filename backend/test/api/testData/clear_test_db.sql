@@ -1,7 +1,11 @@
 USE `hohoja`;
-DELETE FROM `steps`;
-DELETE FROM `ingredients`;
-DELETE FROM `recipetags`;
-DELETE FROM `recipes`;
-DELETE FROM `tags`;
-DELETE FROM `users`;
+SET FOREIGN_KEY_CHECKS = 0; 
+TRUNCATE TABLE `steps`;
+TRUNCATE TABLE `ingredients`;
+TRUNCATE TABLE `recipetags`;
+TRUNCATE TABLE `recipecomments`;
+TRUNCATE TABLE `recipes`;
+TRUNCATE TABLE `tags`;
+TRUNCATE TABLE `users`;
+TRUNCATE TABLE `likes`;
+SET FOREIGN_KEY_CHECKS = 1; 

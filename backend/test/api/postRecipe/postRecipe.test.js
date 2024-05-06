@@ -54,12 +54,12 @@ describe("POST /api/1.0/postRecipe", () => {
     })
 
     it("should create a recipe", async () => {
-        const res = await request(app).post("/api/1.0/postRecipe").send(postBody);
+        const res = await request(app).post("/api/1.0/recipe").send(postBody);
         expect(res.statusCode).toBe(201);
     });
 
     it("should receive bad request", async () => {
-        const res = await request(app).post("/api/1.0/postRecipe").send(invalidPostBody);
+        const res = await request(app).post("/api/1.0/recipe").send(invalidPostBody);
         expect(res.statusCode).toBe(400);
     });
 });
