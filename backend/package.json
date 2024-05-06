@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "NODE_ENV=test && jest"
+    "test": "NODE_ENV=test && jest --runInBand"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.433.0",
