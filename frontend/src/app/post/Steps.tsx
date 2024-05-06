@@ -4,16 +4,17 @@ import IconButton from "./components/IconButton";
 import { FaPlus } from "react-icons/fa6";
 import { IoTrash, IoReorderThreeOutline } from "react-icons/io5";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid"; // 引入 uuid lib
 
 export default function Steps() {
-  const [steps, setSteps] = useState([{ id: 1 }]);
+  const [steps, setSteps] = useState([{ id: uuidv4() }]);
 
   function handleAddStep() {
-    const newStep = { id: steps.length + 1 };
+    const newStep = { id: uuidv4() };
     setSteps([...steps, newStep]);
   }
 
-  function handleDelStep(id: number) {
+  function handleDelStep(id: string) {
     if (steps.length > 1) {
       setSteps((steps) => steps.filter((step) => step.id !== id));
     }
