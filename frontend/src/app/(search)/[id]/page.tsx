@@ -7,10 +7,18 @@ import RecipeListSkeleton from '../RecipeListSkeleton'
 import Image from 'next/image'
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN
+interface Recipe {
+    recipeId: number
+}
 
+interface SearchResponse {
+    data: {
+        recipes: Recipe[]
+    }
+}
 export default function ReciptList() {
     const searchParams = useSearchParams()
-    const [searchData, setSearchData] = useState([])
+    const [searchData, setSearchData] = useState<SearchResponse>({ data: { recipes: [] } })
     const [hasRecipe, setHasRecipe] = useState(true)
     const keyword = searchParams.get('search')
     useEffect(() => {

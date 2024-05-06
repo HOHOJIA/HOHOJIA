@@ -7,7 +7,14 @@ import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function NewRecipe({ recipe }) {
+interface RecipeProps {
+    recipe: {
+        recipeId: number
+        title: string
+        imgUrl: string
+    }
+}
+export default function NewRecipe({ recipe }: RecipeProps) {
     const [showOverlay, setShowOverlay] = useState(false)
     const router = useRouter()
 

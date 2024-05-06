@@ -13,14 +13,24 @@ import RecipeSkeleton from './RecipeSkeleton'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN
+interface Recipe {
+    recipeId: number
+    title: string
+    imgUrl: string
+}
+
+interface ApiResponse {
+    data: {
+        recipes: Recipe[]
+    }
+}
 
 export default function Home() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const pathname = usePathname()
-    // const res = fetch(`/api/home`)
-    const [hotRecipe, setHotRecipe] = useState([])
-    const [newRecipe, setNewRecipe] = useState([])
+    const [hotRecipe, setHotRecipe] = useState<ApiResponse>({ data: { recipes: [] } })
+    const [newRecipe, setNewRecipe] = useState<ApiResponse>({ data: { recipes: [] } })
 
     useEffect(() => {
         const fetchHotRecipes = async () => {
@@ -104,7 +114,7 @@ export default function Home() {
         return controls?.stop
     }, [rerender, xTranslation, duration, width])
 
-    const handleClickTag = (tag) => {
+    const handleClickTag = (tag: string) => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
         current.set('search', tag)
         const search = current.toString()
@@ -137,7 +147,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center justify-between w-full max-w-full gap-6 px-0 py-2 pl-4 xl:px-44 overflow-x-scroll 2xl:px-96 md:px-20 lg:px-36 md:overflow-x-visible">
                     {hotRecipe?.data?.recipes.length > 0 ? (
-                        hotRecipe.data.recipes.slice(0, 3).map((item, index) => (
+                        hotRecipe.data.recipes.slice(0, 3).map((item: any, index: number) => (
                             <div key={index}>
                                 <HotRecipe recipe={item} />
                             </div>
@@ -164,10 +174,11 @@ export default function Home() {
                             className="md:hidden flex items-center justify-between w-full max-w-full xl:px-44 gap-6 py-2 pl-4 overflow-x-scroll md:pl-20 lg:pl-44 2xl:pl-96"
                             style={{ scrollbarWidth: 'thin', scrollbarColor: 'white' }}
                         >
-                            {newRecipe?.data?.recipes.map((item, index) => <NewRecipe recipe={item} key={index} />)}
+                            {newRecipe?.data?.recipes.map((item: any, index: number) => (
+                                <NewRecipe recipe={item} key={index} />
+                            ))}
                         </div>
                         <div className="overflow-x-hidden w-full py-1 md:flex hidden">
-                            {' '}
                             <div className="relative w-auto">
                                 <motion.div
                                     className=" flex gap-4 "
