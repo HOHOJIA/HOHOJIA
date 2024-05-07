@@ -51,19 +51,8 @@ export default function Description({
         span="&nbsp;(分鐘)"
         placeholder="填入時間"
       />
-      <div className="hidden w-full sm:block">
-        <p className="my-4 text-lg font-bold">食材&nbsp;</p>
-        {ingredients.map((ingredient) => (
-          <IngredientInput
-            key={ingredient.id}
-            id={ingredient.id}
-            onAddIngre={handleAddIngredient}
-            onDelIngre={handleDelIngredient}
-            isMobile={isMobile}
-          />
-        ))}
-      </div>
-      <div className="w-full sm:hidden">
+
+      <div className="w-full">
         <p className="my-4 text-lg font-bold">食材&nbsp;</p>
         {ingredients.map((ingredient) => (
           <IngredientInput
@@ -142,6 +131,7 @@ function IngredientInput({
               size="1.5rem"
               onClick={() => onDelIngre(id)}
             />
+
             <IconButton icon={IoReorderThreeOutline} size="1.5rem" />
           </div>
         )}

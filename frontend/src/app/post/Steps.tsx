@@ -5,6 +5,7 @@ import { FaPlus } from "react-icons/fa6";
 import { IoTrash, IoReorderThreeOutline } from "react-icons/io5";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid"; // 引入 uuid lib
+import DropZoneImg from "./components/DropZoneImg";
 
 export default function Steps() {
   const [steps, setSteps] = useState([{ id: uuidv4() }]);
@@ -65,26 +66,7 @@ function EachOfStep({
         </div>
 
         {/* dropzone */}
-        <div className="flex items-center justify-center w-4/12 sm:w-3/12 ">
-          <label
-            htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer sm:h-28 bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-          >
-            <div className="flex flex-col items-center justify-center md:py-5">
-              <BiImageAdd
-                size="2rem"
-                className="text-gray-500 dark:text-gray-400"
-              />
-              <p className="hidden text-sm font-semibold text-center text-gray-500 md:block dark:text-gray-400">
-                Click to upload
-                <span className="hidden font-normal xl:inline-block">
-                  &nbsp;or drag and drop
-                </span>
-              </p>
-            </div>
-            <input id="dropzone-file" type="file" className="hidden" />
-          </label>
-        </div>
+        <DropZoneImg smallSize={true} />
 
         {/* textarea */}
         <Textarea
