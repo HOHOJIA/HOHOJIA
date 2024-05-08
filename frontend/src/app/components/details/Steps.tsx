@@ -44,7 +44,7 @@ export default function Steps() {
                     <div className="absolute left-0 right-0 z-0 hidden w-full transform -translate-y-1/2 border-gray-200 border-dashed top-1/2 border-t-1 lg:block" />
 
                     <Image
-                        className="z-10 object-cover w-full h-auto lg:w-1/6 rounded-2xl"
+                        className="z-10 object-cover w-full h-auto lg:w-1/6 rounded-2xl md:w-4/5 md:self-center"
                         src={step.image}
                         alt="step"
                         width={0}
