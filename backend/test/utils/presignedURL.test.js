@@ -1,7 +1,9 @@
-const s3 = require('../../utils/s3presign');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const request = require("supertest");
+const app = require("../../app");
+
 describe('Check email', () => {
     test('test upload to s3', async () => {
         const testDir = path.dirname(__filename);
@@ -13,14 +15,13 @@ describe('Check email', () => {
             buffer: imageBuffer,
             mimetype: 'image/jpeg',
         };
-        const response = await axios.get(
-            `http://localhost:3000/api/generate-presigned-url`, {
-            params: {
-                filename: file.originalname,
-            },
-        });
-        console.log(response.data);
-        const { presignedUrl } = response.data;
+
+        const response = await request(app)
+            .get("/api/generate-presigned-url")
+            .query({ filename: file.originalname });
+
+
+        const { presignedUrl } = response.body;
         console.log('presignedUrl: ' + presignedUrl);
         const uploadResponse = await axios.put(presignedUrl, file, {
             headers: {
