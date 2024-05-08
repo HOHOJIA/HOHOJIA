@@ -4,8 +4,14 @@ import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/react'
 // import Image from 'next/image'
 import { FaArrowRight } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
-
-export default function HotRecipe({ recipe }) {
+interface RecipeProps {
+    recipe: {
+        recipeId: number
+        title: string
+        imgUrl: string
+    }
+}
+export default function HotRecipe({ recipe }: RecipeProps) {
     const router = useRouter()
 
     const handleClick = () => {
@@ -14,7 +20,7 @@ export default function HotRecipe({ recipe }) {
     return (
         <Card
             onPress={handleClick}
-            className="w-full py-4 min-w-72 sm:min-w-24 md:min-w-24 lg:min-w-54 xl:min-w-72"
+            className="w-full py-4 min-w-72 sm:min-w-24 md:min-w-24 lg:min-w-56 xl:min-w-72 2xl:min-w-[360px]"
             isPressable
             shadow="sm"
         >
