@@ -1,10 +1,11 @@
-const errorMsg = require('../utils/errorMsg');
 const connectionPromise = require('../config/db').connectionPromise;
 module.exports = {
     selectUserByEmail: async(email)=>{
         const connection = connectionPromise;
         try {
-            const [result] = await connection.execute('SELECT * FROM Users WHERE email = ?', [email]);
+            const signInQuery = "SELECT * FROM users WHERE email = ?";
+            
+            const [result] = await connection.execute(signInQuery, [email]);
             return result;
         } catch (error) {
             throw error;
@@ -13,7 +14,7 @@ module.exports = {
     selectUserById: async(userId)=>{
         const connection = connectionPromise;
         try {
-            const [result] = await connection.execute('SELECT * FROM Users WHERE id = ?', [userId]);
+            const [result] = await connection.execute('SELECT * FROM users WHERE id = ?', [userId]);
             return result;
         } catch (error) {
             throw error;
@@ -22,7 +23,8 @@ module.exports = {
     insertNewUser: async(userInfoObj, connection)=>{
         try {
             const {name , email, hashedPassword , provider , avatar} = userInfoObj;
-            const signupQuery = 'INSERT INTO Users(name, email, password, provider , avatar , isActive) VALUES(?,?,?,?,?,?)';
+            console.log(userInfoObj)
+            const signupQuery = 'INSERT INTO users(name, email, password, provider , avatar , isActive) VALUES(?,?,?,?,?,?)';
             const [result] = await connection.execute(signupQuery, [name, email, hashedPassword, provider , avatar , 1]); 
             return result;     
         } catch (error) {
