@@ -1,7 +1,25 @@
+'use client'
+import { useState } from 'react'
 import { Input, Button } from '@nextui-org/react'
 import { FaSearch, FaPlus } from 'react-icons/fa'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
 export default function Banner() {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const pathname = usePathname()
+    const [keyword, setKeyword] = useState('')
+
+    const handleClickSearch = () => {
+        if (keyword !== '') {
+            const current = new URLSearchParams(Array.from(searchParams.entries())) // -> has to use this form
+            current.set('search', keyword)
+            const search = current.toString()
+            const query = search ? `?${search}` : ''
+            router.push(`${pathname}search${query}`)
+        }
+    }
+
     return (
         <div className="bg-[url('/Banner_phone.png')] md:bg-[url('/Banner.png')] w-full h-96 md:h-56  flex justify-center items-center bg-cover">
             <div className="flex flex-col items-start justify-center w-full gap-4 px-4 xl:px-44 py-6 md:items-center md:px-20 lg:px-36 2xl:px-96">
@@ -16,10 +34,12 @@ export default function Banner() {
                         key="outside"
                         type=""
                         label=""
+                        onChange={(e) => setKeyword(e.target.value)}
                         placeholder="想找什麼食譜呢？"
                         className="w-full bg-white md:w-8/12 rounded-xl"
                         endContent={
                             <Button
+                                onPress={handleClickSearch}
                                 className="px-3 py-0 text-sm font-bold"
                                 color="primary"
                                 size="md"
