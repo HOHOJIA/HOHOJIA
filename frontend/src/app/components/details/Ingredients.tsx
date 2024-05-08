@@ -29,8 +29,11 @@ export default function Ingredients() {
                     <div className="flex flex-col gap-4">
                         {ingredients
                             .slice(0, ingredients.length / 2)
-                            .map((ingredient) => (
-                                <div className="flex justify-between lg:gap-32">
+                            .map((ingredient, index) => (
+                                <div
+                                    className="flex justify-between lg:gap-32"
+                                    key={index}
+                                >
                                     <p className="text-gray-600">
                                         {ingredient.name}
                                     </p>
@@ -44,8 +47,11 @@ export default function Ingredients() {
                     <div className="flex flex-col gap-4">
                         {ingredients
                             .slice(ingredients.length / 2)
-                            .map((ingredient) => (
-                                <div className="flex justify-between gap-32">
+                            .map((ingredient, index) => (
+                                <div
+                                    className="flex justify-between gap-32"
+                                    key={index}
+                                >
                                     <p className="text-gray-600">
                                         {ingredient.name}
                                     </p>
