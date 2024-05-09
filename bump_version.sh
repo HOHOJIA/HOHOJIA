@@ -39,3 +39,9 @@ git tag -a v$new_version -m "Bump version to v$new_version"
 push the commit and tag
 git push
 git push origin v$new_version
+
+webhook_url="https://discord.com/api/webhooks/1238131055437811723/iQ2a_uNRe0Dolc54Z6rKAT7xnzIXTiSnK2KOa3ztFZsd2XFlgD3-Wg2cOASGxnXzL96o"
+message_content="**[Bump Version]** New version **v$new_version** has been released!"
+curl -H "Content-Type: application/json" \
+     -d "{\"content\": \"$message_content\"}" \
+     $webhook_url
