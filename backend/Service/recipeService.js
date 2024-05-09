@@ -3,7 +3,6 @@ const errorMsg = require('../utils/errorMsg');
 const connectionPromise = require('../config/db').connectionPromise;
 
 
-// Recipe service: business logic for recipe related operations
 module.exports = {
     /**
      * Post a recipe
