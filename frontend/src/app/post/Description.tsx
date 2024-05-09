@@ -6,11 +6,14 @@ import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid"; // 引入 uuid lib
 
 export default function Description({
-  children,
+  ingredients,
+  setIngredients,
 }: {
-  children?: React.ReactNode;
+  ingredients: { id: string; name: string; size: string }[];
+  setIngredients: React.Dispatch<
+    React.SetStateAction<{ id: string; name: string; size: string }[]>
+  >;
 }) {
-  const [ingredients, setIngredients] = useState([{ id: uuidv4() }]);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -26,7 +29,7 @@ export default function Description({
   }, []);
 
   function handleAddIngredient() {
-    const newIngredient = { id: uuidv4() };
+    const newIngredient = { id: uuidv4(), name: "", size: "" };
     setIngredients([...ingredients, newIngredient]);
   }
 
@@ -39,17 +42,45 @@ export default function Description({
     // }
   }
 
+  function handleChangeIngreName(
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) {
+    const newIngredient = ingredients.map((ingredient) =>
+      ingredient.id === id
+        ? { ...ingredient, name: event.target.value }
+        : ingredient
+    );
+    setIngredients(newIngredient);
+  }
+
+  function handleChangeIngreSize(
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) {
+    const newIngredient = ingredients.map((ingredient) =>
+      ingredient.id === id
+        ? { ...ingredient, size: event.target.value }
+        : ingredient
+    );
+    setIngredients(newIngredient);
+  }
+
+  // console.log(ingredients);
+
   return (
     <div className="flex flex-wrap justify-between w-full gap-5 sm:gap-x-20 sm:gap-y-5">
       <DescriptionInput
         p="份量&nbsp;"
         span="&nbsp;(人份)"
         placeholder="填入數量"
+        name="quantity"
       />
       <DescriptionInput
         p="料理時間&nbsp;"
         span="&nbsp;(分鐘)"
         placeholder="填入時間"
+        name="cookTime"
       />
 
       <div className="w-full">
@@ -61,6 +92,10 @@ export default function Description({
             onAddIngre={handleAddIngredient}
             onDelIngre={handleDelIngredient}
             isMobile={isMobile}
+            name={ingredient.name}
+            size={ingredient.size}
+            onChangeIngreName={handleChangeIngreName}
+            onChangeIngreSize={handleChangeIngreSize}
           />
         ))}
       </div>
@@ -72,18 +107,45 @@ function DescriptionInput({
   p,
   span,
   placeholder,
+  name,
 }: {
   p: string;
   span: string;
   placeholder: string;
+  name: string;
 }) {
+  const [value, setValue] = useState(1);
+  const [isInValid, setIsInValid] = useState(false);
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const input = event.target.value;
+
+    if (!/^\d+$/.test(input)) {
+      setIsInValid(true);
+    } else {
+      setIsInValid(false);
+    }
+
+    const sizeValue = input !== "" ? parseInt(input) : 0;
+    setValue(sizeValue);
+  }
+
   return (
     <div className="w-full sm:w-5/12">
       <p className="my-4 text-lg font-bold">
         {p}
         <span className="text-sm font-light text-slate-400">{span}</span>
       </p>
-      <Input type="text" label={placeholder} variant="bordered" />
+      <Input
+        type="text"
+        label={placeholder}
+        variant="bordered"
+        name={name}
+        value={value.toString()}
+        onChange={handleChange}
+        isInvalid={isInValid}
+        errorMessage={isInValid && "Please enter number only."}
+      />
     </div>
   );
 }
@@ -93,11 +155,25 @@ function IngredientInput({
   onAddIngre,
   onDelIngre,
   isMobile,
+  name,
+  size,
+  onChangeIngreName,
+  onChangeIngreSize,
 }: {
   id: string;
   onAddIngre: () => void;
   onDelIngre: (id: string) => void;
   isMobile: boolean;
+  name: string;
+  size: string;
+  onChangeIngreName: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => void;
+  onChangeIngreSize: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => void;
 }) {
   return (
     <div
@@ -118,10 +194,22 @@ function IngredientInput({
       <div className={`flex w-full ${isMobile ? "flex-nowrap" : ""}`}>
         {isMobile && <IconButton icon={IoReorderThreeOutline} size="1.2rem" />}
         <div className={isMobile ? "w-7/12 mr-2" : "w-6/12 mr-4"}>
-          <Input type="text" label="食材名稱" variant="bordered" />
+          <Input
+            type="text"
+            label="食材名稱"
+            variant="bordered"
+            value={name}
+            onChange={(event) => onChangeIngreName(event, id)}
+          />
         </div>
         <div className={isMobile ? "w-5/12 mx-2" : "w-4/12 mx-4"}>
-          <Input type="text" label="份量" variant="bordered" />
+          <Input
+            type="text"
+            label="份量"
+            variant="bordered"
+            value={size}
+            onChange={(event) => onChangeIngreSize(event, id)}
+          />
         </div>
         {!isMobile && (
           <div className="flex">
