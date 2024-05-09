@@ -63,3 +63,13 @@ jobs:
             git tag -a $new_version -m "Bump version to $new_version"
             # push the tag
             git push origin $new_version
+
+      - name: Send Notification to Discord
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          username: "GitHub Bot"
+          message: |
+            **[Bump Version]** Version upgraded. The **「${{ github.event_name }}」** event triggered by **「${{ github.actor }}」**.
+      

@@ -78,6 +78,14 @@ jobs:
         script: |
           cd ${{ secrets.EC2_DEPLOY_PATH }}
           bash restart.sh
+    - name: Send Notification to Discord
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+        webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+        username: "GitHub Bot"
+        message: |
+          **[Deploy]** Deployment completed on ec2. The **「${{ github.event_name }}」** event triggered by **「${{ github.actor }}」** on **${{ github.ref }}** succeeded.
 
   # Create release notes
   # Can do: add changelogs
