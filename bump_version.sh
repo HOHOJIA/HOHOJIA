@@ -1,4 +1,7 @@
 #!/bin/bash
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
 
 echo "[!] Please make sure you have committed all the changes before bumping the version!"
 echo "Current version: $(grep -E -o "[0-9](.*)" .version)"
@@ -40,8 +43,7 @@ push the commit and tag
 git push
 git push origin v$new_version
 
-webhook_url="https://discord.com/api/webhooks/1238131055437811723/iQ2a_uNRe0Dolc54Z6rKAT7xnzIXTiSnK2KOa3ztFZsd2XFlgD3-Wg2cOASGxnXzL96o"
-message_content="**[Bump Version]** New version **v$new_version** has been released!"
+message_content="New software version v$new_version has been released."
 curl -H "Content-Type: application/json" \
      -d "{\"content\": \"$message_content\"}" \
-     $webhook_url
+     "$DISCORD_WEBHOOK_URL"
