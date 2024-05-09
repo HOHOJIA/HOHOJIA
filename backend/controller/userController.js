@@ -1,4 +1,5 @@
 const userSignUpHandler = require('../Application/Features/User/Commands/SignUp/signUpHandler');
+const userSignInHandler = require('../Application/Features/User/Commands/SignIn/signInHandler');
 const errorMsg = require('../utils/errorMsg');
 const tool = require('../utils/tool');
 
@@ -16,6 +17,17 @@ module.exports = {
             console.log(error)
         }
     },
+    signIn: async(req,res)=>{
+        try {
+            const { provider , email , password } = req.body;
+            if (!email || !password) return errorMsg.inputEmpty(res);
+            console.log(email);
+            const response=await userSignInHandler.handle(res, provider , email , password);
+            res.status(200).json(response);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
 }

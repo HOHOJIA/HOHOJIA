@@ -6,13 +6,12 @@ module.exports = {
     try {
       const { userId, recipeId, replyCommentId, content, time } = newCommentObj;
       const addCommentQuery =
-        "INSERT INTO recipecomments (userId, recipeId, replyCommentId, content, time) VALUES(?,?,?,?,?)";
+        "INSERT INTO recipecomments (userId, recipeId, replyCommentId, content) VALUES(?,?,?,?)";
       const [result] = await connection.execute(addCommentQuery, [
         userId,
         recipeId,
         replyCommentId,
         content,
-        time,
       ]);
       return result;
     } catch (error) {

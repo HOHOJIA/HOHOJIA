@@ -16,3 +16,6 @@ RDS connection
 ```bash 
 mysql -u admin -p -h database-1.chgewsci2ke5.ap-southeast-2.rds.amazonaws.com
 ```
+
+## How to deploy
+- 用 github action 的 bump-vesion 來升版本，就會[觸發 deployment](docs/deployment.md)

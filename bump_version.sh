@@ -1,4 +1,7 @@
 #!/bin/bash
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
 
 echo "[!] Please make sure you have committed all the changes before bumping the version!"
 echo "Current version: $(grep -E -o "[0-9](.*)" .version)"
@@ -39,3 +42,8 @@ git tag -a v$new_version -m "Bump version to v$new_version"
 push the commit and tag
 git push
 git push origin v$new_version
+
+message_content="New software version v$new_version has been released."
+curl -H "Content-Type: application/json" \
+     -d "{\"content\": \"$message_content\"}" \
+     "$DISCORD_WEBHOOK_URL"

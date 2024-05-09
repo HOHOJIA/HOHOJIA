@@ -12,7 +12,7 @@ module.exports = {
                 errorMsg.badRequest(res, validateResults);
                 return;
             }
-
+            
             const response = await postReceipeHandler.handle(req, res);
             if (response) {
                 res.status(201).json(response);

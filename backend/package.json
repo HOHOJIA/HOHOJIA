@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "NODE_ENV=test && jest"
+    "test": "NODE_ENV=test && jest --runInBand"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.433.0",
+    "@aws-sdk/client-s3": "^3.569.0",
+    "@aws-sdk/s3-request-presigner": "^3.569.0",
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
