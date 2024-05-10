@@ -21,10 +21,27 @@ module.exports = {
             return insertResult;
         } catch (error) {
             await connection.rollback();
-            console.log('Error in recipeService', error);
+            console.log('Error in recipeService postRecipe', error);
             errorMsg.query(res);
         } finally {
             connection.release();
         }
     },
+
+    getRecipe: async (res, recipeId) => {
+        const connection = await connectionPromise.getConnection();
+        try {
+            const result = await recipeRepo.getRecipe(recipeId, connection);
+            if (!result) {
+                errorMsg.notFound(res);
+                return;
+            }
+            return result;
+        } catch (error) {
+            console.log('Error in recipeService getRecipe', error);
+            errorMsg.query(res);
+        } finally {
+            connection.release();
+        }
+    }
 }

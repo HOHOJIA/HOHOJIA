@@ -1,0 +1,101 @@
+name: Deployment
+
+# 一次只能有一個 workflow 執行
+concurrency: production
+
+on:
+  push:
+    tags:
+      - 'v*'
+  # Trigger when push a tag with format v* (e.g. v1.0.0)
+
+# For action-gh-release
+permissions:
+  contents: write
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  build-push-image:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build and push Docker image
+        run: |
+          echo "${{ secrets.DOTENV }}" > .env
+          docker login registry.gitlab.com -u${{ secrets.GITLAB_DEPLOY_USER }} --password-stdin <<<${{ secrets.GITLAB_DEPLOY_TOKEN }}
+          docker-compose build
+          docker-compose push
+
+  create-env-files-on-ec2:
+      needs: test
+      runs-on: ubuntu-latest
+      steps:
+      - name: executing remote ssh
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          NGINX_CONF: ${{ secrets.NGINX_CONF }}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          port: ${{ secrets.PORT }}
+          envs: NGINX_CONF
+          script: |
+            cd ${{ secrets.EC2_DEPLOY_PATH }}
+            echo "${{ secrets.DOTENV }}" > .env
+            echo "$NGINX_CONF" > nginx.conf
+
+  copy-docker-compose-file-to-ec2:
+    runs-on: ubuntu-latest
+    needs: create-env-files-on-ec2
+    steps:
+    - uses: actions/checkout@v2
+    - name: Copy file via ssh password
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_KEY }}
+        source: "docker-compose.yml,.version"
+        target: ${{ secrets.EC2_DEPLOY_PATH }}
+
+  restart-server:
+    runs-on: ubuntu-latest
+    needs: [copy-docker-compose-file-to-ec2, create-env-files-on-ec2, build-push-image]
+    steps:
+    - name: Restart server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd ${{ secrets.EC2_DEPLOY_PATH }}
+          bash restart.sh
+    - name: Send Notification to Discord
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+        webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+        username: "GitHub Bot"
+        message: |
+          **[Deploy]** Deployment completed on ec2. The **「${{ github.event_name }}」** event triggered by **「${{ github.actor }}」** on **${{ github.ref }}** succeeded.
+
+  # Create release notes
+  # Can do: add changelogs
+  create-release:
+    needs: [restart-server]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Create a Release
+      uses: softprops/action-gh-release@v2
+      with:
+        generate_release_notes: true 

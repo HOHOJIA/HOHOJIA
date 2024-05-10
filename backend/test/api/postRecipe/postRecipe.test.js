@@ -1,5 +1,8 @@
 const request = require("supertest");
 const app = require("../../../app");
+const executeSql = require('../../testUtils/testUtils').executeSql;
+const connectionPromise = require('../../../config/db').connectionPromise;
+const path = require('path');
 
 const postBody = {
     "userId": 1,
@@ -36,16 +39,28 @@ const postBody = {
 
 const invalidPostBody = {}
 
+
 describe("POST /api/1.0/postRecipe", () => {
 
-    // TODO: test db or mock
-    // it("should create a recipe", async () => {
-    //     const res = await request(app).post("/api/1.0/postRecipe").send(postBody);
-    //     expect(res.statusCode).toBe(201);
-    // });
+    beforeAll(async () => {
+        console.log("setUp");
+        await executeSql(path.join(__dirname, '../testData/clear_test_db.sql'));
+        await executeSql(path.join(__dirname, '../testData/init_test_db.sql'));
+    })
+
+    afterAll(async () => {
+        console.log("tearDown");
+        await connectionPromise.end();
+    })
+
+    it("should create a recipe", async () => {
+        const res = await request(app).post("/api/1.0/recipe").send(postBody);
+        expect(res.statusCode).toBe(201);
+    });
 
     it("should receive bad request", async () => {
-        const res = await request(app).post("/api/1.0/postRecipe").send(invalidPostBody);
+        const res = await request(app).post("/api/1.0/recipe").send(invalidPostBody);
         expect(res.statusCode).toBe(400);
     });
 });
+

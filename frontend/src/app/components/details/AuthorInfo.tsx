@@ -1,11 +1,11 @@
-import { Avatar, Button } from "@nextui-org/react";
+import { Avatar, Button, Divider } from "@nextui-org/react";
 import { FaUserPlus } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { MdDownload, MdOutlineShare } from "react-icons/md";
 
 export default function AuthorInfo() {
     return (
-        <div className="flex flex-col items-end gap-9">
+        <div className="flex flex-col order-1 gap-7 lg:items-end lg:gap-9 lg:order-2">
             <div className="flex items-center gap-5">
                 <Button
                     color="primary"
@@ -25,47 +25,58 @@ export default function AuthorInfo() {
                 </Button>
             </div>
 
-            <div className="flex flex-col gap-5 items-end">
-                <div className="flex items-center gap-2.5">
-                    <Avatar
-                        icon={<IoPersonSharp size={25} color="white" />}
-                        size="md"
-                        className="bg-gray-400"
-                    />
-                    <h4 className="text-lg font-bold">踩街</h4>
+            <div className="flex flex-row items-center justify-between lg:gap-5 lg:flex-col lg:items-end lg:justify-center lg:h-full">
+                <div className="flex flex-col lg:items-end lg:gap-5 gap-2.5">
+                    <div className="flex items-center gap-2.5">
+                        <Avatar
+                            icon={<IoPersonSharp size={25} color="white" />}
+                            size="md"
+                            className="bg-gray-400"
+                        />
+                        <div className="flex flex-col">
+                            <h4 className="font-bold text-md lg:text-lg">
+                                踩街
+                            </h4>
+                            {/* author details for mobile */}
+                            <div className="lg:hidden flex items-center gap-2.5 text-xs">
+                                <p className="text-gray-600 underline transition-colors duration-300 cursor-pointer decoration-1 underline-offset-2 hover:text-gray-400">
+                                    56篇食譜
+                                </p>
+                                <p className="text-gray-600 ">9k+讚</p>
+                            </div>
+                        </div>
+                    </div>
+                    {/* author details for desktop */}
+                    <div className="hidden lg:flex lg:items-center lg:gap-2.5">
+                        <p className="text-sm text-gray-600 underline transition-colors duration-300 cursor-pointer decoration-1 underline-offset-2 hover:text-gray-400">
+                            56篇食譜
+                        </p>
+                        <p className="text-sm text-gray-600">9k+讚</p>
+                    </div>
                 </div>
-                <div className="flex items-center gap-2.5">
-                    <p className="text-gray-600 text-sm underline decoration-1 underline-offset-2 cursor-pointer hover:text-gray-400 transition-colors duration-300">
-                        56篇食譜
-                    </p>
-                    <p className="text-gray-600 text-sm">9k+讚</p>
-                </div>
+
+                {/* buttons for desktop */}
                 <Button
                     color="primary"
                     size="md"
                     radius="sm"
-                    className="px-5 text-md"
+                    className="hidden lg:px-5 lg:text-md lg:flex"
                     startContent={<FaUserPlus size={20} />}
                 >
                     追蹤廚神
                 </Button>
-                <div className="flex items-center gap-3.5">
-                    <Button
-                        color="primary"
-                        isIconOnly
-                        size="sm"
-                        radius="full"
-                        startContent={<MdOutlineShare size={20} />}
-                    />
-                    <Button
-                        color="primary"
-                        isIconOnly
-                        size="sm"
-                        radius="full"
-                        startContent={<MdDownload size={20} />}
-                    />
-                </div>
+                {/* buttons for mobile */}
+                <Button
+                    color="primary"
+                    size="md"
+                    radius="sm"
+                    className="p-5 text-sm lg:hidden"
+                    startContent={<FaUserPlus size={18} />}
+                >
+                    追蹤廚神
+                </Button>
             </div>
+            <Divider className="mt-2 lg:hidden md:hidden" />
         </div>
     );
 }

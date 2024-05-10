@@ -1,9 +1,10 @@
 module.exports = {
     customize: (recipeObject) => {
-        const response = {
-            recipeId: recipeObject.recipeId,
-            recipeLink: `/details/${recipeObject.recipeId}`
+        return {
+            data: {
+                recipeId: recipeObject.recipeId,
+                recipeLink: `/recipe/${recipeObject.recipeId}`
+            }
         };
-        return response;
     }
 }

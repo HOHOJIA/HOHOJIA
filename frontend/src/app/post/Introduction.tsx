@@ -1,8 +1,14 @@
 "use client";
 import { Input, Select, SelectItem, Textarea } from "@nextui-org/react";
-import { BiImageAdd } from "react-icons/bi";
+import DropZoneImg from "./components/DropZoneImg";
 
-export default function Introduction() {
+export default function Introduction({
+  selectedTags,
+  setSelectedTags,
+}: {
+  selectedTags: string[];
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+}) {
   const category = [
     { id: 1, name: "肉類" },
     { id: 2, name: "蔬食" },
@@ -10,6 +16,19 @@ export default function Introduction() {
     { id: 4, name: "中式" },
     { id: 5, name: "西式" },
   ];
+
+  // 處理選擇變更;
+  function handleTagChange(value: string) {
+    let tagsArr = value.split(",").map(Number);
+    const selectedNames = tagsArr
+      .map((id) => {
+        const categoryItem = category.find((category) => category.id === id);
+        return categoryItem ? categoryItem.name : null;
+      })
+      .filter((name) => name !== null) as string[];
+
+    setSelectedTags(selectedNames);
+  }
 
   return (
     <div className="w-full">
@@ -21,6 +40,7 @@ export default function Introduction() {
           type="text"
           label="食譜標題"
           variant="bordered"
+          name="title"
         />
 
         <Select
@@ -28,6 +48,7 @@ export default function Introduction() {
           selectionMode="multiple"
           variant="bordered"
           className="max-w-xs"
+          onChange={(e) => handleTagChange(e.target.value)}
         >
           {category.map((category) => (
             <SelectItem key={category.id} value={category.name}>
@@ -41,30 +62,10 @@ export default function Introduction() {
           minRows={5}
           label="輸入食譜描述（最多150字）"
           variant="bordered"
+          name="description"
         />
 
-        <div className="flex items-center justify-center w-full col-span-3">
-          <label
-            htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-          >
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <BiImageAdd
-                size="4rem"
-                className="mb-2 text-gray-500 dark:text-gray-400"
-              />
-              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                SVG, PNG, JPG or GIF (Recommendation is 2.63:1 horizontal image,
-                1230x468px or above)
-              </p>
-            </div>
-            <input id="dropzone-file" type="file" className="hidden" />
-          </label>
-        </div>
+        <DropZoneImg smallSize={false} />
       </div>
     </div>
   );

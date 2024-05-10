@@ -7,4 +7,9 @@ router.post('/',
     recipeController.postRecipe
 );
 
+router.get('/:recipeId',
+    recipeController.getRecipeValidator,
+    recipeController.getRecipe
+);
+
 module.exports = router;

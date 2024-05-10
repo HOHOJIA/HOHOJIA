@@ -22,29 +22,29 @@ export default function Steps() {
     ];
 
     return (
-        <div className="flex flex-col gap-9 w-full">
-            <h4 className="text-lg font-bold underline decoration-2 underline-offset-8 px-8">
+        <div className="flex flex-col w-full gap-9">
+            <h4 className="text-lg font-bold underline decoration-2 underline-offset-8 lg:px-8">
                 料理步驟
             </h4>
 
             {steps.map((step, index) => (
-                <div className="flex w-full justify-between items-stretch relative">
-                    <Card
-                        className="border-none pl-6 py-5 w-7/12 z-10"
-                        key={index}
-                    >
-                        <CardBody className="flex flex-row items-center gap-8">
-                            <div className="flex items-center justify-center bg-primary text-gray-600 rounded-full text-4xl w-16 h-16">
+                <div
+                    className="relative flex flex-col w-full gap-3 lg:items-stretch lg:justify-between lg:flex-row lg:gap-0"
+                    key={index}
+                >
+                    <Card className="z-10 border-none lg:py-5 lg:pl-6 lg:w-7/12">
+                        <CardBody className="flex flex-row items-center gap-5 lg:gap-8">
+                            <div className="flex items-center justify-center text-xl text-gray-600 rounded-full w-9 h-9 lg:w-16 lg:h-16 lg:text-4xl bg-primary">
                                 {index + 1}
                             </div>
                             <p className="w-10/12">{step.text}</p>
                         </CardBody>
                     </Card>
 
-                    <div className="absolute left-0 right-0 top-1/2 transform -translate-y-1/2 border-t-1 border-dashed border-gray-200 w-full z-0" />
+                    <div className="absolute left-0 right-0 z-0 hidden w-full transform -translate-y-1/2 border-gray-200 border-dashed top-1/2 border-t-1 lg:block" />
 
                     <Image
-                        className="rounded-2xl h-auto w-1/6 object-cover z-10"
+                        className="z-10 object-cover w-full h-auto lg:w-1/6 rounded-2xl md:w-4/5 md:self-center"
                         src={step.image}
                         alt="step"
                         width={0}
