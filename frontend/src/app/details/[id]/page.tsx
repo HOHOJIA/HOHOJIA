@@ -1,11 +1,11 @@
-import Header from "../components/Header";
-import Banner from "../components/details/Banner";
-import Ingredients from "../components/details/Ingredients";
-import AuthorInfo from "../components/details/AuthorInfo";
-import Steps from "../components/details/Steps";
-import Tips from "../components/details/Tips";
-import Comments from "../components/details/Comments";
-import Footer from "../components/Footer";
+import Header from '../../components/Header'
+import Banner from '../../components/details/Banner'
+import Ingredients from '../../components/details/Ingredients'
+import AuthorInfo from '../../components/details/AuthorInfo'
+import Steps from '../../components/details/Steps'
+import Tips from '../../components/details/Tips'
+import Comments from '../../components/details/Comments'
+import Footer from '../../components/Footer'
 
 export default function Details() {
     return (
@@ -25,5 +25,5 @@ export default function Details() {
 
             <Footer />
         </main>
-    );
+    )
 }

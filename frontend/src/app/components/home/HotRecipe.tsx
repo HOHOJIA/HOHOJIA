@@ -15,7 +15,7 @@ export default function HotRecipe({ recipe }: RecipeProps) {
     const router = useRouter()
 
     const handleClick = () => {
-        router.push(`/details`)
+        router.push(`/details/${recipe.recipeId}`)
     }
     return (
         <Card

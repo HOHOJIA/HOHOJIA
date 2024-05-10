@@ -19,7 +19,7 @@ export default function NewRecipe({ recipe }: RecipeProps) {
     const router = useRouter()
 
     const handleClick = () => {
-        router.push(`/details`)
+        router.push(`/details/${recipe.recipeId}`)
     }
     return (
         <motion.div
@@ -37,8 +37,15 @@ export default function NewRecipe({ recipe }: RecipeProps) {
                         exit={{ opacity: 0 }}
                     >
                         <div className="absolute rounded-xl bg-black pointer-events-none opacity-50 h-full w-full" />
-                        <motion.h1 className="" initial={{ y: 10 }} animate={{ y: 0 }} exit={{ y: 10 }}>
-                            <Button className="bg-white font-bold">查看更多</Button>
+                        <motion.h1
+                            className=""
+                            initial={{ y: 10 }}
+                            animate={{ y: 0 }}
+                            exit={{ y: 10 }}
+                        >
+                            <Button className="bg-white font-bold">
+                                查看更多
+                            </Button>
                         </motion.h1>
                     </motion.div>
                 )}
