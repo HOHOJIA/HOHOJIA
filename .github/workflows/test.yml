@@ -29,4 +29,23 @@ jobs:
         shell: bash
         run:  echo "${{ secrets.TEST_DOT_ENV }}" > .env.test
       - name: Run unit tests
-        run: npm test 
+        run: npm test
+      - name: Send Notification to Discord
+        if: success()
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          username: "GitHub Bot"
+          message: |
+            **[Test]** Tests completed. The **「${{ github.event_name }}」** event triggered by **「${{ github.actor }}」** on **${{ github.ref }}** succeeded.
+      - name: Send Notification to Discord
+        if: failure()
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          username: "GitHub Bot"
+          message: |
+            **[Test]** Tests completed,but failed. The **「${{ github.event_name }}」** event triggered by **「${{ github.actor }}」** on **${{ github.ref }}** failed.
+    

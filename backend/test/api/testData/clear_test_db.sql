@@ -7,5 +7,7 @@ TRUNCATE TABLE `recipecomments`;
 TRUNCATE TABLE `recipes`;
 TRUNCATE TABLE `tags`;
 TRUNCATE TABLE `users`;
+TRUNCATE TABLE `userRoles`;
+TRUNCATE TABLE `roles`;
 TRUNCATE TABLE `likes`;
 SET FOREIGN_KEY_CHECKS = 1; 

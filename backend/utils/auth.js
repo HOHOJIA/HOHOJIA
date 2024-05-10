@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const errorMsg = require('./errorMsg');
-require('dotenv').config();
+require("dotenv").config({
+    path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
+  });
 module.exports = {
     generateAccessToken: async (userId) => {
         const secretKey = process.env.SECRET;

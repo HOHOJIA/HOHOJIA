@@ -3,8 +3,9 @@ const bcrypt = require("bcrypt");
 const CryptoJS = require("crypto-js");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
-require("dotenv").config();
-
+require("dotenv").config({
+    path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
+  });
 module.exports = {
   uploadPicture: () => {
     const upload = multer({
