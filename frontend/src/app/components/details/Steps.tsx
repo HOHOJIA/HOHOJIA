@@ -28,11 +28,11 @@ export default function Steps() {
             </h4>
 
             {steps.map((step, index) => (
-                <div className="relative flex flex-col w-full gap-3 lg:items-stretch lg:justify-between lg:flex-row lg:gap-0">
-                    <Card
-                        className="z-10 border-none lg:py-5 lg:pl-6 lg:w-7/12"
-                        key={index}
-                    >
+                <div
+                    className="relative flex flex-col w-full gap-3 lg:items-stretch lg:justify-between lg:flex-row lg:gap-0"
+                    key={index}
+                >
+                    <Card className="z-10 border-none lg:py-5 lg:pl-6 lg:w-7/12">
                         <CardBody className="flex flex-row items-center gap-5 lg:gap-8">
                             <div className="flex items-center justify-center text-xl text-gray-600 rounded-full w-9 h-9 lg:w-16 lg:h-16 lg:text-4xl bg-primary">
                                 {index + 1}
