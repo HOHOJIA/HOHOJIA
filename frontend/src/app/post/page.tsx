@@ -13,6 +13,7 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid"; // 引入 uuid lib
+import Cookies from "js-cookie";
 
 // 從 S3 拿到 url 時呼叫這個 function
 // let totalImgUrl: string[] = [];
@@ -23,11 +24,13 @@ import { v4 as uuidv4 } from "uuid"; // 引入 uuid lib
 
 async function postData(postdata: object) {
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+  const token = Cookies.get("access_token");
 
   const res = await fetch(`${apiDomain}/recipe`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(postdata),
   });

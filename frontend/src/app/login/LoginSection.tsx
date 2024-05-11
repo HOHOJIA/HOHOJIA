@@ -6,6 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF } from "react-icons/fa";
 import { AiFillEye } from "react-icons/ai";
 import { AiFillEyeInvisible } from "react-icons/ai";
+import Cookies from "js-cookie";
 
 async function signupData(signupdata: object) {
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
@@ -31,32 +32,36 @@ async function signupData(signupdata: object) {
   }
 }
 
+async function loginData(logindata: object) {
+  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+
+  const res = await fetch(`${apiDomain}/users/signin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(logindata),
+  });
+
+  if (res.status === 200) {
+    const responseData = await res.json();
+    console.log("Response:", responseData);
+    return responseData;
+  } else {
+    const responseData = await res.json();
+    console.log("Error Response:", responseData);
+    const errorMsg = responseData.error;
+
+    throw new Error(errorMsg);
+  }
+}
+
 export default function Login() {
   const [selected, setSelected] = useState("login");
 
   function handleSelected(selectState: string) {
     setSelected(selectState);
   }
-
-  function handleSignUpSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-    formData.delete("pwdConfirm");
-
-    const values = Object.fromEntries(formData.entries());
-    console.log(values);
-
-    signupData(values)
-      .then(() => {
-        alert("註冊成功！");
-      })
-      .catch((error) => {
-        alert(`註冊失敗，${error}`);
-      });
-  }
-
-  function handleLoginSubmit() {}
 
   return (
     <div className="flex flex-col justify-center w-80 ">
@@ -110,10 +115,7 @@ export default function Login() {
       {selected === "login" ? (
         <LoginInfo onSelected={handleSelected} />
       ) : (
-        <SignupInfo
-          onSignUpSubmit={handleSignUpSubmit}
-          onSelected={handleSelected}
-        />
+        <SignupInfo onSelected={handleSelected} />
       )}
     </div>
   );
@@ -153,14 +155,36 @@ function LoginInfo({
 }: {
   onSelected: (selectState: string) => void;
 }) {
+  function handleLoginSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    const values = Object.fromEntries(formData.entries());
+    console.log(values);
+
+    loginData(values)
+      .then((responseData) => {
+        Cookies.set("access_token", responseData.data.access_token, {
+          httpOnly: true,
+          expires: 7,
+        });
+        alert("登入成功！");
+      })
+      .catch((error) => {
+        alert(`登入失敗，${error.error}`);
+      });
+  }
+
   return (
-    <form action="">
+    <form onSubmit={handleLoginSubmit}>
       <div className="flex flex-wrap justify-center gap-5 my-5 ">
         <Input
           type="email"
           label="電子信箱"
           variant="bordered"
           className="max-w-xs"
+          name="email"
         />
         <PasswordBtn label="密碼" size="md" name="password" />
 
@@ -186,10 +210,8 @@ function LoginInfo({
 }
 
 function SignupInfo({
-  onSignUpSubmit,
   onSelected,
 }: {
-  onSignUpSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   onSelected: (selectState: string) => void;
 }) {
   const [password, setPassword] = useState("");
@@ -201,8 +223,26 @@ function SignupInfo({
     setPwdCheck(password !== pwdConfirm && pwdConfirm !== "");
   }, [password, pwdConfirm]);
 
+  function handleSignUpSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    formData.delete("pwdConfirm");
+
+    const values = Object.fromEntries(formData.entries());
+    console.log(values);
+
+    signupData(values)
+      .then(() => {
+        alert("註冊成功！");
+      })
+      .catch((error) => {
+        alert(`註冊失敗，${error}`);
+      });
+  }
+
   return (
-    <form onSubmit={onSignUpSubmit}>
+    <form onSubmit={handleSignUpSubmit}>
       <div className="flex flex-wrap justify-center gap-5 my-5 ">
         <Input
           type="text"
