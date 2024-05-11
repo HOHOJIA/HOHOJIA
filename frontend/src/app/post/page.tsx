@@ -96,6 +96,13 @@ export default function Post() {
       });
   }
 
+  // 防止按下 Enter 後 form 會自動 submit
+  function handleKeyDown(event: React.KeyboardEvent<HTMLFormElement>) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  }
+
   return (
     <>
       <Header />
@@ -104,7 +111,7 @@ export default function Post() {
           shadow="md"
           className="w-full py-4 my-4 md:w-10/12 lg:w-8/12 lg:my-12"
         >
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
             <CardHeader className="flex-col items-start px-8 py-4 sm:px-12">
               <p className="text-xl font-bold border-b-2 pb-1.5 border-black mb-1.5">
                 來分享你的美味秘訣吧！
