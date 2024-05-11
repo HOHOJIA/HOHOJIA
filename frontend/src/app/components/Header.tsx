@@ -25,7 +25,7 @@ export default function Header() {
     return (
         <Navbar
             maxWidth="full"
-            className="shadow-lg"
+            className="shadow-lg md:py-2"
             classNames={{
                 item: [
                     "flex",
@@ -36,7 +36,8 @@ export default function Header() {
                     "data-[active=true]:font-normal",
                     "data-[active=true]:text-black",
                     "data-[active=true]:after:absolute",
-                    "data-[active=true]:after:bottom-4",
+                    "lg:data-[active=true]:after:bottom-4",
+                    "md:data-[active=true]:after:bottom-0",
                     "data-[active=true]:after:left-0",
                     "data-[active=true]:after:right-0",
                     "data-[active=true]:after:h-[3px]",

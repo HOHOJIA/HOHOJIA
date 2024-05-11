@@ -12,7 +12,7 @@ export default function Details() {
         <main className="">
             <Header />
 
-            <div className="flex flex-col items-start w-full gap-12 px-8 pt-12 pb-40 lg:pt-16 lg:px-32">
+            <div className="flex flex-col items-start w-full gap-12 px-8 pt-12 pb-40 lg:pt-16 lg:px-32 md:px-20">
                 <Banner />
                 <div className="flex flex-col w-full gap-10 lg:justify-between lg:flex-row lg:gap-0">
                     <Ingredients />

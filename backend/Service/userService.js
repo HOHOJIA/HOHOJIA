@@ -30,4 +30,8 @@ module.exports = {
         }
 
     },
+    signIn: async (email) => {
+        const result = await userRepo.selectUserByEmail(email);
+        return result;
+    },
 }

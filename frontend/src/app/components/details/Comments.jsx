@@ -20,7 +20,7 @@ export default function Comments() {
     ];
 
     return (
-        <div className="flex flex-col gap-9 lg:w-7/12">
+        <div className="flex flex-col gap-9 lg:w-7/12 md:w-full">
             <h4 className="text-lg font-bold underline lg:px-8 decoration-2 underline-offset-8">
                 留言
             </h4>
