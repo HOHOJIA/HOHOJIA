@@ -1,14 +1,16 @@
 module.exports = {
-  customize: async (insertResult, newCommentObj) => {
+  customize: async (returnCommentObj) => {
+    console.log("-----" + returnCommentObj);
     const response = {
       data: {
         comment: {
-          commentId: insertResult.insertId,
-          userId: parseInt(newCommentObj.userId),
-          recipeId: parseInt(newCommentObj.recipeId),
-          replyCommentId: parseInt(newCommentObj.replyCommentId),
-          content: newCommentObj.content,
-          time: newCommentObj.time,
+          commentId: returnCommentObj.commentId,
+          userId: parseInt(returnCommentObj.userId),
+          username: returnCommentObj.username,
+          recipeId: parseInt(returnCommentObj.recipeId),
+          replyCommentId: parseInt(returnCommentObj.replyCommentId),
+          content: returnCommentObj.content,
+          time: returnCommentObj.time,
         },
       },
     };

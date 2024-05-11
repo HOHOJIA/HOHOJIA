@@ -5,8 +5,12 @@ const tool = require("../utils/tool");
 module.exports = {
   addComment: async (req, res) => {
     try {
-      const { userId, recipeId, replyCommentId, content } = req.body;
+      const userId = req.decodedToken.id;
+      const recipeId = req.body.recipeId;
+      const replyCommentId = req.body.replyCommentId;
+      const content = req.body.content;
       // 未登入或無食譜Id return 401
+      console.log("in comment controller : " + userId);
       if (!userId || !recipeId) return errorMsg.unauthorized(res);
       // create time
       let time = tool.formatTime();

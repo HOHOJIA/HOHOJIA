@@ -37,4 +37,7 @@ module.exports = {
   badRequest: (res, detailMsg = "") => {
     res.status(400).json({ error: "Bad request", detail: detailMsg });
   },
+  likeExist: (res) => {
+    res.status(403).json({ error: "Like already exists" });
+  },
 };
