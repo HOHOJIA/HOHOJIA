@@ -6,7 +6,13 @@ interface ICustomFile extends File {
   preview: string;
 }
 
-export default function DropZoneImg({ smallSize }: { smallSize: boolean }) {
+export default function DropZoneImg({
+  smallSize,
+  getImgUrl,
+}: {
+  smallSize: boolean;
+  getImgUrl: (file: File) => void;
+}) {
   const [files, setFiles] = React.useState<ICustomFile[]>([]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -18,6 +24,8 @@ export default function DropZoneImg({ smallSize }: { smallSize: boolean }) {
           const customFile: ICustomFile = Object.assign(file, {
             preview: URL.createObjectURL(file),
           });
+          console.log(file);
+          getImgUrl(file); // 呼叫 getImgUrl 函數並將文件傳遞給它
           return customFile;
         })
       );

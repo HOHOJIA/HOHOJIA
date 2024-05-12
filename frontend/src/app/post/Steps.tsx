@@ -9,17 +9,19 @@ import DropZoneImg from "./components/DropZoneImg";
 export default function Steps({
   steps,
   setSteps,
+  getImgUrl,
 }: {
-  steps: { id: string; image: string; description: string; order: number }[];
+  steps: { id: string; imgUrl: string; description: string; order: number }[];
   setSteps: React.Dispatch<
     React.SetStateAction<
-      { id: string; image: string; description: string; order: number }[]
+      { id: string; imgUrl: string; description: string; order: number }[]
     >
   >;
+  getImgUrl: (file: File) => void;
 }) {
   // 用來達到 steps order 自動更新
   const prevSteps = useRef<
-    { id: string; image: string; description: string; order: number }[]
+    { id: string; imgUrl: string; description: string; order: number }[]
   >([]);
   useEffect(() => {
     // 檢查目前的 steps 和上一次的 steps 是否相同
@@ -40,7 +42,7 @@ export default function Steps({
   function handleAddStep() {
     const newStep = {
       id: uuidv4(),
-      image: "https://images.dog.ceo/breeds/appenzeller/n02107908_3450.jpg",
+      imgUrl: "",
       description: "",
       order: steps.length + 1,
     };
@@ -77,6 +79,7 @@ export default function Steps({
           onClickDel={() => handleDelStep(step.id)}
           description={step.description}
           onChangeDescription={handleChangeDescription}
+          getImgUrl={getImgUrl}
         />
       ))}
     </div>
@@ -90,6 +93,7 @@ function EachOfStep({
   onClickDel,
   description,
   onChangeDescription,
+  getImgUrl,
 }: {
   order: number;
   id: string;
@@ -100,6 +104,7 @@ function EachOfStep({
     event: React.ChangeEvent<HTMLInputElement>,
     id: string
   ) => void;
+  getImgUrl: (file: File) => void;
 }) {
   return (
     <div className="flex flex-wrap mt-5 mb-12 h-28">
@@ -122,7 +127,7 @@ function EachOfStep({
         </div>
 
         {/* dropzone */}
-        <DropZoneImg smallSize={true} />
+        <DropZoneImg smallSize={true} getImgUrl={getImgUrl} />
 
         {/* textarea */}
         <Textarea
