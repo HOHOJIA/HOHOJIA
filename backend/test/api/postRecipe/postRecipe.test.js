@@ -46,13 +46,11 @@ jest.mock('jsonwebtoken');
 describe("POST /api/1.0/postRecipe", () => {
 
     beforeAll(async () => {
-        console.log("setUp");
         await executeSql(path.join(__dirname, '../testData/clear_test_db.sql'));
         await executeSql(path.join(__dirname, '../testData/init_test_db.sql'));
     })
 
     afterAll(async () => {
-        console.log("tearDown");
         await connectionPromise.end();
     })
 
