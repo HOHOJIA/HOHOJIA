@@ -3,6 +3,7 @@ const app = require("../../../app");
 const executeSql = require('../../testUtils/testUtils').executeSql;
 const connectionPromise = require('../../../config/db').connectionPromise;
 const path = require('path');
+const jwt = require('jsonwebtoken');
 
 const postBody = {
     "userId": 1,
@@ -40,6 +41,8 @@ const postBody = {
 const invalidPostBody = {}
 
 
+jest.mock('jsonwebtoken');
+
 describe("POST /api/1.0/postRecipe", () => {
 
     beforeAll(async () => {
@@ -54,13 +57,34 @@ describe("POST /api/1.0/postRecipe", () => {
     })
 
     it("should create a recipe", async () => {
-        const res = await request(app).post("/api/1.0/recipe").send(postBody);
+        jwt.verify.mockImplementation(() => {
+            return { id: 1, iat: 1715330185, exp: null }
+        });
+
+        const res = await request(app)
+            .post("/api/1.0/recipe")
+            .set("authorization", "Bearer sometoken")
+            .send(postBody);
+
         expect(res.statusCode).toBe(201);
     });
 
     it("should receive bad request", async () => {
-        const res = await request(app).post("/api/1.0/recipe").send(invalidPostBody);
+        jwt.verify.mockImplementation(() => {
+            return { id: 1, iat: 1715330185, exp: null }
+        });
+
+        const res = await request(app)
+            .post("/api/1.0/recipe")
+            .set("authorization", "Bearer sometoken")
+            .send(invalidPostBody);
+
         expect(res.statusCode).toBe(400);
+    });
+
+    it("should receive no token", async () => {
+        const res = await request(app).post("/api/1.0/recipe").send(invalidPostBody);
+        expect(res.statusCode).toBe(401);
     });
 });
 
