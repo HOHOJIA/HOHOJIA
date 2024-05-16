@@ -16,7 +16,7 @@ export default function Steps({ steps }: StepsProps) {
                 料理步驟
             </h4>
 
-            {steps.map((step, index) => (
+            {steps?.map((step, index) => (
                 <div
                     className="relative flex flex-col w-full gap-3 lg:items-stretch lg:justify-between lg:flex-row lg:gap-0"
                     key={index}
