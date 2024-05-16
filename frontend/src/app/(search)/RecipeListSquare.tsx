@@ -14,37 +14,47 @@ export default function RecipeListSquare(props: { recipe: any }) {
         : ''
 
     const handleClick = () => {
-        router.push(`/details`)
+        router.push(`/details/${recipe.recipeId}`)
     }
     return (
         <Card
             isPressable
             onPress={handleClick}
             isBlurred
-            className="border-none bg-background/60 dark:bg-default-100/50 "
+            className="w-full border-none bg-background/60 dark:bg-default-100/50 "
             shadow="sm"
         >
-            <CardBody className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-6 items-start justify-start">
+            <CardBody className="grid items-start justify-start grid-cols-6 gap-6 md:grid-cols-12 md:gap-6">
                 <div className="relative col-span-6 md:col-span-4">
-                    <Image
-                        alt="Album cover"
-                        className="object-cover"
-                        height={200}
-                        shadow="md"
-                        src={recipe.imgUrl}
-                        width="100%"
-                    />
+                    {recipe.imgUrl === null ? (
+                        <div className="h-[200px] text-center flex-col items-center justify-center flex w-full rounded-xl text-gray-500 bg-gray-200 ">
+                            美味食物還在製作中
+                            <br />
+                            照片請燒等
+                            <br />
+                            (❁´◡`❁)
+                        </div>
+                    ) : (
+                        <Image
+                            alt="Album cover"
+                            className="object-cover"
+                            height={200}
+                            shadow="md"
+                            src={recipe.imgUrl}
+                            width="100%"
+                        />
+                    )}
                 </div>
 
-                <div className="flex flex-col col-span-6 md:col-span-8 justify-between h-full">
-                    <div className="flex justify-between items-start">
+                <div className="flex flex-col justify-between h-full col-span-6 md:col-span-8">
+                    <div className="flex items-start justify-between">
                         <div className="flex flex-col gap-0">
-                            <h1 className="text-large font-bold mt-2">{recipe.title}</h1>
-                            <p className="text-small text-foreground/80 mt-2">{ingredientsString}</p>
+                            <h1 className="mt-2 font-bold text-large">{recipe.title}</h1>
+                            <p className="mt-2 text-small text-foreground/80">{ingredientsString}</p>
                         </div>
                     </div>
 
-                    <div className="flex flex-row mt-3 gap-1 items-center">
+                    <div className="flex flex-row items-center gap-1 mt-3">
                         <IoPersonCircleSharp className="text-foreground/80" />
                         <p className="text-small">{recipe.userName}</p>
                     </div>
