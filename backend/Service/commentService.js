@@ -24,4 +24,21 @@ module.exports = {
       connection.release();
     }
   },
+  checkComment: async (insertId) => {
+    const connection = await connectionPromise.getConnection();
+    try {
+      //transaction
+      await connection.beginTransaction();
+      const returnResult = await commentRepo.checkComment(insertId, connection);
+      await connection.commit();
+
+      return returnResult;
+    } catch (error) {
+      await connection.rollback();
+      console.error(error);
+    } finally {
+      console.log("connection release");
+      connection.release();
+    }
+  },
 };

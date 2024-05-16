@@ -1,24 +1,20 @@
-import { Avatar, Button, Textarea } from "@nextui-org/react";
-import { BiSolidShare } from "react-icons/bi";
-import { FaQuoteLeft } from "react-icons/fa6";
-import { IoPersonSharp } from "react-icons/io5";
+import { Avatar, Button, Textarea } from '@nextui-org/react'
+import { BiSolidShare } from 'react-icons/bi'
+import { FaQuoteLeft } from 'react-icons/fa6'
+import { IoPersonSharp } from 'react-icons/io5'
 
-export default function Comments() {
-    const comments = [
-        {
-            name: "艾蜜莉",
-            avatar: null,
-            content: "我想要做14杯要怎麼加量？",
-            time: "一周前",
-        },
-        {
-            name: "莎莉",
-            avatar: null,
-            content: "能用小烤箱烤嗎？大概要烤多久",
-            time: "一個月前",
-        },
-    ];
+interface CommentsProps {
+    comments: {
+        name: string
+        time: string
+        userId: string
+        content: string
+        commentId: string
+        replyCommentId: string
+    }[]
+}
 
+export default function Comments({ comments }: CommentsProps) {
     return (
         <div className="flex flex-col gap-9 lg:w-7/12 md:w-full">
             <h4 className="text-lg font-bold underline lg:px-8 decoration-2 underline-offset-8">
@@ -31,8 +27,8 @@ export default function Comments() {
                     variant="bordered"
                     classNames={{
                         inputWrapper:
-                            "px-7 py-5 border border-gray-200 shadow-lg",
-                        input: "placeholder:text-gray-400 text-md",
+                            'px-7 py-5 border border-gray-200 shadow-lg',
+                        input: 'placeholder:text-gray-400 text-md',
                     }}
                     minRows={4}
                 />
@@ -78,12 +74,13 @@ export default function Comments() {
                         <div className="flex flex-col items-end justify-between">
                             <BiSolidShare size={25} color="#5C5C5C" />
                             <p className="text-sm text-gray-500">
-                                {comment.time}
+                                {/* 2024-04-27 19:57:29.000000 => 2024-04-27 19:57 */}
+                                {comment.time.slice(0, 16)}
                             </p>
                         </div>
                     </div>
                 ))}
             </div>
         </div>
-    );
+    )
 }

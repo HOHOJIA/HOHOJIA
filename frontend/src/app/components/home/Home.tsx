@@ -116,7 +116,7 @@ export default function Home() {
 
     const handleClickTag = (tag: string) => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
-        current.set('search', tag)
+        current.set('tag', tag)
         const search = current.toString()
         const query = search ? `?${search}` : ''
         router.push(`${pathname}search${query}`)
@@ -145,7 +145,7 @@ export default function Home() {
                         <FaArrowRight size="0.8rem" />
                     </Button>
                 </div>
-                <div className="flex items-center justify-between w-full max-w-full gap-6 px-0 py-2 pl-4 xl:px-44 overflow-x-scroll 2xl:px-96 md:px-20 lg:px-36 md:overflow-x-visible">
+                <div className="flex items-center justify-between w-full max-w-full gap-6 px-0 py-2 pl-4 overflow-x-scroll xl:px-44 2xl:px-96 md:px-20 lg:px-36 md:overflow-x-visible">
                     {hotRecipe?.data?.recipes.length > 0 ? (
                         hotRecipe.data.recipes.slice(0, 3).map((item: any, index: number) => (
                             <div key={index}>
@@ -160,7 +160,7 @@ export default function Home() {
                         </>
                     )}
                 </div>
-                <div className="flex flex-row justify-between w-full px-4 mt-6 text-xl font-bold md:px-20 xl:px-44  lg:px-36 2xl:px-96">
+                <div className="flex flex-row justify-between w-full px-4 mt-6 text-xl font-bold md:px-20 xl:px-44 lg:px-36 2xl:px-96">
                     <p>最新分享食譜</p>
                     <Button className="flex flex-row items-center gap-1 text-sm bg-transparent">
                         看更多
@@ -171,17 +171,17 @@ export default function Home() {
                 {newRecipe?.data?.recipes.length > 0 ? (
                     <>
                         <div
-                            className="md:hidden flex items-center justify-between w-full max-w-full xl:px-44 gap-6 py-2 pl-4 overflow-x-scroll md:pl-20 lg:pl-44 2xl:pl-96"
+                            className="flex items-center justify-between w-full max-w-full gap-6 py-2 pl-4 overflow-x-scroll md:hidden xl:px-44 md:pl-20 lg:pl-44 2xl:pl-96"
                             style={{ scrollbarWidth: 'thin', scrollbarColor: 'white' }}
                         >
                             {newRecipe?.data?.recipes.map((item: any, index: number) => (
                                 <NewRecipe recipe={item} key={index} />
                             ))}
                         </div>
-                        <div className="overflow-x-hidden w-full py-1 md:flex hidden">
+                        <div className="hidden w-full py-1 overflow-x-hidden md:flex">
                             <div className="relative w-auto">
                                 <motion.div
-                                    className=" flex gap-4 "
+                                    className="flex gap-4 "
                                     style={{ x: xTranslation }}
                                     ref={ref}
                                     onHoverStart={() => {
@@ -201,7 +201,7 @@ export default function Home() {
                         </div>
                     </>
                 ) : (
-                    <div className="flex items-center justify-between w-full max-w-full gap-6 px-0 py-2 pl-4 xl:px-44 overflow-x-scroll 2xl:px-96 md:px-20 lg:px-36 md:overflow-x-visible">
+                    <div className="flex items-center justify-between w-full max-w-full gap-6 px-0 py-2 pl-4 overflow-x-scroll xl:px-44 2xl:px-96 md:px-20 lg:px-36 md:overflow-x-visible">
                         <RecipeSkeleton status="new" />
                         <RecipeSkeleton status="new" />
                         <RecipeSkeleton status="new" />
