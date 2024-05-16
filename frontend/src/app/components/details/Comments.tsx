@@ -15,6 +15,16 @@ interface CommentsProps {
 }
 
 export default function Comments({ comments }: CommentsProps) {
+    function handleComment() {
+        // TODO: integrate with backend
+        console.log('comment')
+    }
+
+    function handleReplyComment() {
+        // TODO: integrate with backend
+        console.log('reply comment')
+    }
+
     return (
         <div className="flex flex-col gap-9 lg:w-7/12 md:w-full">
             <h4 className="text-lg font-bold underline lg:px-8 decoration-2 underline-offset-8">
@@ -37,6 +47,7 @@ export default function Comments({ comments }: CommentsProps) {
                     size="md"
                     radius="sm"
                     className="text-md"
+                    onClick={handleComment}
                 >
                     送出
                 </Button>
@@ -74,7 +85,6 @@ export default function Comments({ comments }: CommentsProps) {
                         <div className="flex flex-col items-end justify-between">
                             <BiSolidShare size={25} color="#5C5C5C" />
                             <p className="text-sm text-gray-500">
-                                {/* 2024-04-27 19:57:29.000000 => 2024-04-27 19:57 */}
                                 {comment.time.slice(0, 16)}
                             </p>
                         </div>

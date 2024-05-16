@@ -8,6 +8,11 @@ interface BannerProps {
 }
 
 export default function Banner({ title, description }: BannerProps) {
+    function handleLike() {
+        // TODO: integrate with backend
+        console.log('like')
+    }
+
     return (
         <div className="bg-[url('/images/details_banner.webp')] w-full bg-cover rounded-xl lg:px-16 lg:py-16 px-6 py-8 bg-center lg:bg-left-top relative">
             <div className="absolute top-0 left-0 z-0 w-full h-full bg-white bg-opacity-40 rounded-xl" />
@@ -25,6 +30,7 @@ export default function Banner({ title, description }: BannerProps) {
                             radius="sm"
                             className="px-3 text-md"
                             startContent={<FaThumbsUp size={20} />}
+                            onClick={handleLike}
                         >
                             讚
                         </Button>
