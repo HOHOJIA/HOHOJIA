@@ -11,7 +11,7 @@ describe("GET /api/1.0/recipe", () => {
         await executeSql(path.join(__dirname, '../testData/clear_test_db.sql'));
         await executeSql(path.join(__dirname, './testData/init_test_db.sql'));
     })
-    
+
     afterAll(async () => {
         await connectionPromise.end();
     })
@@ -29,6 +29,7 @@ describe("GET /api/1.0/recipe", () => {
         expect(res.body.data.tags).toHaveLength(2);
         expect(res.body.data.steps).toHaveLength(2);
         expect(res.body.data.ingredients).toHaveLength(2);
+        expect(res.body.data.imageUrl).toBe("https://i.imgur.com/JOKsNeT.jpeg");
     });
 
     it("should not found recipe", async () => {
