@@ -1,26 +1,15 @@
-import { Card, CardBody } from "@nextui-org/react";
-import Image from "next/image";
+import { Card, CardBody } from '@nextui-org/react'
+import Image from 'next/image'
 
-export default function Steps() {
-    const steps = [
-        {
-            text: "鮮奶油、鮮奶和香草莢醬拌勻，中火煮沸",
-            image: "/images/steps/img_step1.webp",
-        },
-        {
-            text: "蛋黃加糖拌勻，慢慢加入步驟1中，要不停的攪拌",
-            image: "/images/steps/img_step2.webp",
-        },
-        {
-            text: "布丁液過篩兩次，撈除氣泡或使用保鮮膜去除，倒入烤盅，深烤盤加約1公分高熱水，入爐170度烤40分鐘，出爐放涼移入冰箱冷藏",
-            image: "/images/steps/img_step3.webp",
-        },
-        {
-            text: "食用前表面灑上薄薄一層二砂，用噴槍炙燒烤至焦糖色，即可享用",
-            image: "/images/steps/img_step4.webp",
-        },
-    ];
+interface StepsProps {
+    steps: {
+        order: number
+        imageUrl: string
+        description: string
+    }[]
+}
 
+export default function Steps({ steps }: StepsProps) {
     return (
         <div className="flex flex-col w-full gap-9">
             <h4 className="text-lg font-bold underline decoration-2 underline-offset-8 lg:px-8">
@@ -35,9 +24,9 @@ export default function Steps() {
                     <Card className="z-10 border-none lg:py-5 lg:pl-6 lg:w-7/12">
                         <CardBody className="flex flex-row items-center gap-5 lg:gap-8">
                             <div className="flex items-center justify-center text-xl text-gray-600 rounded-full w-9 h-9 lg:w-16 lg:h-16 lg:text-4xl bg-primary">
-                                {index + 1}
+                                {step.order}
                             </div>
-                            <p className="w-10/12">{step.text}</p>
+                            <p className="w-10/12">{step.description}</p>
                         </CardBody>
                     </Card>
 
@@ -45,7 +34,9 @@ export default function Steps() {
 
                     <Image
                         className="z-10 object-cover w-full h-auto lg:w-1/6 rounded-2xl md:w-4/5 md:self-center"
-                        src={step.image}
+                        src={
+                            step.imageUrl || '/images/details_no_steps_img.webp'
+                        }
                         alt="step"
                         width={0}
                         height={0}
@@ -54,5 +45,5 @@ export default function Steps() {
                 </div>
             ))}
         </div>
-    );
+    )
 }

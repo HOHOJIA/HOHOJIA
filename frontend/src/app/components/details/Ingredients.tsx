@@ -1,23 +1,33 @@
-import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
+import { Card, CardBody, CardHeader, Divider } from '@nextui-org/react'
 
-export default function Ingredients() {
-    const ingredients = [
-        { name: "鮮奶油", amount: "250ml" },
-        { name: "牛奶", amount: "150ml" },
-        { name: "雞蛋", amount: "4顆" },
-        { name: "香草精", amount: "1匙" },
-    ];
+interface IngredientsProps {
+    quantity: number
+    cookTime: number
+    ingredients: {
+        name: string
+        size: string
+    }[]
+}
 
+export default function Ingredients({
+    quantity,
+    cookTime,
+    ingredients,
+}: IngredientsProps) {
     return (
         <div className="flex flex-col order-2 w-full gap-9 lg:order-1">
             <div className="flex justify-between lg:gap-16 lg:justify-start">
                 <div className="flex items-center gap-3">
                     <p className="text-sm font-bold lg:text-md">份量</p>
-                    <h3 className="text-2xl font-bold lg:text-4xl">4人份</h3>
+                    <h3 className="text-2xl font-bold lg:text-4xl">
+                        {quantity}人份
+                    </h3>
                 </div>
                 <div className="flex items-center gap-4">
                     <p className="text-sm font-bold lg:text-md">料理時間</p>
-                    <h3 className="text-2xl font-bold lg:text-4xl">30分鐘</h3>
+                    <h3 className="text-2xl font-bold lg:text-4xl">
+                        {cookTime}分鐘
+                    </h3>
                 </div>
             </div>
 
@@ -38,7 +48,7 @@ export default function Ingredients() {
                                         {ingredient.name}
                                     </p>
                                     <p className="font-bold text-gray-600">
-                                        {ingredient.amount}
+                                        {ingredient.size}
                                     </p>
                                 </div>
                             ))}
@@ -56,7 +66,7 @@ export default function Ingredients() {
                                         {ingredient.name}
                                     </p>
                                     <p className="font-bold text-gray-600">
-                                        {ingredient.amount}
+                                        {ingredient.size}
                                     </p>
                                 </div>
                             ))}
@@ -64,5 +74,5 @@ export default function Ingredients() {
                 </CardBody>
             </Card>
         </div>
-    );
+    )
 }
