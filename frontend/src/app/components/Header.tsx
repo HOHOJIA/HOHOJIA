@@ -17,15 +17,28 @@ import { FaSearch } from 'react-icons/fa'
 import { FaQuestion } from 'react-icons/fa6'
 import { IoPersonSharp } from 'react-icons/io5'
 import { TbBellRinging2Filled } from 'react-icons/tb'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Cookies from 'js-cookie'
 
 export default function Header() {
     const router = useRouter()
+    const searchParams = useSearchParams()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [keyword, setKeyword] = useState('')
 
-    // check if cookie is set, if set, user is logined
     const isLogined = !!Cookies.get('access_token')
+
+    function handleClickSearch() {
+        if (keyword !== '') {
+            const current = new URLSearchParams(
+                Array.from(searchParams.entries())
+            )
+            current.set('title', keyword)
+            const search = current.toString()
+            const query = search ? `?${search}` : ''
+            router.push(`/search${query}`)
+        }
+    }
 
     return (
         <Navbar
@@ -97,6 +110,8 @@ export default function Header() {
                         type=""
                         label=""
                         placeholder="搜尋食譜"
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
                         className="mr-2 w-60"
                         classNames={{
                             label: '',
@@ -112,6 +127,7 @@ export default function Header() {
                                 isIconOnly
                                 style={{ height: '100%' }}
                                 startContent={<FaSearch />}
+                                onClick={handleClickSearch}
                             />
                         }
                     />
