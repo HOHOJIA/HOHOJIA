@@ -17,6 +17,7 @@ interface RecipeDetails {
     recipeId: number
     title: string
     description: string
+    imageUrl: string
     quantity: number
     cookTime: number
     totalLike: number
@@ -62,6 +63,7 @@ export default function Details() {
                     throw new Error('Failed to fetch recipe details')
                 }
                 const res = await response.json()
+                console.log(res)
                 setRecipeDetails(res.data)
             } catch (err: any) {
                 setError(err.message)
@@ -85,8 +87,10 @@ export default function Details() {
             {recipeDetails && (
                 <div className="flex flex-col items-start w-full gap-12 px-8 pt-12 pb-40 lg:pt-16 lg:px-32 md:px-20">
                     <Banner
+                        imageUrl={recipeDetails.imageUrl}
                         title={recipeDetails.title}
                         description={recipeDetails.description}
+                        totalLike={recipeDetails.totalLike}
                     />
                     <div className="flex flex-col w-full gap-10 lg:justify-between lg:flex-row lg:gap-0">
                         <Ingredients
