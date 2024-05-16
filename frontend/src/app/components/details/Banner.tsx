@@ -24,7 +24,9 @@ export default function Banner({
         <div
             className="w-full bg-cover rounded-xl lg:px-16 lg:py-16 px-6 py-8 bg-center lg:bg-left-top relative"
             style={{
-                backgroundImage: `url(${imageUrl})`,
+                backgroundImage: `url(${
+                    imageUrl || '/images/details_banner_no_image.png'
+                })`,
             }}
         >
             <div className="absolute top-0 left-0 z-0 w-full h-full bg-white bg-opacity-40 rounded-xl" />
