@@ -3,13 +3,30 @@ import { FaFolderPlus, FaThumbsUp } from 'react-icons/fa6'
 import { MdDownload, MdOutlineShare } from 'react-icons/md'
 
 interface BannerProps {
+    imageUrl: string
     title: string
     description: string
+    totalLike: number
 }
 
-export default function Banner({ title, description }: BannerProps) {
+export default function Banner({
+    imageUrl,
+    title,
+    description,
+    totalLike,
+}: BannerProps) {
+    function handleLike() {
+        // TODO: integrate with backend
+        console.log('like')
+    }
+
     return (
-        <div className="bg-[url('/images/details_banner.webp')] w-full bg-cover rounded-xl lg:px-16 lg:py-16 px-6 py-8 bg-center lg:bg-left-top relative">
+        <div
+            className="w-full bg-cover rounded-xl lg:px-16 lg:py-16 px-6 py-8 bg-center lg:bg-left-top relative"
+            style={{
+                backgroundImage: `url(${imageUrl})`,
+            }}
+        >
             <div className="absolute top-0 left-0 z-0 w-full h-full bg-white bg-opacity-40 rounded-xl" />
             <div className="z-20 flex flex-col w-full gap-32 lg:gap-24 lg:w-1/2">
                 <div className="z-20 flex flex-col gap-5">
@@ -25,10 +42,11 @@ export default function Banner({ title, description }: BannerProps) {
                             radius="sm"
                             className="px-3 text-md"
                             startContent={<FaThumbsUp size={20} />}
+                            onClick={handleLike}
                         >
                             讚
                         </Button>
-                        <p className="z-20 text-gray-500">1k+說讚</p>
+                        <p className="z-20 text-gray-500">{totalLike}說讚</p>
                     </div>
                     <div className="flex items-center gap-3.5">
                         <Button
