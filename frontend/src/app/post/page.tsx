@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import Introduction from "./Introduction";
 import Description from "./Description";
 import Steps from "./Steps";
+import { totalImgUrl, setImgUrl } from "./components/setImgUrl";
 import {
   Card,
   CardHeader,
@@ -13,21 +14,54 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid"; // 引入 uuid lib
+import Cookies from "js-cookie";
 
-// 從 S3 拿到 url 時呼叫這個 function
-// let totalImgUrl: string[] = [];
-// function imgUrl(thisImgUrl: string) {
-//   totalImgUrl.push(thisImgUrl);
-//   return totalImgUrl;
-// }
+const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+const S3_BUCKET_REGION = process.env.S3_BUCKET_REGION;
+const BUCKET_NAME = process.env.BUCKET_NAME;
+
+async function getImgUrl(file: File) {
+  const queryParams = new URLSearchParams({ filename: file.name });
+
+  try {
+    const res = await fetch(
+      `http://13.210.223.164/api/generate-presigned-url?${queryParams}`
+    );
+
+    const { presignedUrl } = await res.json();
+    console.log(presignedUrl);
+
+    const uploadRes = await fetch(presignedUrl, {
+      method: "PUT",
+      body: file,
+      headers: {
+        "Content-Type": file.type,
+      },
+    });
+
+    if (uploadRes.status === 200) {
+      console.log("File successfully uploaded");
+      const imageUrl = `https://${BUCKET_NAME}.s3.${S3_BUCKET_REGION}.amazonaws.com/${encodeURIComponent(
+        file.name
+      )}`;
+      setImgUrl(imageUrl);
+    } else {
+      console.error("Upload failed");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
 
 async function postData(postdata: object) {
-  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+  const token = Cookies.get("access_token");
 
   const res = await fetch(`${apiDomain}/recipe`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(postdata),
   });
@@ -47,16 +81,14 @@ export default function Post() {
   const [steps, setSteps] = useState([
     {
       id: uuidv4(),
-      image: "https://images.dog.ceo/breeds/appenzeller/n02107908_3450.jpg",
+      imgUrl: "",
       description: "",
       order: 1,
     },
   ]);
-
   const [ingredients, setIngredients] = useState([
     { id: uuidv4(), name: "", size: "" },
   ]);
-
   // 創建一個狀態來保存選中的標籤
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -71,15 +103,26 @@ export default function Post() {
     formData.append("userId", "1");
     formData.append(
       "imgUrl",
-      "https://images.dog.ceo/breeds/appenzeller/n02107908_3450.jpg"
+      totalImgUrl.length > 0
+        ? totalImgUrl[0]
+        : "https://images.dog.ceo/breeds/appenzeller/n02107908_3450.jpg"
     );
 
     // 4. 將 formData 轉為 object
     const values = Object.fromEntries(formData.entries());
+
+    // 將圖片加入到 steps 中
+    const updatedSteps = steps.map((step) => {
+      const imageUrl = totalImgUrl[step.order]
+        ? totalImgUrl[step.order]
+        : "https://images.dog.ceo/breeds/appenzeller/n02107908_3450.jpg";
+      return { ...step, imgUrl: imageUrl };
+    });
+
     const newValues = {
       ...values,
       tags: selectedTags,
-      steps: steps,
+      steps: updatedSteps,
       ingredients: ingredients,
     };
     console.log(newValues);
@@ -93,6 +136,13 @@ export default function Post() {
       });
   }
 
+  // 防止按下 Enter 後 form 會自動 submit
+  function handleKeyDown(event: React.KeyboardEvent<HTMLFormElement>) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  }
+
   return (
     <>
       <Header />
@@ -101,7 +151,7 @@ export default function Post() {
           shadow="md"
           className="w-full py-4 my-4 md:w-10/12 lg:w-8/12 lg:my-12"
         >
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
             <CardHeader className="flex-col items-start px-8 py-4 sm:px-12">
               <p className="text-xl font-bold border-b-2 pb-1.5 border-black mb-1.5">
                 來分享你的美味秘訣吧！
@@ -110,6 +160,7 @@ export default function Post() {
               <Introduction
                 selectedTags={selectedTags}
                 setSelectedTags={setSelectedTags}
+                getImgUrl={getImgUrl}
               />
             </CardHeader>
 
@@ -125,7 +176,7 @@ export default function Post() {
               <hr className="w-full h-0.5 mt-10 mb-2 bg-gray-200" />
 
               {/* Steps section */}
-              <Steps steps={steps} setSteps={setSteps} />
+              <Steps steps={steps} setSteps={setSteps} getImgUrl={getImgUrl} />
               <hr className="w-full h-0.5 mt-3 mb-2 bg-gray-200" />
 
               {/* Cooking Tips section */}

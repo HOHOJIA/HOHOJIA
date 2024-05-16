@@ -16,7 +16,6 @@ const recipeObjFromPost = (body) => {
             tip: body.tip,
             description: body.description,
             imageUrl: body.imageUrl,
-            userId: body.userId,
             tags: body.tags.map(tag => tag.toString()),
             steps: body.steps.map(step => {
                 return {
@@ -48,6 +47,10 @@ module.exports = {
             errorMsg.badRequest(res, 'Invalid post body fromat');
             return;
         }
+
+        // Add userID from token
+        recipeObj.userId = req.decodedToken.id;
+
         const insertResult = await recipeService.postRecipe(res, recipeObj);
         if (!insertResult) return; // Error msg response has already been handled in postRecipe
 

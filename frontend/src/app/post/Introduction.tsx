@@ -5,9 +5,11 @@ import DropZoneImg from "./components/DropZoneImg";
 export default function Introduction({
   selectedTags,
   setSelectedTags,
+  getImgUrl,
 }: {
   selectedTags: string[];
   setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+  getImgUrl: (file: File) => void;
 }) {
   const category = [
     { id: 1, name: "肉類" },
@@ -65,7 +67,7 @@ export default function Introduction({
           name="description"
         />
 
-        <DropZoneImg smallSize={false} />
+        <DropZoneImg smallSize={false} getImgUrl={getImgUrl} />
       </div>
     </div>
   );

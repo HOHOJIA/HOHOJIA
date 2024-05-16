@@ -7,6 +7,10 @@ module.exports = {
     const connection = await connectionPromise.getConnection();
     try {
       //transaction
+      const checkResult = await likeRepo.checkLikeById(likeObj.userId);
+      if (checkResult.length > 0) {
+        return null;
+      }
       await connection.beginTransaction();
       const insertResult = await likeRepo.addLike(likeObj, connection);
       await connection.commit();

@@ -6,6 +6,55 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF } from "react-icons/fa";
 import { AiFillEye } from "react-icons/ai";
 import { AiFillEyeInvisible } from "react-icons/ai";
+import Cookies from "js-cookie";
+
+async function signupData(signupdata: object) {
+  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+
+  const res = await fetch(`${apiDomain}/users/signup`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(signupdata),
+  });
+
+  if (res.status === 200) {
+    const responseData = await res.json();
+    console.log("Response:", responseData);
+    return responseData;
+  } else {
+    const responseData = await res.json();
+    console.log("Error Response:", responseData);
+    const errorMsg = responseData.error;
+
+    throw new Error(errorMsg);
+  }
+}
+
+async function loginData(logindata: object) {
+  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+
+  const res = await fetch(`${apiDomain}/users/signin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(logindata),
+  });
+
+  if (res.status === 200) {
+    const responseData = await res.json();
+    console.log("Response:", responseData);
+    return responseData;
+  } else {
+    const responseData = await res.json();
+    console.log("Error Response:", responseData);
+    const errorMsg = responseData.error;
+
+    throw new Error(errorMsg);
+  }
+}
 
 export default function Login() {
   const [selected, setSelected] = useState("login");
@@ -63,25 +112,10 @@ export default function Login() {
       </div>
 
       {/* 登入資訊 */}
-      {selected === "login" ? <LoginInfo /> : <SignupInfo />}
-
-      {/* 登入按鈕 */}
       {selected === "login" ? (
-        <SubmitBtn
-          btn="登入"
-          hint="HOHOJIA新夥伴嗎？"
-          changeBtn="來去註冊"
-          selectState="signup"
-          onSelected={handleSelected}
-        />
+        <LoginInfo onSelected={handleSelected} />
       ) : (
-        <SubmitBtn
-          btn="註冊"
-          hint="已經加入HOHOJIA了嗎？"
-          changeBtn="來去登入"
-          selectState="login"
-          onSelected={handleSelected}
-        />
+        <SignupInfo onSelected={handleSelected} />
       )}
     </div>
   );
@@ -116,31 +150,70 @@ function SignBar({
   );
 }
 
-function LoginInfo() {
+function LoginInfo({
+  onSelected,
+}: {
+  onSelected: (selectState: string) => void;
+}) {
+  function handleLoginSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    const values = Object.fromEntries(formData.entries());
+    console.log(values);
+
+    loginData(values)
+      .then((responseData) => {
+        Cookies.set("access_token", responseData.data.access_token, {
+          httpOnly: true,
+          expires: 7,
+        });
+        alert("登入成功！");
+      })
+      .catch((error) => {
+        alert(`登入失敗，${error.error}`);
+      });
+  }
+
   return (
-    <div className="flex flex-wrap justify-center gap-5 my-5 ">
-      <Input
-        type="email"
-        label="電子信箱"
-        variant="bordered"
-        className="max-w-xs"
-      />
-      <PasswordBtn label="密碼" size="md" />
+    <form onSubmit={handleLoginSubmit}>
+      <div className="flex flex-wrap justify-center gap-5 my-5 ">
+        <Input
+          type="email"
+          label="電子信箱"
+          variant="bordered"
+          className="max-w-xs"
+          name="email"
+        />
+        <PasswordBtn label="密碼" size="md" name="password" />
 
-      <div className="flex justify-between w-full px-5 my-5">
-        <Checkbox defaultSelected size="sm">
-          <p className="text-neutral-400">記住登入資訊</p>
-        </Checkbox>
+        <div className="flex justify-between w-full px-5 my-5">
+          <Checkbox defaultSelected size="sm">
+            <p className="text-neutral-400">記住登入資訊</p>
+          </Checkbox>
 
-        <Link href="" size="sm" underline="always" className="text-amber-400">
-          忘記密碼？
-        </Link>
+          <Link href="" size="sm" underline="always" className="text-amber-400">
+            忘記密碼？
+          </Link>
+        </div>
       </div>
-    </div>
+      <SubmitBtn
+        btn="登入"
+        hint="HOHOJIA新夥伴嗎？"
+        changeBtn="來去註冊"
+        selectState="signup"
+        onSelected={onSelected}
+      />
+    </form>
   );
 }
 
-function SignupInfo() {
+function SignupInfo({
+  onSelected,
+}: {
+  onSelected: (selectState: string) => void;
+}) {
   const [password, setPassword] = useState("");
   const [pwdConfirm, setPwdConfirm] = useState("");
   const [pwdCheck, setPwdCheck] = useState(false);
@@ -150,37 +223,68 @@ function SignupInfo() {
     setPwdCheck(password !== pwdConfirm && pwdConfirm !== "");
   }, [password, pwdConfirm]);
 
+  function handleSignUpSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    formData.delete("pwdConfirm");
+
+    const values = Object.fromEntries(formData.entries());
+    console.log(values);
+
+    signupData(values)
+      .then(() => {
+        alert("註冊成功！");
+      })
+      .catch((error) => {
+        alert(`註冊失敗，${error}`);
+      });
+  }
+
   return (
-    <div className="flex flex-wrap justify-center gap-5 my-5 ">
-      <Input
-        type="text"
-        label="使用者名稱"
-        variant="bordered"
-        className="max-w-xs"
-        size="sm"
+    <form onSubmit={handleSignUpSubmit}>
+      <div className="flex flex-wrap justify-center gap-5 my-5 ">
+        <Input
+          type="text"
+          label="使用者名稱"
+          variant="bordered"
+          className="max-w-xs"
+          size="sm"
+          name="name"
+        />
+        <Input
+          type="email"
+          label="電子信箱"
+          variant="bordered"
+          className="max-w-xs"
+          size="sm"
+          name="email"
+        />
+        <PasswordBtn
+          label="密碼"
+          size="sm"
+          value={password}
+          invalid={false}
+          onChanged={setPassword}
+          name="password"
+        />
+        <PasswordBtn
+          label="再次輸入密碼"
+          size="sm"
+          value={pwdConfirm}
+          invalid={pwdCheck}
+          onChanged={setPwdConfirm}
+          name="pwdConfirm"
+        />
+      </div>
+      <SubmitBtn
+        btn="註冊"
+        hint="已經加入HOHOJIA了嗎？"
+        changeBtn="來去登入"
+        selectState="login"
+        onSelected={onSelected}
       />
-      <Input
-        type="email"
-        label="電子信箱"
-        variant="bordered"
-        className="max-w-xs"
-        size="sm"
-      />
-      <PasswordBtn
-        label="密碼"
-        size="sm"
-        value={password}
-        invalid={false}
-        onChanged={setPassword}
-      />
-      <PasswordBtn
-        label="再次輸入密碼"
-        size="sm"
-        value={pwdConfirm}
-        invalid={pwdCheck}
-        onChanged={setPwdConfirm}
-      />
-    </div>
+    </form>
   );
 }
 
@@ -190,12 +294,14 @@ function PasswordBtn({
   value,
   invalid,
   onChanged,
+  name,
 }: {
   label: string;
   size: string;
   value?: string;
   invalid?: boolean;
   onChanged?: (value: string) => void; // onChanged 是一個接受字串參數，並且不傳回任何值的 function
+  name: string;
 }) {
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -230,6 +336,7 @@ function PasswordBtn({
       className="max-w-xs"
       isInvalid={invalid}
       errorMessage="密碼不一致"
+      name={name}
     />
   );
 }
@@ -249,7 +356,12 @@ function SubmitBtn({
 }) {
   return (
     <div className="flex flex-wrap justify-center gap-5  mt-5">
-      <Button color="primary" size="lg" className="w-full font-medium">
+      <Button
+        color="primary"
+        size="lg"
+        className="w-full font-medium"
+        type="submit"
+      >
         {btn}
       </Button>
       <div className="flex justify-center">
