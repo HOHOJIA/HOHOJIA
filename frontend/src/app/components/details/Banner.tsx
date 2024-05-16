@@ -1,12 +1,16 @@
 import { Button } from '@nextui-org/react'
+import Cookies from 'js-cookie'
 import { FaFolderPlus, FaThumbsUp } from 'react-icons/fa6'
 import { MdDownload, MdOutlineShare } from 'react-icons/md'
+
+const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN
 
 interface BannerProps {
     imageUrl: string
     title: string
     description: string
     totalLike: number
+    recipeId: number
 }
 
 export default function Banner({
@@ -14,10 +18,37 @@ export default function Banner({
     title,
     description,
     totalLike,
+    recipeId,
 }: BannerProps) {
-    function handleLike() {
-        // TODO: integrate with backend
-        console.log('like')
+    async function handleLike() {
+        const token = Cookies.get('access_token')
+
+        const res = await fetch(`${apiDomain}/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                recipeId,
+            }),
+        })
+
+        if (res.status === 200) {
+            const responseData = await res.json()
+            console.log('Response:', responseData)
+            return responseData
+        } else {
+            const responseData = await res.json()
+            console.log('Error Response:', responseData)
+            const errorMsg = responseData.error
+            alert(
+                errorMsg === 'unauthorized'
+                    ? '你還沒有登入呦～請先登入後再來按讚！'
+                    : errorMsg
+            )
+            return null
+        }
     }
 
     return (

@@ -93,6 +93,7 @@ export default function Details() {
                             title={recipeDetails.title}
                             description={recipeDetails.description}
                             totalLike={recipeDetails.totalLike}
+                            recipeId={recipeDetails.recipeId}
                         />
                         <div className="flex flex-col w-full gap-10 lg:justify-between lg:flex-row lg:gap-0">
                             <Ingredients
@@ -107,7 +108,10 @@ export default function Details() {
                         </div>
                         <Steps steps={recipeDetails.steps} />
                         <Tips tip={recipeDetails.tip} />
-                        <Comments comments={recipeDetails.comments} />
+                        <Comments
+                            comments={recipeDetails.comments}
+                            recipeId={recipeDetails.recipeId}
+                        />
                     </div>
                 )
             )}
