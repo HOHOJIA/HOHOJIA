@@ -13,7 +13,7 @@ export default function Banner() {
     const handleClickSearch = () => {
         if (keyword !== '') {
             const current = new URLSearchParams(Array.from(searchParams.entries())) // -> has to use this form
-            current.set('search', keyword)
+            current.set('title', keyword)
             const search = current.toString()
             const query = search ? `?${search}` : ''
             router.push(`${pathname}search${query}`)
@@ -22,7 +22,7 @@ export default function Banner() {
 
     return (
         <div className="bg-[url('/Banner_phone.png')] md:bg-[url('/Banner.png')] w-full h-96 md:h-56  flex justify-center items-center bg-cover">
-            <div className="flex flex-col items-start justify-center w-full gap-4 px-4 xl:px-44 py-6 md:items-center md:px-20 lg:px-36 2xl:px-96">
+            <div className="flex flex-col items-start justify-center w-full gap-4 px-4 py-6 xl:px-44 md:items-center md:px-20 lg:px-36 2xl:px-96">
                 <h1 className="text-xl font-bold text-white drop-shadow-lg ">
                     讓每一次料理
                     <br className="block md:hidden" />
@@ -59,6 +59,7 @@ export default function Banner() {
                                 <div className="flex md:hidden">分享</div>
                             </div>
                         }
+                        onPress={() => router.push('/post')}
                     >
                         你想分享食譜嗎？
                     </Button>
