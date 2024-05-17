@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import {
     Button,
@@ -25,8 +25,18 @@ export default function Header() {
     const searchParams = useSearchParams()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [keyword, setKeyword] = useState('')
+    const [isLogined, setIsLogined] = useState(false)
 
-    const isLogined = !!Cookies.get('access_token')
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            const token = Cookies.get('access_token')
+            if (token) {
+                setIsLogined(true)
+            }
+        }
+
+        checkLoginStatus()
+    }, [])
 
     function handleClickSearch() {
         if (keyword !== '') {
