@@ -89,7 +89,7 @@ export default function Banner({
                             size="md"
                             radius="full"
                             startContent={<FaFolderPlus size={20} />}
-                        ></Button>
+                        />
                         <Button
                             color="primary"
                             isIconOnly
