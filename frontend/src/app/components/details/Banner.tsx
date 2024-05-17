@@ -36,7 +36,6 @@ export default function Banner({
 
         if (res.status === 200) {
             const responseData = await res.json()
-            console.log('Response:', responseData)
             return responseData
         } else {
             const responseData = await res.json()

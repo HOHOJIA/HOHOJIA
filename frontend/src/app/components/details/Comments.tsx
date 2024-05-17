@@ -41,7 +41,6 @@ export default function Comments({ recipeId, comments }: CommentsProps) {
 
         if (res.status === 200) {
             const responseData = await res.json()
-            console.log('Response:', responseData)
             return responseData
         } else {
             const responseData = await res.json()
@@ -75,7 +74,6 @@ export default function Comments({ recipeId, comments }: CommentsProps) {
 
         if (res.status === 200) {
             const responseData = await res.json()
-            console.log('Response:', responseData)
             setComment('')
             return responseData
         } else {
