@@ -1,3 +1,4 @@
+import useShowAlert from '@/hooks/useShowAlert'
 import { Avatar, Button, Textarea } from '@nextui-org/react'
 import Cookies from 'js-cookie'
 import { useState } from 'react'
@@ -21,9 +22,13 @@ interface CommentsProps {
 
 export default function Comments({ recipeId, comments }: CommentsProps) {
     const [comment, setComment] = useState('')
+    const showAlert = useShowAlert()
 
     async function handleComment(content: string) {
-        if (comment === '') return
+        if (comment === '') {
+            showAlert('Oops...', '留言最少要有一個字喔！', 'error')
+            return
+        }
         const token = Cookies.get('access_token')
 
         const res = await fetch(`${apiDomain}/comment/add`, {
@@ -45,18 +50,20 @@ export default function Comments({ recipeId, comments }: CommentsProps) {
         } else {
             const responseData = await res.json()
             console.log('Error Response:', responseData)
-            const errorMsg = responseData.error
-            alert(
-                errorMsg === 'unauthorized'
+            const errorMsg =
+                responseData.error === 'unauthorized'
                     ? '你還沒有登入呦～請先登入後再來按讚！'
-                    : errorMsg
-            )
+                    : responseData.error
+            showAlert('Oops...', errorMsg, 'error')
             return null
         }
     }
 
     async function handleReplyComment(replyCommentId: string, content: string) {
-        if (comment === '') return
+        if (comment === '') {
+            showAlert('Oops...', '留言最少要有一個字喔！', 'error')
+            return
+        }
         const token = Cookies.get('access_token')
 
         const res = await fetch(`${apiDomain}/comment/add`, {
@@ -79,12 +86,11 @@ export default function Comments({ recipeId, comments }: CommentsProps) {
         } else {
             const responseData = await res.json()
             console.log('Error Response:', responseData)
-            const errorMsg = responseData.error
-            alert(
-                errorMsg === 'unauthorized'
+            const errorMsg =
+                responseData.error === 'unauthorized'
                     ? '你還沒有登入呦～請先登入後再來按讚！'
-                    : errorMsg
-            )
+                    : responseData.error
+            showAlert('Oops...', errorMsg, 'error')
             return null
         }
     }

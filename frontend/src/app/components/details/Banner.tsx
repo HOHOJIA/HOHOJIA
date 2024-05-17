@@ -1,3 +1,4 @@
+import useShowAlert from '@/hooks/useShowAlert'
 import { Button } from '@nextui-org/react'
 import Cookies from 'js-cookie'
 import { FaFolderPlus, FaThumbsUp } from 'react-icons/fa6'
@@ -20,6 +21,8 @@ export default function Banner({
     totalLike,
     recipeId,
 }: BannerProps) {
+    const showAlert = useShowAlert()
+
     async function handleLike() {
         const token = Cookies.get('access_token')
 
@@ -40,12 +43,11 @@ export default function Banner({
         } else {
             const responseData = await res.json()
             console.log('Error Response:', responseData)
-            const errorMsg = responseData.error
-            alert(
-                errorMsg === 'unauthorized'
+            const errorMsg =
+                responseData.error === 'unauthorized'
                     ? '你還沒有登入呦～請先登入後再來按讚！'
-                    : errorMsg
-            )
+                    : responseData.error
+            showAlert('Oops...', errorMsg, 'error')
             return null
         }
     }
