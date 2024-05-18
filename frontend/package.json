@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "no-lint-build": "next build --no-lint"
+    "no-lint-build": "next build --no-lint",
+    "testing": "just testing"
   },
   "dependencies": {
     "@nextui-org/react": "^2.3.0",
