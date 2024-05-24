@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardBody, CardFooter, Skeleton } from '@nextui-org/react'
 
-export default function RecipeSkeleton(props) {
+export default function RecipeSkeleton(props: any) {
     const { status } = props
     return (
         <>

@@ -19,7 +19,7 @@ module.exports = {
                 recipeId: Number(recipeObject.recipeId),
                 title: recipeObject.title,
                 description: recipeObject.description,
-                imageUrl: recipeObject.imgUrl,
+                imageUrl: recipeObject.imageUrl,
                 quantity: Number(recipeObject.quantity),
                 cookTime: Number(recipeObject.cookTime),
                 totalLike: Number(recipeObject.totalLike), // TODO: Database handle

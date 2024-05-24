@@ -19,11 +19,11 @@ export default function NewRecipe({ recipe }: RecipeProps) {
     const router = useRouter()
 
     const handleClick = () => {
-        router.push(`/details`)
+        router.push(`/details/${recipe.recipeId}`)
     }
     return (
         <motion.div
-            className="relative   rounded-xl flex justify-center items-center"
+            className="relative flex items-center justify-center rounded-xl"
             key={recipe?.recipeId}
             onHoverStart={() => setShowOverlay(true)}
             onHoverEnd={() => setShowOverlay(false)}
@@ -31,31 +31,43 @@ export default function NewRecipe({ recipe }: RecipeProps) {
             <AnimatePresence>
                 {showOverlay && (
                     <motion.div
-                        className="absolute left-0 top-0 bottom-0 right-0 z-10 flex justify-center items-center"
+                        className="absolute top-0 bottom-0 left-0 right-0 z-10 flex items-center justify-center"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                     >
-                        <div className="absolute rounded-xl bg-black pointer-events-none opacity-50 h-full w-full" />
+                        <div className="absolute w-full h-full bg-black opacity-50 pointer-events-none rounded-xl" />
                         <motion.h1 className="" initial={{ y: 10 }} animate={{ y: 0 }} exit={{ y: 10 }}>
-                            <Button className="bg-white font-bold">查看更多</Button>
+                            <Button className="font-bold bg-white" onPress={handleClick}>
+                                查看更多
+                            </Button>
                         </motion.h1>
                     </motion.div>
                 )}
             </AnimatePresence>
             <Card
                 onPress={handleClick}
-                className="h-full min-w-56 w-full  items-center justify-start flex flex-col"
+                className="flex flex-col items-center justify-start w-full h-full min-w-56"
                 isPressable
                 shadow="sm"
             >
-                <Image
-                    alt="Card background"
-                    className="object-cover w-full rounded-xl h-[200px] "
-                    src={recipe?.imgUrl}
-                    width={300}
-                    height={200}
-                />
+                {recipe.imgUrl === null ? (
+                    <div className="h-[200px] text-center flex-col items-center justify-center flex w-full rounded-xl text-gray-500 bg-gray-200 ">
+                        美味食物還在製作中
+                        <br />
+                        照片請燒等
+                        <br />
+                        (❁´◡`❁)
+                    </div>
+                ) : (
+                    <Image
+                        alt="Card background"
+                        className="object-cover w-full rounded-xl h-[200px] "
+                        src={recipe?.imgUrl}
+                        width={300}
+                        height={200}
+                    />
+                )}
                 <CardFooter>
                     <h5 className="font-bold ">{recipe?.title}</h5>
                 </CardFooter>

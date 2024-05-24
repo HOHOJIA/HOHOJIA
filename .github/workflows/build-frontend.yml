@@ -1,0 +1,44 @@
+name: Build frontend
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/**'
+    branches:
+      - main
+      - develop
+  workflow_call: # 可以被其他 workflow 呼叫
+
+defaults:
+  run:
+    working-directory: ./frontend
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run no-lint-build
+      - name: Send Notification to Discord
+        if: success()
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          username: "GitHub Bot"
+          message: |
+            **[Test]** Frontend build succeeded. The **「${{ github.event_name }}」** event triggered by **「${{ github.actor }}」** on **${{ github.ref }}** succeeded.
+      - name: Send Notification to Discord
+        if: failure()
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          username: "GitHub Bot"
+          message: |
+            **[Test]** :warning: Frontend build failed. The **「${{ github.event_name }}」** event triggered by **「${{ github.actor }}」** on **${{ github.ref }}** failed.
+    

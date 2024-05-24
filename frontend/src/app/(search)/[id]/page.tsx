@@ -1,9 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react'
-import RecipeListSquare from '../RecipeListSquare'
+import RecipeListSquare from '../../components/search/RecipeListSquare'
 import Header from '@/app/components/Header'
 import { useSearchParams } from 'next/navigation'
-import RecipeListSkeleton from '../RecipeListSkeleton'
+import RecipeListSkeleton from '../../components/search/RecipeListSkeleton'
 import Image from 'next/image'
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN
@@ -20,29 +20,41 @@ export default function ReciptList() {
     const searchParams = useSearchParams()
     const [searchData, setSearchData] = useState<SearchResponse>({ data: { recipes: [] } })
     const [hasRecipe, setHasRecipe] = useState(true)
-    const keyword = searchParams.get('search')
+    const tagKeyword = searchParams.get('tag')
+    const titleKeyword = searchParams.get('title')
     useEffect(() => {
-        if (keyword) {
-            const fetchSearch = async () => {
-                const res = await fetch(`${apiDomain}/search?title=${keyword}`)
+        if (tagKeyword) {
+            const fetchTagSearch = async () => {
+                const res = await fetch(`${apiDomain}/search?tag=${tagKeyword}`)
                 setSearchData(await res.json())
                 if (res.status === 404) {
                     setHasRecipe(false)
                 }
             }
 
-            fetchSearch()
+            fetchTagSearch()
         }
-    }, [keyword])
+        if (titleKeyword) {
+            const fetchTitleSearch = async () => {
+                const res = await fetch(`${apiDomain}/search?title=${titleKeyword}`)
+                setSearchData(await res.json())
+                if (res.status === 404) {
+                    setHasRecipe(false)
+                }
+            }
+
+            fetchTitleSearch()
+        }
+    }, [tagKeyword, titleKeyword])
     return (
-        <div className="min-h-screen w-full bg-gray-50 ">
+        <div className="w-full min-h-screen bg-gray-50 ">
             <Header />
-            <div className=" w-full bg-gray-50 px-10 md:px-72 py-24 itmes-center justify-center flex gap-8 flex-col">
-                <div className="w-full flex flex-row gap-2 text-lg">
-                    <div className="font-bold">{keyword}</div>
+            <div className="flex flex-col justify-center w-full gap-8 px-10 py-24 bg-gray-50 md:px-72 itmes-center">
+                <div className="flex flex-row w-full gap-2 text-lg">
+                    <div className="font-bold">{tagKeyword ? tagKeyword : titleKeyword}</div>
                     <div>相關食譜</div>
                 </div>
-                <div className="w-full items-center justify-center flex gap-8 flex-col">
+                <div className="flex flex-col items-center justify-center w-full gap-8">
                     {searchData?.data?.recipes.length > 0 ? (
                         searchData.data.recipes.map((recipe: any) => (
                             <RecipeListSquare key={recipe.recipeId} recipe={recipe} />
@@ -50,9 +62,9 @@ export default function ReciptList() {
                     ) : hasRecipe === true ? (
                         <RecipeListSkeleton />
                     ) : (
-                        <div className="flex flex-col justify-center items-center gap-2">
+                        <div className="flex flex-col items-center justify-center gap-2">
                             <Image alt="no result" src="/noResults.png" width={200} height={300} />
-                            <div className="text-lg md:text-3xl font-bold text-indigo-800">
+                            <div className="text-lg font-bold text-indigo-800 md:text-3xl">
                                 Sorry！ 無相關食譜＞﹏＜
                             </div>
                             <div>請嘗試其他關鍵字</div>

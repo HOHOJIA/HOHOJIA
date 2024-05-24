@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import React, { useState } from "react";
-import Image from "next/image";
+import Link from 'next/link'
+import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 import {
     Button,
     Input,
@@ -12,43 +12,72 @@ import {
     NavbarItem,
     NavbarMenu,
     NavbarMenuToggle,
-} from "@nextui-org/react";
-import { FaSearch } from "react-icons/fa";
-import { FaQuestion } from "react-icons/fa6";
-import { IoPersonSharp } from "react-icons/io5";
-import { TbBellRinging2Filled } from "react-icons/tb";
+} from '@nextui-org/react'
+import { FaSearch } from 'react-icons/fa'
+import { FaQuestion } from 'react-icons/fa6'
+import { IoPersonSharp } from 'react-icons/io5'
+import { TbBellRinging2Filled } from 'react-icons/tb'
+import { useRouter, useSearchParams } from 'next/navigation'
+import Cookies from 'js-cookie'
 
 export default function Header() {
-    const [isLogined, setIsLogined] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [keyword, setKeyword] = useState('')
+    const [isLogined, setIsLogined] = useState(false)
+
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            const token = Cookies.get('access_token')
+            if (token) {
+                setIsLogined(true)
+            }
+        }
+
+        checkLoginStatus()
+    }, [])
+
+    function handleClickSearch() {
+        if (keyword !== '') {
+            const current = new URLSearchParams(
+                Array.from(searchParams.entries())
+            )
+            current.set('title', keyword)
+            const search = current.toString()
+            const query = search ? `?${search}` : ''
+            router.push(`/search${query}`)
+        }
+    }
 
     return (
         <Navbar
             maxWidth="full"
-            className="shadow-lg"
+            className="shadow-lg md:py-2"
             classNames={{
                 item: [
-                    "flex",
-                    "relative",
-                    "lg:h-full",
-                    "items-center",
-                    "text-gray-500",
-                    "data-[active=true]:font-normal",
-                    "data-[active=true]:text-black",
-                    "data-[active=true]:after:absolute",
-                    "data-[active=true]:after:bottom-4",
-                    "data-[active=true]:after:left-0",
-                    "data-[active=true]:after:right-0",
-                    "data-[active=true]:after:h-[3px]",
-                    "data-[active=true]:after:rounded-[2px]",
-                    "data-[active=true]:after:bg-yellow-300",
+                    'flex',
+                    'relative',
+                    'lg:h-full',
+                    'items-center',
+                    'text-gray-500',
+                    'data-[active=true]:font-normal',
+                    'data-[active=true]:text-black',
+                    'data-[active=true]:after:absolute',
+                    'lg:data-[active=true]:after:bottom-4',
+                    'md:data-[active=true]:after:bottom-0',
+                    'data-[active=true]:after:left-0',
+                    'data-[active=true]:after:right-0',
+                    'data-[active=true]:after:h-[3px]',
+                    'data-[active=true]:after:rounded-[2px]',
+                    'data-[active=true]:after:bg-yellow-300',
                 ],
             }}
             onMenuOpenChange={setIsMenuOpen}
         >
             <NavbarContent>
                 <NavbarMenuToggle
-                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
                     className="sm:hidden"
                 />
                 <NavbarBrand>
@@ -91,21 +120,24 @@ export default function Header() {
                         type=""
                         label=""
                         placeholder="搜尋食譜"
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
                         className="mr-2 w-60"
                         classNames={{
-                            label: "",
-                            input: "",
-                            innerWrapper: "",
+                            label: '',
+                            input: '',
+                            innerWrapper: '',
                             inputWrapper:
-                                "bg-white pr-0 pl-4 border-yellow-300 rounded-md border-1",
+                                'bg-white pr-0 pl-4 border-yellow-300 rounded-md border-1',
                         }}
                         endContent={
                             <Button
                                 className="p-0 rounded-s-none rounded-e-sm"
                                 color="primary"
                                 isIconOnly
-                                style={{ height: "100%" }}
+                                style={{ height: '100%' }}
                                 startContent={<FaSearch />}
+                                onClick={handleClickSearch}
                             />
                         }
                     />
@@ -117,7 +149,7 @@ export default function Header() {
                         size="md"
                         radius="sm"
                         className="px-5 lg:px-10"
-                        onClick={() => setIsLogined(true)}
+                        onClick={() => router.push('/login')}
                     >
                         登入/註冊
                     </Button>
@@ -158,18 +190,18 @@ export default function Header() {
                         placeholder="搜尋食譜"
                         className="w-full mb-2"
                         classNames={{
-                            label: "",
-                            input: "",
-                            innerWrapper: "",
+                            label: '',
+                            input: '',
+                            innerWrapper: '',
                             inputWrapper:
-                                "bg-white pr-0 pl-4 border-yellow-300 rounded-md border-1",
+                                'bg-white pr-0 pl-4 border-yellow-300 rounded-md border-1',
                         }}
                         endContent={
                             <Button
                                 className="p-0 rounded-s-none rounded-e-sm"
                                 color="primary"
                                 isIconOnly
-                                style={{ height: "100%" }}
+                                style={{ height: '100%' }}
                                 startContent={<FaSearch />}
                             />
                         }
@@ -193,5 +225,5 @@ export default function Header() {
                 </NavbarItem>
             </NavbarMenu>
         </Navbar>
-    );
+    )
 }
