@@ -40,4 +40,7 @@ module.exports = {
   likeExist: (res) => {
     res.status(403).json({ error: "Like already exists" });
   },
+  likeNotExist: (res) => {
+    res.status(403).json({ error: "Like not exists" });
+  },
 };
