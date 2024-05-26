@@ -1,4 +1,5 @@
 import { Avatar, Button, Divider } from '@nextui-org/react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { FaUserPlus } from 'react-icons/fa6'
 import { IoPersonSharp } from 'react-icons/io5'
 
@@ -17,6 +18,17 @@ interface AuthorInfoProps {
 }
 
 export default function AuthorInfo({ tags, author }: AuthorInfoProps) {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+
+    const handleClickTag = (tag: string) => {
+        const current = new URLSearchParams(Array.from(searchParams.entries()))
+        current.set('tag', tag)
+        const search = current.toString()
+        const query = search ? `?${search}` : ''
+        router.push(`/search${query}`)
+    }
+
     return (
         <div className="flex flex-col order-1 gap-7 lg:items-end lg:gap-9 lg:order-2">
             <div className="flex items-center gap-5">
@@ -27,6 +39,7 @@ export default function AuthorInfo({ tags, author }: AuthorInfoProps) {
                         size="sm"
                         radius="sm"
                         className="px-2.5 text-sm"
+                        onClick={() => handleClickTag(tag.name)}
                     >
                         #{tag.name}
                     </Button>

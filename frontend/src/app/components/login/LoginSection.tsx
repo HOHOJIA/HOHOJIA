@@ -166,7 +166,6 @@ function LoginInfo({
     loginData(values)
       .then((responseData) => {
         Cookies.set("access_token", responseData.data.access_token, {
-          httpOnly: true,
           expires: 7,
         });
         alert("登入成功！");

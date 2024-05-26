@@ -1,9 +1,15 @@
+import useShowAlert from '@/hooks/useShowAlert'
 import { Avatar, Button, Textarea } from '@nextui-org/react'
+import Cookies from 'js-cookie'
+import { useState } from 'react'
 import { BiSolidShare } from 'react-icons/bi'
 import { FaQuoteLeft } from 'react-icons/fa6'
 import { IoPersonSharp } from 'react-icons/io5'
 
+const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN
+
 interface CommentsProps {
+    recipeId: number
     comments: {
         name: string
         time: string
@@ -14,7 +20,81 @@ interface CommentsProps {
     }[]
 }
 
-export default function Comments({ comments }: CommentsProps) {
+export default function Comments({ recipeId, comments }: CommentsProps) {
+    const [comment, setComment] = useState('')
+    const showAlert = useShowAlert()
+
+    async function handleComment(content: string) {
+        if (comment === '') {
+            showAlert('Oops...', '留言最少要有一個字喔！', 'error')
+            return
+        }
+        const token = Cookies.get('access_token')
+
+        const res = await fetch(`${apiDomain}/comment/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                recipeId,
+                replyCommentId: null,
+                content,
+            }),
+        })
+
+        if (res.status === 200) {
+            const responseData = await res.json()
+            return responseData
+        } else {
+            const responseData = await res.json()
+            console.log('Error Response:', responseData)
+            const errorMsg =
+                responseData.error === 'unauthorized'
+                    ? '你還沒有登入呦～請先登入後再來按讚！'
+                    : responseData.error
+            showAlert('Oops...', errorMsg, 'error')
+            return null
+        }
+    }
+
+    async function handleReplyComment(replyCommentId: string, content: string) {
+        if (comment === '') {
+            showAlert('Oops...', '留言最少要有一個字喔！', 'error')
+            return
+        }
+        const token = Cookies.get('access_token')
+
+        const res = await fetch(`${apiDomain}/comment/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                recipeId,
+                replyCommentId: null,
+                content,
+            }),
+        })
+
+        if (res.status === 200) {
+            const responseData = await res.json()
+            setComment('')
+            return responseData
+        } else {
+            const responseData = await res.json()
+            console.log('Error Response:', responseData)
+            const errorMsg =
+                responseData.error === 'unauthorized'
+                    ? '你還沒有登入呦～請先登入後再來按讚！'
+                    : responseData.error
+            showAlert('Oops...', errorMsg, 'error')
+            return null
+        }
+    }
+
     return (
         <div className="flex flex-col gap-9 lg:w-7/12 md:w-full">
             <h4 className="text-lg font-bold underline lg:px-8 decoration-2 underline-offset-8">
@@ -31,12 +111,15 @@ export default function Comments({ comments }: CommentsProps) {
                         input: 'placeholder:text-gray-400 text-md',
                     }}
                     minRows={4}
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
                 />
                 <Button
                     color="primary"
                     size="md"
                     radius="sm"
                     className="text-md"
+                    onClick={() => handleComment(comment)}
                 >
                     送出
                 </Button>
@@ -72,9 +155,19 @@ export default function Comments({ comments }: CommentsProps) {
                         </div>
 
                         <div className="flex flex-col items-end justify-between">
-                            <BiSolidShare size={25} color="#5C5C5C" />
+                            <Button
+                                isIconOnly
+                                startContent={
+                                    <BiSolidShare size={25} color="#5C5C5C" />
+                                }
+                                onClick={() =>
+                                    handleReplyComment(
+                                        comment.commentId,
+                                        comment.content
+                                    )
+                                }
+                            />
                             <p className="text-sm text-gray-500">
-                                {/* 2024-04-27 19:57:29.000000 => 2024-04-27 19:57 */}
                                 {comment.time.slice(0, 16)}
                             </p>
                         </div>
