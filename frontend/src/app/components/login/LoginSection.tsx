@@ -169,6 +169,7 @@ function LoginInfo({
           expires: 7,
         });
         alert("登入成功！");
+        window.location.href = "/"; // login success, redirect to home page
       })
       .catch((error) => {
         alert(`登入失敗，${error.error}`);
