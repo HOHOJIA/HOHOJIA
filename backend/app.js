@@ -3,7 +3,7 @@ let express = require("express");
 let path = require("path");
 let cookieParser = require("cookie-parser");
 let logger = require("morgan");
-const s3Client = require('./utils/s3presign');
+const s3Client = require("./utils/s3presign");
 const cors = require("cors");
 const version = process.env.HOHOJIA_VERSION || "version not found";
 
@@ -25,23 +25,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// // mysql connection info (git ignore env folder)
-// const connection = mysql.createConnection({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_DATABASE,
-// });
-
-// // connect to mysql db
-// connection.connect((err) => {
-//   if (err) {
-//     console.error("Error connecting to database: " + err.stack);
-//     return;
-//   }
-//   console.log("Connected to database as id " + connection.threadId);
-// });
-
 app.use("/", indexRouter);
 app.use("/api/1.0/users", usersRouter);
 app.use("/api/1.0/like", likeRouter);
@@ -50,14 +33,14 @@ app.use("/api/1.0/recipe", recipeRouter);
 app.use("/api/1.0/search", searchRouter);
 app.use("/api/1.0/getAllRecipes", allRecipesRouter);
 
-app.get('/api/generate-presigned-url', async (req, res) => {
+app.get("/api/generate-presigned-url", async (req, res) => {
   try {
-          console.log(req.query.filename);  
-      const presignedUrl = await s3Client.getSign(req.query.filename);
-      res.json({ presignedUrl });
+    console.log(req.query.filename);
+    const presignedUrl = await s3Client.getSign(req.query.filename);
+    res.json({ presignedUrl });
   } catch (error) {
-      console.error(error);
-      res.status(500).send('Error generating presigned URL');
+    console.error(error);
+    res.status(500).send("Error generating presigned URL");
   }
 });
 app.get("/api/1.0/test", (req, res) => {

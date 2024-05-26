@@ -12,11 +12,27 @@ module.exports = {
       throw error;
     }
   },
-  checkLikeById: async (userId) => {
+  deleteLike: async (likeObj) => {
     const connection = connectionPromise;
     try {
-      const checkQuery = "SELECT * FROM likes WHERE userId = ?";
-      const [result] = await connection.execute(checkQuery, [userId]);
+      const { userId, recipeId } = likeObj;
+      const deleteLikeQuery =
+        "DELETE FROM likes WHERE userId = ? and recipeId = ?";
+      const [result] = await connection.execute(deleteLikeQuery, [
+        userId,
+        recipeId,
+      ]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+  checkLikeById: async (userId, recipeId) => {
+    const connection = connectionPromise;
+    try {
+      const checkQuery =
+        "SELECT * FROM likes WHERE userId = ? and recipeId = ?";
+      const [result] = await connection.execute(checkQuery, [userId, recipeId]);
       return result;
     } catch (error) {
       throw error;
