@@ -7,6 +7,7 @@ import { FaFacebookF } from "react-icons/fa";
 import { AiFillEye } from "react-icons/ai";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import Cookies from "js-cookie";
+import useShowAlert from "@/hooks/useShowAlert";
 
 async function signupData(signupdata: object) {
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
@@ -155,6 +156,8 @@ function LoginInfo({
 }: {
   onSelected: (selectState: string) => void;
 }) {
+  const showAlert = useShowAlert();
+
   function handleLoginSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -168,11 +171,11 @@ function LoginInfo({
         Cookies.set("access_token", responseData.data.access_token, {
           expires: 7,
         });
-        alert("登入成功！");
+        showAlert("Success!", "登入成功！", "success");
         window.location.href = "/"; // login success, redirect to home page
       })
       .catch((error) => {
-        alert(`登入失敗，${error.error}`);
+        showAlert("Oops...", `登入失敗，${error}`, "error");
       });
   }
 
@@ -214,6 +217,7 @@ function SignupInfo({
 }: {
   onSelected: (selectState: string) => void;
 }) {
+  const showAlert = useShowAlert();
   const [password, setPassword] = useState("");
   const [pwdConfirm, setPwdConfirm] = useState("");
   const [pwdCheck, setPwdCheck] = useState(false);
@@ -234,10 +238,10 @@ function SignupInfo({
 
     signupData(values)
       .then(() => {
-        alert("註冊成功！");
+        showAlert("Success!", "註冊成功！", "success");
       })
       .catch((error) => {
-        alert(`註冊失敗，${error}`);
+        showAlert("Oops...", `註冊失敗，${error}`, "error");
       });
   }
 
