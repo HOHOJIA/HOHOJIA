@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "${{ secrets.DOTENV }}" > .env
           docker login registry.gitlab.com -u${{ secrets.GITLAB_DEPLOY_USER }} --password-stdin <<<${{ secrets.GITLAB_DEPLOY_TOKEN }}
-          docker-compose build
+          docker-compose build --no-cache
           docker-compose push
 
   create-env-files-on-ec2:
