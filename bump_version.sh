@@ -40,7 +40,7 @@ git commit -m "Bump version to v$new_version"
 # add tag
 git tag -a v$new_version -m "Bump version to v$new_version"
 push the commit and tag
-git push
+git push origin main
 git push origin v$new_version
 
 message_content="New software version v$new_version has been released."
