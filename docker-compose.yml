@@ -20,7 +20,7 @@ services:
         context: ./frontend
         dockerfile: Dockerfile
         args:
-            NEXT_PUBLIC_API_DOMAIN: ${NEXT_PUBLIC_API_DOMAIN}
+          NEXT_PUBLIC_API_DOMAIN: ${NEXT_PUBLIC_API_DOMAIN}
       container_name: hohoja_frontend_container
       networks:
         - hohoja_network
