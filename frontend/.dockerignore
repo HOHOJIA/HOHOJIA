@@ -1,5 +1,6 @@
-ode_modules
+node_modules
 **/.dockerignore
 **/.git
 **/.gitignore
 **/.env
+.next
