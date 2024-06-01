@@ -8,6 +8,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install && npm run no-lint-build
+RUN NEXT_PUBLIC_API_DOMAIN=$NEXT_PUBLIC_API_DOMAIN && npm install && npm run no-lint-build
 
 CMD npm run start
