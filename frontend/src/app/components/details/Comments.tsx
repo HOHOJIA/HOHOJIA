@@ -18,80 +18,105 @@ interface CommentsProps {
         commentId: string
         replyCommentId: string
     }[]
+    onCommentSuccess: () => void
 }
 
-export default function Comments({ recipeId, comments }: CommentsProps) {
+export default function Comments({
+    recipeId,
+    comments,
+    onCommentSuccess,
+}: CommentsProps) {
     const [comment, setComment] = useState('')
+    const [isCommenting, setIsCommenting] = useState(false)
     const showAlert = useShowAlert()
 
     async function handleComment(content: string) {
-        if (comment === '') {
-            showAlert('Oops...', '留言最少要有一個字喔！', 'error')
-            return
-        }
-        const token = Cookies.get('access_token')
+        try {
+            setIsCommenting(true)
+            if (comment === '') {
+                showAlert('Oops...', '留言最少要有一個字喔！', 'error')
+                return
+            }
+            const token = Cookies.get('access_token')
 
-        const res = await fetch(`${apiDomain}/comment/add`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                recipeId,
-                replyCommentId: null,
-                content,
-            }),
-        })
+            const res = await fetch(`${apiDomain}/comment/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    recipeId,
+                    replyCommentId: null,
+                    content,
+                }),
+            })
 
-        if (res.status === 200) {
-            const responseData = await res.json()
-            return responseData
-        } else {
-            const responseData = await res.json()
-            console.log('Error Response:', responseData)
-            const errorMsg =
-                responseData.error === 'unauthorized'
-                    ? '你還沒有登入呦～請先登入後再來按讚！'
-                    : responseData.error
-            showAlert('Oops...', errorMsg, 'error')
-            return null
+            if (res.status === 200) {
+                const responseData = await res.json()
+                setComment('')
+                onCommentSuccess()
+                return responseData
+            } else {
+                const responseData = await res.json()
+                console.log('Error Response:', responseData)
+                const errorMsg =
+                    responseData.error === 'unauthorized'
+                        ? '你還沒有登入呦～請先登入後再來按讚！'
+                        : responseData.error
+                showAlert('Oops...', errorMsg, 'error')
+                return null
+            }
+        } catch (err: any) {
+            console.log('Error:', err.message)
+            showAlert('Oops...', err.message, 'error')
+        } finally {
+            setIsCommenting(false)
         }
     }
 
     async function handleReplyComment(replyCommentId: string, content: string) {
-        if (comment === '') {
-            showAlert('Oops...', '留言最少要有一個字喔！', 'error')
-            return
-        }
-        const token = Cookies.get('access_token')
+        try {
+            setIsCommenting(true)
+            if (comment === '') {
+                showAlert('Oops...', '留言最少要有一個字喔！', 'error')
+                return
+            }
+            const token = Cookies.get('access_token')
 
-        const res = await fetch(`${apiDomain}/comment/add`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                recipeId,
-                replyCommentId: null,
-                content,
-            }),
-        })
+            const res = await fetch(`${apiDomain}/comment/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    recipeId,
+                    replyCommentId,
+                    content,
+                }),
+            })
 
-        if (res.status === 200) {
-            const responseData = await res.json()
-            setComment('')
-            return responseData
-        } else {
-            const responseData = await res.json()
-            console.log('Error Response:', responseData)
-            const errorMsg =
-                responseData.error === 'unauthorized'
-                    ? '你還沒有登入呦～請先登入後再來按讚！'
-                    : responseData.error
-            showAlert('Oops...', errorMsg, 'error')
-            return null
+            if (res.status === 200) {
+                const responseData = await res.json()
+                setComment('')
+                onCommentSuccess()
+                return responseData
+            } else {
+                const responseData = await res.json()
+                console.log('Error Response:', responseData)
+                const errorMsg =
+                    responseData.error === 'unauthorized'
+                        ? '你還沒有登入呦～請先登入後再來按讚！'
+                        : responseData.error
+                showAlert('Oops...', errorMsg, 'error')
+                return null
+            }
+        } catch (err: any) {
+            console.log('Error:', err.message)
+            showAlert('Oops...', err.message, 'error')
+        } finally {
+            setIsCommenting(false)
         }
     }
 
@@ -120,6 +145,7 @@ export default function Comments({ recipeId, comments }: CommentsProps) {
                     radius="sm"
                     className="text-md"
                     onClick={() => handleComment(comment)}
+                    isLoading={isCommenting}
                 >
                     送出
                 </Button>

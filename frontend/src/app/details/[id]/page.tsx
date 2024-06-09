@@ -112,6 +112,7 @@ export default function Details() {
                         <Comments
                             comments={recipeDetails.comments}
                             recipeId={recipeDetails.recipeId}
+                            onCommentSuccess={fetchRecipeDetails}
                         />
                     </div>
                 )
