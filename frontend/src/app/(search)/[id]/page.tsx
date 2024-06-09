@@ -1,9 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react'
-import RecipeListSquare from '../RecipeListSquare'
+import RecipeListSquare from '../../components/search/RecipeListSquare'
 import Header from '@/app/components/Header'
 import { useSearchParams } from 'next/navigation'
-import RecipeListSkeleton from '../RecipeListSkeleton'
+import RecipeListSkeleton from '../../components/search/RecipeListSkeleton'
 import Image from 'next/image'
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN

@@ -1,10 +1,10 @@
 "use client";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Introduction from "./Introduction";
-import Description from "./Description";
-import Steps from "./Steps";
-import { totalImgUrl, setImgUrl } from "./components/setImgUrl";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
+import Introduction from "@/app/components/post/Introduction";
+import Description from "@/app/components/post/Description";
+import Steps from "@/app/components/post/Steps";
+import { totalImgUrl, setImgUrl } from "@/app/components/post/setImgUrl";
 import {
   Card,
   CardHeader,
@@ -15,6 +15,7 @@ import {
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid"; // 引入 uuid lib
 import Cookies from "js-cookie";
+import useShowAlert from "@/hooks/useShowAlert";
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
 const S3_BUCKET_REGION = process.env.S3_BUCKET_REGION;
@@ -78,6 +79,7 @@ async function postData(postdata: object) {
 }
 
 export default function Post() {
+  const showAlert = useShowAlert();
   const [steps, setSteps] = useState([
     {
       id: uuidv4(),
@@ -129,10 +131,10 @@ export default function Post() {
 
     postData(newValues)
       .then(() => {
-        alert("發佈成功！");
+        showAlert("Success!", "食譜已成功發佈", "success");
       })
       .catch(() => {
-        alert("發佈失敗，請稍後重試");
+        showAlert("Oops...", "發佈食譜失敗，請稍後再試", "error");
       });
   }
 

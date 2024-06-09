@@ -7,7 +7,10 @@ module.exports = {
     const connection = await connectionPromise.getConnection();
     try {
       //transaction
-      const checkResult = await likeRepo.checkLikeById(likeObj.userId);
+      const checkResult = await likeRepo.checkLikeById(
+        likeObj.userId,
+        likeObj.recipeId
+      );
       if (checkResult.length > 0) {
         return null;
       }
@@ -16,6 +19,31 @@ module.exports = {
       await connection.commit();
 
       return insertResult;
+    } catch (error) {
+      await connection.rollback();
+      console.error(error);
+      errorMsg.query(res);
+    } finally {
+      console.log("connection release");
+      connection.release();
+    }
+  },
+  unlike: async (res, likeObj) => {
+    const connection = await connectionPromise.getConnection();
+    try {
+      //transaction
+      const checkResult = await likeRepo.checkLikeById(
+        likeObj.userId,
+        likeObj.recipeId
+      );
+      if (checkResult.length < 0) {
+        return null;
+      }
+      await connection.beginTransaction();
+      const deleteResult = await likeRepo.deleteLike(likeObj, connection);
+      await connection.commit();
+
+      return deleteResult;
     } catch (error) {
       await connection.rollback();
       console.error(error);
