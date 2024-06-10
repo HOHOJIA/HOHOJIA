@@ -1,5 +1,15 @@
 import useShowAlert from '@/hooks/useShowAlert'
-import { Avatar, Button, Textarea } from '@nextui-org/react'
+import {
+    Avatar,
+    Button,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    Textarea,
+    useDisclosure,
+} from '@nextui-org/react'
 import Cookies from 'js-cookie'
 import { useState } from 'react'
 import { BiSolidShare } from 'react-icons/bi'
@@ -28,7 +38,13 @@ export default function Comments({
 }: CommentsProps) {
     const [comment, setComment] = useState('')
     const [isCommenting, setIsCommenting] = useState(false)
+    const [originalComment, setOriginalComment] = useState('')
+    const [originalCommentAuthor, setOriginalCommentAuthor] = useState('')
+    const [replyContent, setReplyContent] = useState('')
+    const [replyCommentId, setReplyCommentId] = useState<string | null>(null)
+    const [isReplying, setIsReplying] = useState(false)
     const showAlert = useShowAlert()
+    const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
     async function handleComment(content: string) {
         try {
@@ -75,10 +91,14 @@ export default function Comments({
         }
     }
 
-    async function handleReplyComment(replyCommentId: string, content: string) {
+    async function handleReplyComment(
+        replyCommentId: string,
+        content: string,
+        onClose: () => void
+    ) {
         try {
-            setIsCommenting(true)
-            if (comment === '') {
+            setIsReplying(true)
+            if (content === '') {
                 showAlert('Oops...', '留言最少要有一個字喔！', 'error')
                 return
             }
@@ -101,6 +121,9 @@ export default function Comments({
                 const responseData = await res.json()
                 setComment('')
                 onCommentSuccess()
+                setReplyContent('')
+                setReplyCommentId(null)
+                onClose()
                 return responseData
             } else {
                 const responseData = await res.json()
@@ -116,8 +139,19 @@ export default function Comments({
             console.log('Error:', err.message)
             showAlert('Oops...', err.message, 'error')
         } finally {
-            setIsCommenting(false)
+            setIsReplying(false)
         }
+    }
+
+    function openReplyModal(
+        commentId: string,
+        comment: string,
+        author: string
+    ) {
+        setOriginalComment(comment)
+        setOriginalCommentAuthor(author)
+        setReplyCommentId(commentId)
+        onOpen()
     }
 
     return (
@@ -187,9 +221,10 @@ export default function Comments({
                                     <BiSolidShare size={25} color="#5C5C5C" />
                                 }
                                 onClick={() =>
-                                    handleReplyComment(
+                                    openReplyModal(
                                         comment.commentId,
-                                        comment.content
+                                        comment.content,
+                                        comment.name
                                     )
                                 }
                             />
@@ -200,6 +235,70 @@ export default function Comments({
                     </div>
                 ))}
             </div>
+
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader>回覆留言</ModalHeader>
+                            <ModalBody className="flex flex-col gap-7">
+                                <div className="flex justify-between items-center">
+                                    <p className="text-md text-gray-600">
+                                        {originalComment}
+                                    </p>
+                                    <div className="flex gap-2.5 items-center">
+                                        <Avatar
+                                            icon={
+                                                <IoPersonSharp
+                                                    size={16}
+                                                    color="white"
+                                                />
+                                            }
+                                            size="sm"
+                                            className="bg-gray-400"
+                                        />
+                                        <p className="text-md text-gray-600">
+                                            {originalCommentAuthor}
+                                        </p>
+                                    </div>
+                                </div>
+                                <Textarea
+                                    placeholder="回覆廚神們的留言吧！"
+                                    variant="bordered"
+                                    classNames={{
+                                        inputWrapper:
+                                            'px-6 py-4 border border-gray-200 shadow-lg',
+                                        input: 'placeholder:text-gray-400 text-sm',
+                                    }}
+                                    minRows={4}
+                                    value={replyContent}
+                                    onChange={(e) =>
+                                        setReplyContent(e.target.value)
+                                    }
+                                />
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button
+                                    color="primary"
+                                    size="md"
+                                    radius="sm"
+                                    className="text-md"
+                                    onClick={() =>
+                                        handleReplyComment(
+                                            replyCommentId!,
+                                            replyContent,
+                                            onClose
+                                        )
+                                    }
+                                    isLoading={isReplying}
+                                >
+                                    送出
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     )
 }
