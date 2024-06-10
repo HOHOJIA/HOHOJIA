@@ -39,7 +39,7 @@ export default function HotRecipe({ recipe }: RecipeProps) {
                 ) : (
                     <Image
                         alt="Card background"
-                        className="max-h-[200px] object-cover w-full rounded-xl "
+                        className="min-h-[200px] max-h-[200px] object-cover w-full rounded-xl "
                         src={recipe.imgUrl}
                         width={270}
                         height={270}
