@@ -21,7 +21,13 @@ export default function ReplyCommentModal({
     isReplying,
 }: any) {
     return (
-        <Modal isOpen={isOpen} onOpenChange={onClose}>
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={() => {
+                onClose()
+                setReplyContent('')
+            }}
+        >
             <ModalContent>
                 <>
                     <ModalHeader>回覆留言</ModalHeader>

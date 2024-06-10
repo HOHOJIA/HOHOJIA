@@ -64,6 +64,16 @@ export default function Comments({
             setLoading(true)
 
             const token = Cookies.get('access_token')
+
+            if (!token) {
+                showAlert(
+                    'Oops...',
+                    '你還沒有登入呦～請先登入後再來留言！',
+                    'error'
+                )
+                return
+            }
+
             const res = await fetch(`${apiDomain}/comment/add`, {
                 method: 'POST',
                 headers: {
@@ -86,6 +96,8 @@ export default function Comments({
                 const errorMsg =
                     responseData.error === 'unauthorized'
                         ? '你還沒有登入呦～請先登入後再來按讚！'
+                        : responseData.error === 'Client error - Invalid token'
+                        ? '登入逾時囉，請重新登入'
                         : responseData.error
                 showAlert('Oops...', errorMsg, 'error')
                 return null
