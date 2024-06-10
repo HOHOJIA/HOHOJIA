@@ -17,7 +17,7 @@ export default function Steps({
       { id: string; imageUrl: string; description: string; order: number }[]
     >
   >;
-  getImgUrl: (file: File) => void;
+  getImgUrl: (file: File, stepid: string) => void;
 }) {
   // 用來達到 steps order 自動更新
   const prevSteps = useRef<
@@ -105,7 +105,7 @@ function EachOfStep({
     event: React.ChangeEvent<HTMLInputElement>,
     id: string
   ) => void;
-  getImgUrl: (file: File) => void;
+  getImgUrl: (file: File, stepid: string) => void;
 }) {
   return (
     <div className="flex flex-wrap mt-5 mb-12 h-28">
@@ -128,7 +128,7 @@ function EachOfStep({
         </div>
 
         {/* dropzone */}
-        <DropZoneImg smallSize={true} getImgUrl={getImgUrl} />
+        <DropZoneImg smallSize={true} getImgUrl={getImgUrl} stepid={id} />
 
         {/* textarea */}
         <Textarea
