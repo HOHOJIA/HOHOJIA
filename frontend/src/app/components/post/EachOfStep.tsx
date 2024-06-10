@@ -6,8 +6,6 @@ import { IoTrash, IoReorderThreeOutline } from 'react-icons/io5'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import DropZoneImg from './DropZoneImg'
-import { useRef } from 'react'
-import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core'
 
 export function EachOfStep({
     order,
