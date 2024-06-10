@@ -126,7 +126,7 @@ export default function Comments({
     }
 
     return (
-        <div className="flex flex-col gap-9 lg:w-7/12 md:w-full">
+        <div className="flex flex-col gap-9 lg:w-7/12 w-full">
             <h4 className="text-lg font-bold underline lg:px-8 decoration-2 underline-offset-8">
                 留言
             </h4>
@@ -138,7 +138,7 @@ export default function Comments({
                     classNames={{
                         inputWrapper:
                             'px-7 py-5 border border-gray-200 shadow-lg',
-                        input: 'placeholder:text-gray-400 text-md',
+                        input: 'placeholder:text-gray-400 text-md w-full',
                     }}
                     minRows={4}
                     value={comment}
@@ -206,7 +206,7 @@ export default function Comments({
                                         )
                                     }
                                 />
-                                <p className="text-sm text-gray-500">
+                                <p className="text-xs lg:text-sm md:text-sm text-gray-500">
                                     {comment.time.slice(0, 16)}
                                 </p>
                             </div>
@@ -218,14 +218,12 @@ export default function Comments({
                                     (reply: any, replyIndex: number) => (
                                         <div
                                             key={replyIndex}
-                                            className="flex items-stretch justify-between pl-6 border-l-2 border-gray-200"
+                                            className="flex items-stretch justify-between pl-5 border-l-2 border-gray-200"
                                         >
                                             <div className="flex flex-col justify-between gap-12">
-                                                <div className="flex flex-col gap-2.5">
-                                                    <p className="text-md text-gray-800">
-                                                        {reply.content}
-                                                    </p>
-                                                </div>
+                                                <p className="text-md text-gray-800">
+                                                    {reply.content}
+                                                </p>
 
                                                 <div className="flex gap-2.5 items-center grow">
                                                     <Avatar
@@ -245,7 +243,7 @@ export default function Comments({
                                             </div>
 
                                             <div className="flex items-end">
-                                                <p className="text-sm text-gray-500">
+                                                <p className="text-xs lg:text-sm md:text-sm text-gray-500 text-nowrap">
                                                     {reply.time.slice(0, 16)}
                                                 </p>
                                             </div>
