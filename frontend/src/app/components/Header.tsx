@@ -15,7 +15,7 @@ import {
 } from '@nextui-org/react'
 import { FaSearch } from 'react-icons/fa'
 import { FaQuestion } from 'react-icons/fa6'
-import { IoPersonSharp } from 'react-icons/io5'
+import { IoLogOut, IoPersonSharp } from 'react-icons/io5'
 import { TbBellRinging2Filled } from 'react-icons/tb'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -48,6 +48,11 @@ export default function Header() {
             const query = search ? `?${search}` : ''
             router.push(`/search${query}`)
         }
+    }
+
+    function handleLogout() {
+        Cookies.remove('access_token')
+        setIsLogined(false)
     }
 
     return (
@@ -175,6 +180,14 @@ export default function Header() {
                             size="sm"
                             radius="full"
                             startContent={<IoPersonSharp size={20} />}
+                        />
+                        <Button
+                            color="primary"
+                            isIconOnly
+                            size="sm"
+                            radius="full"
+                            startContent={<IoLogOut size={20} />}
+                            onClick={handleLogout}
                         />
                     </>
                 )}
