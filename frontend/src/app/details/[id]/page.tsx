@@ -55,23 +55,23 @@ export default function Details() {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    useEffect(() => {
-        const fetchRecipeDetails = async () => {
-            if (!recipeId || recipeDetails) return
-            try {
-                const response = await fetch(`${apiDomain}/recipe/${recipeId}`)
-                if (!response.ok) {
-                    throw new Error('Failed to fetch recipe details')
-                }
-                const res = await response.json()
-                setRecipeDetails(res.data)
-            } catch (err: any) {
-                setError(err.message)
-            } finally {
-                setIsLoading(false)
+    const fetchRecipeDetails = async () => {
+        if (!recipeId) return
+        try {
+            const response = await fetch(`${apiDomain}/recipe/${recipeId}`)
+            if (!response.ok) {
+                throw new Error('Failed to fetch recipe details')
             }
+            const res = await response.json()
+            setRecipeDetails(res.data)
+        } catch (err: any) {
+            setError(err.message)
+        } finally {
+            setIsLoading(false)
         }
+    }
 
+    useEffect(() => {
         if (recipeId && !recipeDetails) {
             fetchRecipeDetails()
         }
@@ -94,8 +94,9 @@ export default function Details() {
                             description={recipeDetails.description}
                             totalLike={recipeDetails.totalLike}
                             recipeId={recipeDetails.recipeId}
+                            onLikeSuccess={fetchRecipeDetails}
                         />
-                        <div className="flex flex-col w-full gap-10 lg:justify-between lg:flex-row lg:gap-0">
+                        <div className="flex flex-col w-full gap-10 lg:justify-between lg:flex-row lg:gap-0 lg:items-start">
                             <Ingredients
                                 quantity={recipeDetails.quantity}
                                 cookTime={recipeDetails.cookTime}
@@ -111,6 +112,7 @@ export default function Details() {
                         <Comments
                             comments={recipeDetails.comments}
                             recipeId={recipeDetails.recipeId}
+                            onCommentSuccess={fetchRecipeDetails}
                         />
                     </div>
                 )

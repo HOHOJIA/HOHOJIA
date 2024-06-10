@@ -1,3 +1,7 @@
+import { Textarea } from '@nextui-org/react'
+import IconButton from './IconButton'
+import { FaPlus } from 'react-icons/fa6'
+import { IoTrash, IoReorderThreeOutline } from 'react-icons/io5'
 import { useEffect, useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid' // 引入 uuid lib
 import { EachOfStep } from './EachOfStep'
@@ -7,12 +11,15 @@ export default function Steps({
     setSteps,
     getImgUrl,
 }: {
-    steps: { id: string; imgUrl: string; description: string; order: number }[]
-    setSteps: React.Dispatch<React.SetStateAction<{ id: string; imgUrl: string; description: string; order: number }[]>>
+    steps: { id: string; imageUrl: string; description: string; order: number }[]
+    setSteps: React.Dispatch<
+        React.SetStateAction<{ id: string; imageUrl: string; description: string; order: number }[]>
+    >
     getImgUrl: (file: File) => void
 }) {
     // 用來達到 steps order 自動更新
-    const prevSteps = useRef<{ id: string; imgUrl: string; description: string; order: number }[]>([])
+    const prevSteps = useRef<{ id: string; imageUrl: string; description: string; order: number }[]>([])
+
     useEffect(() => {
         // 檢查目前的 steps 和上一次的 steps 是否相同
         const isSameSteps = JSON.stringify(steps) === JSON.stringify(prevSteps.current)
@@ -31,7 +38,7 @@ export default function Steps({
     function handleAddStep() {
         const newStep = {
             id: uuidv4(),
-            imgUrl: '',
+            imageUrl: '',
             description: '',
             order: steps.length + 1,
         }
@@ -48,6 +55,8 @@ export default function Steps({
         const newStep = steps.map((step) => (step.id === id ? { ...step, description: event.target.value } : step))
         setSteps(newStep)
     }
+
+    // console.log(steps);
 
     return (
         <div className="w-full">
