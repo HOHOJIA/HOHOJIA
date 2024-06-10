@@ -243,6 +243,9 @@ function SignupInfo({
     signupData(values)
       .then(() => {
         showAlert("Success!", "註冊成功！", "success");
+        setTimeout(() => {
+          window.location.href = "/login"; // login success, redirect to home page
+        }, 1000);
       })
       .catch((error) => {
         showAlert("Oops...", `註冊失敗，${error}`, "error");
