@@ -172,7 +172,9 @@ function LoginInfo({
           expires: 7,
         });
         showAlert("Success!", "登入成功！", "success");
-        window.location.href = "/"; // login success, redirect to home page
+        setTimeout(() => {
+          window.location.href = "/"; // login success, redirect to home page
+        }, 2000);
       })
       .catch((error) => {
         showAlert("Oops...", `登入失敗，${error}`, "error");
