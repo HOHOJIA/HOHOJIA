@@ -31,7 +31,7 @@ export default function Ingredients({
                 </div>
             </div>
 
-            <Card className="px-6 pt-2.5 lg:pr-12 pb-5 lg:w-8/12">
+            <Card className="px-6 pt-2.5 lg:pr-10 pb-5 lg:w-9/12">
                 <CardHeader className="text-lg font-bold underline decoration-2 underline-offset-8">
                     食材
                 </CardHeader>
@@ -41,7 +41,7 @@ export default function Ingredients({
                             .slice(0, ingredients.length / 2)
                             .map((ingredient, index) => (
                                 <div
-                                    className="flex justify-between lg:gap-32"
+                                    className="flex justify-between lg:gap-28"
                                     key={index}
                                 >
                                     <p className="text-gray-600">
@@ -59,7 +59,7 @@ export default function Ingredients({
                             .slice(ingredients.length / 2)
                             .map((ingredient, index) => (
                                 <div
-                                    className="flex justify-between gap-32"
+                                    className="flex justify-between gap-28"
                                     key={index}
                                 >
                                     <p className="text-gray-600">

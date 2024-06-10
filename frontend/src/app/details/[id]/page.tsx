@@ -96,7 +96,7 @@ export default function Details() {
                             recipeId={recipeDetails.recipeId}
                             onLikeSuccess={fetchRecipeDetails}
                         />
-                        <div className="flex flex-col w-full gap-10 lg:justify-between lg:flex-row lg:gap-0">
+                        <div className="flex flex-col w-full gap-10 lg:justify-between lg:flex-row lg:gap-0 lg:items-start">
                             <Ingredients
                                 quantity={recipeDetails.quantity}
                                 cookTime={recipeDetails.cookTime}
