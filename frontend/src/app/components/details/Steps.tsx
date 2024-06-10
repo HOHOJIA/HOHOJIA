@@ -32,16 +32,19 @@ export default function Steps({ steps }: StepsProps) {
 
                     <div className="absolute left-0 right-0 z-0 hidden w-full transform -translate-y-1/2 border-gray-200 border-dashed top-1/2 border-t-1 lg:block" />
 
-                    <Image
-                        className="z-10 object-cover w-full h-auto lg:w-1/6 rounded-2xl md:w-4/5 md:self-center"
-                        src={
-                            step.imageUrl || '/images/details_no_steps_img.webp'
-                        }
-                        alt="step"
-                        width={0}
-                        height={0}
-                        sizes="100vw"
-                    />
+                    <div className="relative w-full min-h-48 lg:min-h-32 md:min-h-72 lg:w-1/6 md:w-4/5 md:self-center aspect-w-16 aspect-h-9">
+                        <Image
+                            className="z-10 object-cover w-full h-full rounded-2xl"
+                            src={
+                                step.imageUrl ||
+                                '/images/details_no_steps_img.webp'
+                            }
+                            alt="step"
+                            layout="fill"
+                            objectFit="cover"
+                            sizes="100vw"
+                        />
+                    </div>
                 </div>
             ))}
         </div>

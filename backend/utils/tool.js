@@ -1,47 +1,10 @@
-const multer = require("multer");
 const bcrypt = require("bcrypt");
 const CryptoJS = require("crypto-js");
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
 require("dotenv").config({
     path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
   });
 module.exports = {
-  uploadPicture: () => {
-    const upload = multer({
-      storage: multer.memoryStorage(),
-    });
-    return upload;
-  },
-  /**
-   * upload the file from client to the S3
-   * @param {Object} file - The file from client
-   * @returns {string}
-   */
-  // uploadToS3: async (file) => {
-  //     const {
-  //         AWS_ACCESS_KEY_ID,
-  //         AWS_SECRET_ACCESS_KEY,
-  //         S3_BUCKET_REGION,
-  //         BUCKET_NAME,
-  //     } = process.env;
-  //     const key = Date.now().toString() + '-' + file.originalname;
-  //     const s3Client = new S3Client({
-  //         region: S3_BUCKET_REGION,
-  //         credentials: {
-  //             accessKeyId: AWS_ACCESS_KEY_ID,
-  //             secretAccessKey: AWS_SECRET_ACCESS_KEY,
-  //         },
-  //     });
-  //     const command = new PutObjectCommand({
-  //         Bucket: BUCKET_NAME,
-  //         Key: key,
-  //         Body: file.buffer,
-  //         ContentType: file.mimetype,
-  //     });
-  //     await s3Client.send(command);
-  //     return `https://${BUCKET_NAME}.s3.${S3_BUCKET_REGION}.amazonaws.com/${key}`;
-  // },
   checkEmail: async (email) => {
     const emailRegex =
       /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
