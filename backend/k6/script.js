@@ -1,3 +1,4 @@
+// 嘻嘻嘻呵呵呵
 import http from "k6/http";
 import { check, sleep } from "k6";
 
