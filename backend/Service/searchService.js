@@ -13,8 +13,7 @@ module.exports = {
       if (type === "title") {
         searchResult = await searchRepo.searchByTitle(keyword);
         try {
-          redisClient.setEx(keyword, 3600, JSON.stringify(searchResult));
-          console.log("存入Redis" + keyword);
+          await redisClient.setEx(keyword, 3600, JSON.stringify(searchResult));
         } catch (err) {
           console.error("Redis setEx error:", err);
         }
