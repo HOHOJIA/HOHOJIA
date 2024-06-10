@@ -12,7 +12,7 @@ import {
   Textarea,
   Button,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid"; // 引入 uuid lib
 import Cookies from "js-cookie";
 import useShowAlert from "@/hooks/useShowAlert";
@@ -93,6 +93,22 @@ export default function Post() {
   ]);
   // 創建一個狀態來保存選中的標籤
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    const checkLogin = async () => {
+      const token = Cookies.get("access_token");
+      if (!token) {
+        // 按下確認後導向登入頁面
+        showAlert("Oops...", "請先登入才能發佈食譜", "error").then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "/login";
+          }
+        });
+      }
+    };
+
+    checkLogin();
+  }, [showAlert]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     // 1. form submit 後不會 reload
