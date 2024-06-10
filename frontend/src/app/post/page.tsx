@@ -18,8 +18,8 @@ import Cookies from "js-cookie";
 import useShowAlert from "@/hooks/useShowAlert";
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
-const S3_BUCKET_REGION = process.env.S3_BUCKET_REGION;
-const BUCKET_NAME = process.env.BUCKET_NAME;
+const S3_BUCKET_REGION = process.env.NEXT_PUBLIC_S3_BUCKET_REGION;
+const BUCKET_NAME = process.env.NEXT_PUBLIC_BUCKET_NAME;
 
 async function getImgUrl(file: File) {
   const queryParams = new URLSearchParams({ filename: file.name });
@@ -42,10 +42,10 @@ async function getImgUrl(file: File) {
 
     if (uploadRes.status === 200) {
       console.log("File successfully uploaded");
-      const imageUrl = `https://${BUCKET_NAME}.s3.${S3_BUCKET_REGION}.amazonaws.com/${encodeURIComponent(
+      const imgUrl = `https://${BUCKET_NAME}.s3.${S3_BUCKET_REGION}.amazonaws.com/${encodeURIComponent(
         file.name
       )}`;
-      setImgUrl(imageUrl);
+      setImgUrl(imgUrl);
     } else {
       console.error("Upload failed");
     }
@@ -83,7 +83,7 @@ export default function Post() {
   const [steps, setSteps] = useState([
     {
       id: uuidv4(),
-      imgUrl: "",
+      imageUrl: "",
       description: "",
       order: 1,
     },
@@ -93,10 +93,10 @@ export default function Post() {
   ]);
   // 創建一個狀態來保存選中的標籤
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const token = Cookies.get("access_token");
 
   useEffect(() => {
     const checkLogin = async () => {
-      const token = Cookies.get("access_token");
       if (!token) {
         // 按下確認後導向登入頁面
         showAlert("Oops...", "請先登入才能發佈食譜", "error").then((result) => {
@@ -117,10 +117,18 @@ export default function Post() {
     // 2. 取得 form data
     const formData = new FormData(event.currentTarget);
 
-    // 3. 將剩餘資料加入 formData
-    formData.append("userId", "1");
+    // 3. 將 user id 加入 formData
+    if (token) {
+      formData.append("userId", token);
+    } else {
+      // 處理 token 遺失的情況
+      showAlert("Oops...", "無法獲取用戶信息，請重新登入", "error");
+      return;
+    }
+
+    // 3. 將圖片加入 formData
     formData.append(
-      "imgUrl",
+      "imageUrl",
       totalImgUrl.length > 0
         ? totalImgUrl[0]
         : "https://images.dog.ceo/breeds/appenzeller/n02107908_3450.jpg"
@@ -134,7 +142,7 @@ export default function Post() {
       const imageUrl = totalImgUrl[step.order]
         ? totalImgUrl[step.order]
         : "https://images.dog.ceo/breeds/appenzeller/n02107908_3450.jpg";
-      return { ...step, imgUrl: imageUrl };
+      return { ...step, imageUrl: imageUrl };
     });
 
     const newValues = {
@@ -148,6 +156,9 @@ export default function Post() {
     postData(newValues)
       .then(() => {
         showAlert("Success!", "食譜已成功發佈", "success");
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
       })
       .catch(() => {
         showAlert("Oops...", "發佈食譜失敗，請稍後再試", "error");
