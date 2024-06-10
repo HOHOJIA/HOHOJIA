@@ -33,16 +33,21 @@ export function EachOfStep({
     }
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="flex flex-wrap mt-5 mb-12 h-28">
+        <div ref={setNodeRef} {...attributes} style={style} className="flex flex-wrap mt-5 mb-12 h-28">
             <div className="flex items-end justify-between w-full mb-1 sm:items-center sm:justify-end">
                 <div className="flex justify-center w-1/6 text-2xl font-medium bg-yellow-300 rounded-lg sm:hidden">
                     {order}
                 </div>
-                <div>
-                    <IconButton icon={FaPlus} size="1.2rem" onClick={onClickAdd} />
-                    <IconButton icon={IoTrash} size="1.2rem" onClick={onClickDel} />
-
-                    <IconButton icon={IoReorderThreeOutline} size="1.2rem" />
+                <div className="flex flex-row">
+                    <div>
+                        <IconButton icon={FaPlus} size="1.2rem" onClick={onClickAdd} />
+                    </div>
+                    <div>
+                        <IconButton icon={IoTrash} size="1.2rem" onClick={onClickDel} />
+                    </div>
+                    <div {...listeners} className="w-1/3">
+                        <IconButton icon={IoReorderThreeOutline} size="1.2rem" />
+                    </div>
                 </div>
             </div>
 

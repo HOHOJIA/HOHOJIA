@@ -1,11 +1,8 @@
-import { Textarea } from '@nextui-org/react'
-import IconButton from './IconButton'
-import { FaPlus } from 'react-icons/fa6'
-import { IoTrash, IoReorderThreeOutline } from 'react-icons/io5'
 import { useEffect, useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid' // 引入 uuid lib
 import { EachOfStep } from './EachOfStep'
-
+import { DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors, closestCorners } from '@dnd-kit/core'
+import { arrayMove, sortableKeyboardCoordinates, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 export default function Steps({
     steps,
     setSteps,
@@ -56,23 +53,51 @@ export default function Steps({
         setSteps(newStep)
     }
 
-    // console.log(steps);
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    )
 
+    const handleDragEnd = (event: any) => {
+        const { active, over } = event
+
+        if (!over) {
+            return
+        }
+
+        if (active.id !== over.id) {
+            setSteps((items) => {
+                const oldIndex = items.findIndex((item) => item.id === active.id)
+                const newIndex = items.findIndex((item) => item.id === over.id)
+                const newItems = arrayMove(items, oldIndex, newIndex)
+                return newItems.map((step, index) => ({
+                    ...step,
+                    order: index + 1,
+                }))
+            })
+        }
+    }
     return (
         <div className="w-full">
             <p className="my-4 text-lg font-bold">步驟</p>
-            {steps.map((step, index) => (
-                <EachOfStep
-                    order={step.order}
-                    id={step.id}
-                    key={step.id}
-                    onClickAdd={handleAddStep}
-                    onClickDel={() => handleDelStep(step.id)}
-                    description={step.description}
-                    onChangeDescription={handleChangeDescription}
-                    getImgUrl={getImgUrl}
-                />
-            ))}
+            <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+                <SortableContext items={steps} strategy={verticalListSortingStrategy}>
+                    {steps.map((step) => (
+                        <EachOfStep
+                            order={step.order}
+                            id={step.id}
+                            key={step.id}
+                            onClickAdd={handleAddStep}
+                            onClickDel={() => handleDelStep(step.id)}
+                            description={step.description}
+                            onChangeDescription={handleChangeDescription}
+                            getImgUrl={getImgUrl}
+                        />
+                    ))}{' '}
+                </SortableContext>
+            </DndContext>
         </div>
     )
 }
