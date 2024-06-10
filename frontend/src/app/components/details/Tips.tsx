@@ -9,9 +9,15 @@ export default function Tips({ tip }: TipsProps) {
                 廚神秘訣
             </h4>
 
-            <div className="pl-6 py-2.5 border-l-2 border-primary">
-                <p>{tip}</p>
-            </div>
+            {tip ? (
+                <div className="pl-6 py-2.5 border-l-2 border-primary">
+                    <p>{tip}</p>
+                </div>
+            ) : (
+                <p className="pl-7 text-gray-400">
+                    這位廚神很神秘，沒有分享他的秘訣...
+                </p>
+            )}
         </div>
     )
 }

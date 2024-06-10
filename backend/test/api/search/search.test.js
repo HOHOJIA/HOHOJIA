@@ -3,6 +3,8 @@ const app = require("../../../app");
 const executeSql = require("../../testUtils/testUtils").executeSql;
 const connectionPromise = require("../../../config/db").connectionPromise;
 const path = require("path");
+// mock Redis
+jest.mock("redis", () => jest.requireActual("redis-mock"));
 
 describe("GET /api/1.0/search?title=布雷", () => {
   beforeAll(async () => {
