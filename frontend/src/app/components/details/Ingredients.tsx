@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Divider } from '@nextui-org/react'
+import { Card, CardBody, CardHeader } from '@nextui-org/react'
 
 interface IngredientsProps {
     quantity: number
@@ -47,19 +47,19 @@ export default function Ingredients({
                                     <p className="text-gray-600">
                                         {ingredient.name}
                                     </p>
-                                    <p className="font-bold text-gray-600">
+                                    <p className="font-bold text-gray-600 text-sm lg:text-md md-text-md">
                                         {ingredient.size}
                                     </p>
                                 </div>
                             ))}
                     </div>
-                    <Divider orientation="vertical" />
+                    <div className="border-r-1 border-gray-300" />
                     <div className="flex flex-col gap-4">
                         {ingredients
                             .slice(ingredients.length / 2)
                             .map((ingredient, index) => (
                                 <div
-                                    className="flex justify-between gap-28"
+                                    className="flex justify-between lg:gap-28"
                                     key={index}
                                 >
                                     <p className="text-gray-600">
