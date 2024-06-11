@@ -20,12 +20,12 @@ export default function HotRecipe({ recipe }: RecipeProps) {
     return (
         <Card
             onPress={handleClick}
-            className="w-full py-4 min-w-72 sm:min-w-24 md:min-w-24 lg:min-w-56 xl:min-w-72 2xl:min-w-[360px]"
+            className="w-full py-4 min-w-72 sm:min-w-24 md:min-w-24 lg:min-w-56 xl:min-w-72 2xl:min-w-[360px] max-w-72 sm:max-w-24 md:max-w-24 lg:max-w-56 xl:max-w-72 2xl:max-w-[360px]"
             isPressable
             shadow="sm"
         >
             <CardHeader className="flex-col items-start px-4 pt-2 pb-0">
-                <h4 className="font-bold text-large">{recipe.title}</h4>
+                <h4 className="font-bold text-large line-clamp-1">{recipe.title}</h4>
             </CardHeader>
             <CardBody className="gap-2 py-2 overflow-visible">
                 {recipe.imgUrl === null ? (
