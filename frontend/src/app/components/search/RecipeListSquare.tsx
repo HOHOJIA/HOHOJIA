@@ -17,15 +17,9 @@ export default function RecipeListSquare(props: { recipe: any }) {
         router.push(`/details/${recipe.recipeId}`)
     }
     return (
-        <Card
-            isPressable
-            onPress={handleClick}
-            isBlurred
-            className="w-full border-none bg-background/60 dark:bg-default-100/50 "
-            shadow="sm"
-        >
-            <CardBody className="grid items-start justify-start grid-cols-6 gap-6 md:grid-cols-12 md:gap-6">
-                <div className="relative col-span-6 md:col-span-4">
+        <Card isPressable onPress={handleClick} className="w-full border-none bg-background/60 md:pr-4" shadow="sm">
+            <CardBody className="w-full items-center justify-center md:items-start md:justify-start flex md:flex-row gap-6 flex-col md:gap-6">
+                <div className="w-full md:w-2/6 items-center">
                     {recipe.imgUrl === null ? (
                         <div className="h-[200px] text-center flex-col items-center justify-center flex w-full rounded-xl text-gray-500 bg-gray-200 ">
                             美味食物還在製作中
@@ -37,20 +31,20 @@ export default function RecipeListSquare(props: { recipe: any }) {
                     ) : (
                         <Image
                             alt="Album cover"
-                            className="object-cover"
+                            className="min-w-full object-cover h-[200px] "
                             height={200}
-                            shadow="md"
+                            width={300}
+                            shadow="sm"
                             src={recipe.imgUrl}
-                            width="100%"
                         />
                     )}
                 </div>
 
-                <div className="flex flex-col justify-between h-full col-span-6 md:col-span-8">
+                <div className="w-full md:w-4/6 flex flex-col justify-between h-full ">
                     <div className="flex items-start justify-between">
                         <div className="flex flex-col gap-0">
-                            <h1 className="mt-2 font-bold text-large">{recipe.title}</h1>
-                            <p className="mt-2 text-small text-foreground/80">{ingredientsString}</p>
+                            <h1 className="mt-2 font-bold text-large line-clamp-1">{recipe.title}</h1>
+                            <p className="mt-2 text-small text-foreground/80 line-clamp-2">{ingredientsString}</p>
                         </div>
                     </div>
 
