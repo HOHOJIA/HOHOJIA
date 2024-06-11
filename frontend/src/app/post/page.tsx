@@ -21,7 +21,7 @@ const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
 const S3_BUCKET_REGION = process.env.NEXT_PUBLIC_S3_BUCKET_REGION;
 const BUCKET_NAME = process.env.NEXT_PUBLIC_BUCKET_NAME;
 
-async function getImgUrl(file: File) {
+async function getImgUrl(file: File, stepid: string) {
   const queryParams = new URLSearchParams({ filename: file.name });
 
   try {
@@ -45,7 +45,7 @@ async function getImgUrl(file: File) {
       const imgUrl = `https://${BUCKET_NAME}.s3.${S3_BUCKET_REGION}.amazonaws.com/${encodeURIComponent(
         file.name
       )}`;
-      setImgUrl(imgUrl);
+      setImgUrl(imgUrl, stepid);
     } else {
       console.error("Upload failed");
     }
@@ -127,22 +127,19 @@ export default function Post() {
     }
 
     // 3. 將圖片加入 formData
-    formData.append(
-      "imageUrl",
-      totalImgUrl.length > 0
-        ? totalImgUrl[0]
-        : "https://images.dog.ceo/breeds/appenzeller/n02107908_3450.jpg"
-    );
+    totalImgUrl.forEach((imgObj) => {
+      if (imgObj.Imgid === "Banner") {
+        formData.append("imageUrl", imgObj.ImgUrl);
+      }
+    });
 
     // 4. 將 formData 轉為 object
     const values = Object.fromEntries(formData.entries());
 
     // 將圖片加入到 steps 中
     const updatedSteps = steps.map((step) => {
-      const imageUrl = totalImgUrl[step.order]
-        ? totalImgUrl[step.order]
-        : "https://images.dog.ceo/breeds/appenzeller/n02107908_3450.jpg";
-      return { ...step, imageUrl: imageUrl };
+      const stepImage = totalImgUrl.find((imgObj) => imgObj.Imgid === step.id);
+      return { ...step, imageUrl: stepImage?.ImgUrl };
     });
 
     const newValues = {
@@ -155,10 +152,11 @@ export default function Post() {
 
     postData(newValues)
       .then(() => {
-        showAlert("Success!", "食譜已成功發佈", "success");
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 2000);
+        showAlert("Success!", "食譜已成功發佈", "success").then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "/";
+          }
+        });
       })
       .catch(() => {
         showAlert("Oops...", "發佈食譜失敗，請稍後再試", "error");

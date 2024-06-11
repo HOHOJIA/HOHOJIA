@@ -9,9 +9,11 @@ interface ICustomFile extends File {
 export default function DropZoneImg({
   smallSize,
   getImgUrl,
+  stepid,
 }: {
   smallSize: boolean;
-  getImgUrl: (file: File) => void;
+  getImgUrl: (file: File, stepid: string) => void;
+  stepid?: string;
 }) {
   const [files, setFiles] = React.useState<ICustomFile[]>([]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -25,7 +27,11 @@ export default function DropZoneImg({
             preview: URL.createObjectURL(file),
           });
           console.log(file);
-          getImgUrl(file); // 呼叫 getImgUrl 函數並將文件傳遞給它
+          if (stepid) {
+            getImgUrl(file, stepid); // 呼叫 getImgUrl 函數並將文件傳遞給它
+          } else {
+            getImgUrl(file, "Banner");
+          }
           return customFile;
         })
       );
