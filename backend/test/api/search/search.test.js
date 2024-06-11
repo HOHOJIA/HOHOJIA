@@ -43,6 +43,7 @@ describe("GET /api/1.0/search?title=布雷", () => {
   it("should not find any recipes and return an error message", async () => {
     const res = await request(app).get("/api/1.0/search?title=芒果");
     expect(res.statusCode).toBe(404);
+    console.error(res.body.error);
     expect(res.body.error).toBe("No recipes found");
   });
 });

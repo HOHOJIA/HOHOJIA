@@ -19,6 +19,7 @@ const redisClient = redis.createClient({
 (async () => {
   try {
     await redisClient.connect();
+    console.log(await redisClient.ping());
   } catch (err) {
     console.error("Error connecting to Redis", err);
   }
@@ -26,7 +27,7 @@ const redisClient = redis.createClient({
 
 // Middleware to check the cache before fetching data
 const cacheTitle = async (req, res, next) => {
-  const { title } = req.query;
+  const { title, tag } = req.query;
   if (title) {
     try {
       const data = await redisClient.get(title);
@@ -38,8 +39,18 @@ const cacheTitle = async (req, res, next) => {
       console.error("Redis get error:", err);
       return res.status(500).send(err);
     }
+  } else if (tag) {
+    try {
+      const data = await redisClient.get(tag);
+      if (data) {
+        return res.send(JSON.parse(data));
+      }
+      next();
+    } catch (err) {
+      console.error("Redis get error:", err);
+      return res.status(500).send(err);
+    }
   }
-  next();
 };
 module.exports = {
   redisClient,
