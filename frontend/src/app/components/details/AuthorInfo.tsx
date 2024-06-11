@@ -55,7 +55,7 @@ export default function AuthorInfo({ tags, author }: AuthorInfoProps) {
                             className="bg-gray-400"
                         />
                         <div className="flex flex-col">
-                            <h4 className="font-bold text-md lg:text-lg">
+                            <h4 className="font-bold text-md lg:text-lg text-nowrap">
                                 {author.name}
                             </h4>
                             {/* author details for mobile */}

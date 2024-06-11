@@ -1,6 +1,7 @@
 import {
     Avatar,
     Button,
+    Divider,
     Modal,
     ModalBody,
     ModalContent,
@@ -32,10 +33,7 @@ export default function ReplyCommentModal({
                 <>
                     <ModalHeader>回覆留言</ModalHeader>
                     <ModalBody className="flex flex-col gap-7">
-                        <div className="flex justify-between items-center">
-                            <p className="text-md text-gray-600">
-                                {originalComment}
-                            </p>
+                        <div className="flex flex-col gap-3.5">
                             <div className="flex gap-2.5 items-center">
                                 <Avatar
                                     icon={
@@ -47,13 +45,16 @@ export default function ReplyCommentModal({
                                     size="sm"
                                     className="bg-gray-400"
                                 />
-                                <p className="text-md text-gray-600">
+                                <p className="text-md text-gray-600 text-nowrap">
                                     {originalCommentAuthor}
                                 </p>
                             </div>
+                            <p className="text-md text-gray-600">
+                                {originalComment}
+                            </p>
                         </div>
                         <Textarea
-                            placeholder="回覆廚神們的留言吧！"
+                            placeholder={`回覆${originalCommentAuthor}！`}
                             variant="bordered"
                             classNames={{
                                 inputWrapper:
