@@ -69,7 +69,7 @@ export default function NewRecipe({ recipe }: RecipeProps) {
                     />
                 )}
                 <CardFooter>
-                    <h5 className="font-bold line-clamp-2">{recipe?.title}</h5>
+                    <h5 className="font-bold line-clamp-1">{recipe?.title}</h5>
                 </CardFooter>
             </Card>
         </motion.div>
