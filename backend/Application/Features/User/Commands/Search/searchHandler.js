@@ -1,6 +1,7 @@
 const errorMsg = require("../../../../../utils/errorMsg");
 const searchService = require("../../../../../Service/searchService");
 const searchRes = require("./searchRes");
+const redisClient = require("../../../../../utils/cache");
 
 module.exports = {
   handle: async (res, type, keyword) => {

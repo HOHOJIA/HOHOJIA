@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Divider } from '@nextui-org/react'
+import { Card, CardBody, CardHeader } from '@nextui-org/react'
 
 interface IngredientsProps {
     quantity: number
@@ -31,35 +31,35 @@ export default function Ingredients({
                 </div>
             </div>
 
-            <Card className="px-6 pt-2.5 lg:pr-10 pb-5 lg:w-9/12">
+            <Card className="px-6 pt-2.5 lg:pr-8 pb-5 lg:w-fit">
                 <CardHeader className="text-lg font-bold underline decoration-2 underline-offset-8">
                     食材
                 </CardHeader>
-                <CardBody className="flex flex-col justify-between gap-2 lg:flex-row lg:gap-0">
+                <CardBody className="flex flex-col justify-between gap-2 lg:flex-row lg:gap-11">
                     <div className="flex flex-col gap-4">
                         {ingredients
                             .slice(0, ingredients.length / 2)
                             .map((ingredient, index) => (
                                 <div
-                                    className="flex justify-between lg:gap-28"
+                                    className="flex justify-between lg:gap-24"
                                     key={index}
                                 >
                                     <p className="text-gray-600">
                                         {ingredient.name}
                                     </p>
-                                    <p className="font-bold text-gray-600">
+                                    <p className="font-bold text-gray-600 text-sm lg:text-md md-text-md">
                                         {ingredient.size}
                                     </p>
                                 </div>
                             ))}
                     </div>
-                    <Divider orientation="vertical" />
+                    <div className="border-r-1 border-gray-300" />
                     <div className="flex flex-col gap-4">
                         {ingredients
                             .slice(ingredients.length / 2)
                             .map((ingredient, index) => (
                                 <div
-                                    className="flex justify-between gap-28"
+                                    className="flex justify-between lg:gap-24"
                                     key={index}
                                 >
                                     <p className="text-gray-600">

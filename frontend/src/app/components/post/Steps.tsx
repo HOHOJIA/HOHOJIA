@@ -1,11 +1,20 @@
-import { Textarea } from "@nextui-org/react";
-import IconButton from "./IconButton";
-import { FaPlus } from "react-icons/fa6";
-import { IoTrash, IoReorderThreeOutline } from "react-icons/io5";
 import { useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid"; // 引入 uuid lib
-import DropZoneImg from "./DropZoneImg";
-
+import { EachOfStep } from "./EachOfStep";
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCorners,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  sortableKeyboardCoordinates,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 export default function Steps({
   steps,
   setSteps,
@@ -17,7 +26,7 @@ export default function Steps({
       { id: string; imageUrl: string; description: string; order: number }[]
     >
   >;
-  getImgUrl: (file: File) => void;
+  getImgUrl: (file: File, stepid: string) => void;
 }) {
   // 用來達到 steps order 自動更新
   const prevSteps = useRef<
@@ -66,80 +75,54 @@ export default function Steps({
     setSteps(newStep);
   }
 
-  // console.log(steps);
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+    if (!over) {
+      return;
+    }
+
+    if (active.id !== over.id) {
+      setSteps((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        const newItems = arrayMove(items, oldIndex, newIndex);
+        return newItems.map((step, index) => ({
+          ...step,
+          order: index + 1,
+        }));
+      });
+    }
+  };
   return (
     <div className="w-full">
       <p className="my-4 text-lg font-bold">步驟</p>
-      {steps.map((step, index) => (
-        <EachOfStep
-          order={step.order}
-          id={step.id}
-          key={step.id}
-          onClickAdd={handleAddStep}
-          onClickDel={() => handleDelStep(step.id)}
-          description={step.description}
-          onChangeDescription={handleChangeDescription}
-          getImgUrl={getImgUrl}
-        />
-      ))}
-    </div>
-  );
-}
-
-function EachOfStep({
-  order,
-  id,
-  onClickAdd,
-  onClickDel,
-  description,
-  onChangeDescription,
-  getImgUrl,
-}: {
-  order: number;
-  id: string;
-  onClickAdd: () => void;
-  onClickDel: () => void;
-  description: string;
-  onChangeDescription: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    id: string
-  ) => void;
-  getImgUrl: (file: File) => void;
-}) {
-  return (
-    <div className="flex flex-wrap mt-5 mb-12 h-28">
-      {/* icon */}
-      <div className="flex items-end justify-between w-full mb-1 sm:items-center sm:justify-end">
-        <div className="flex justify-center w-1/6 text-2xl font-medium bg-yellow-300 rounded-lg sm:hidden">
-          {order}
-        </div>
-        <div>
-          <IconButton icon={FaPlus} size="1.2rem" onClick={onClickAdd} />
-          <IconButton icon={IoTrash} size="1.2rem" onClick={onClickDel} />
-          <IconButton icon={IoReorderThreeOutline} size="1.2rem" />
-        </div>
-      </div>
-
-      <div className="flex w-full gap-5 mt-1 flex-nowrap">
-        {/* order */}
-        <div className="items-center justify-center hidden w-1/12 text-2xl font-medium bg-yellow-300 rounded-lg sm:flex h-28">
-          {order}
-        </div>
-
-        {/* dropzone */}
-        <DropZoneImg smallSize={true} getImgUrl={getImgUrl} />
-
-        {/* textarea */}
-        <Textarea
-          className="w-8/12"
-          minRows={3}
-          label="輸入食譜描述"
-          variant="bordered"
-          value={description}
-          onChange={(event) => onChangeDescription(event, id)}
-        />
-      </div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext items={steps} strategy={verticalListSortingStrategy}>
+          {steps.map((step) => (
+            <EachOfStep
+              order={step.order}
+              id={step.id}
+              key={step.id}
+              onClickAdd={handleAddStep}
+              onClickDel={() => handleDelStep(step.id)}
+              description={step.description}
+              onChangeDescription={handleChangeDescription}
+              getImgUrl={getImgUrl}
+            />
+          ))}{" "}
+        </SortableContext>
+      </DndContext>
     </div>
   );
 }
