@@ -27,16 +27,19 @@ const redisClient = redis.createClient({
 // Middleware to check the cache before fetching data
 const cacheTitle = async (req, res, next) => {
   const { title } = req.query;
-  try {
-    const data = await redisClient.get(title);
-    if (data) {
-      return res.send(JSON.parse(data));
+  if (title) {
+    try {
+      const data = await redisClient.get(title);
+      if (data) {
+        return res.send(JSON.parse(data));
+      }
+      next();
+    } catch (err) {
+      console.error("Redis get error:", err);
+      return res.status(500).send(err);
     }
-    next();
-  } catch (err) {
-    console.error("Redis get error:", err);
-    return res.status(500).send(err);
   }
+  next();
 };
 module.exports = {
   redisClient,
