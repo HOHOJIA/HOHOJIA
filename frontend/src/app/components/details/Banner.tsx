@@ -126,7 +126,7 @@ export default function Banner({
                         >
                             讚
                         </Button>
-                        <p className="z-20 text-gray-500">{newTotalLike}說讚</p>
+                        <p className="z-20 text-gray-700">{newTotalLike}說讚</p>
                     </div>
                     <div className="flex items-center gap-3.5">
                         <Button
