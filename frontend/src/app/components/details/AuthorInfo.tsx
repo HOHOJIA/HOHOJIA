@@ -47,7 +47,7 @@ export default function AuthorInfo({ tags, author }: AuthorInfoProps) {
             </div>
 
             <div className="flex flex-row items-center justify-between lg:gap-5 lg:flex-col lg:items-end lg:justify-center lg:h-full">
-                <div className="flex flex-col lg:items-end lg:gap-5 gap-2.5">
+                <div className="flex flex-col lg:items-end lg:gap-3 gap-2.5">
                     <div className="flex items-center gap-2.5">
                         <Avatar
                             icon={<IoPersonSharp size={25} color="white" />}

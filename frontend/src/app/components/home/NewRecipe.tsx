@@ -47,7 +47,7 @@ export default function NewRecipe({ recipe }: RecipeProps) {
             </AnimatePresence>
             <Card
                 onPress={handleClick}
-                className="flex flex-col items-center justify-start w-full h-full min-w-56"
+                className="flex flex-col items-center justify-start w-full h-full min-w-56 max-w-56"
                 isPressable
                 shadow="sm"
             >
@@ -69,7 +69,7 @@ export default function NewRecipe({ recipe }: RecipeProps) {
                     />
                 )}
                 <CardFooter>
-                    <h5 className="font-bold ">{recipe?.title}</h5>
+                    <h5 className="font-bold line-clamp-1">{recipe?.title}</h5>
                 </CardFooter>
             </Card>
         </motion.div>
