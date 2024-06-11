@@ -145,10 +145,6 @@ export default function Home() {
                     </div>
                     <div className="flex flex-row items-center justify-between w-full px-4 mt-6 text-xl font-bold md:px-20 lg:px-36 xl:px-44 2xl:px-96">
                         <p>今日熱門食譜</p>
-                        <Button className="flex flex-row items-center gap-1 text-sm bg-transparent">
-                            看更多
-                            <FaArrowRight size="0.8rem" />
-                        </Button>
                     </div>
                     <div className="flex items-center justify-between w-full max-w-full gap-6 px-0 py-2 pl-4 overflow-x-scroll xl:px-44 2xl:px-96 md:px-20 lg:px-36 md:overflow-x-visible">
                         {hotRecipe?.data?.recipes.length > 0 ? (
@@ -167,10 +163,6 @@ export default function Home() {
                     </div>
                     <div className="flex flex-row justify-between w-full px-4 mt-6 text-xl font-bold md:px-20 xl:px-44 lg:px-36 2xl:px-96">
                         <p>最新分享食譜</p>
-                        <Button className="flex flex-row items-center gap-1 text-sm bg-transparent">
-                            看更多
-                            <FaArrowRight size="0.8rem" />
-                        </Button>
                     </div>
 
                     {newRecipe?.data?.recipes.length > 0 ? (
