@@ -62,7 +62,7 @@ export default function NewRecipe({ recipe }: RecipeProps) {
                 ) : (
                     <Image
                         alt="Card background"
-                        className="object-cover w-full rounded-xl h-[200px] "
+                        className="object-cover min-w-full rounded-xl h-[200px] "
                         src={recipe?.imgUrl}
                         width={300}
                         height={200}
