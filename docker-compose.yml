@@ -20,6 +20,8 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_DOMAIN: ${NEXT_PUBLIC_API_DOMAIN}
+        NEXT_PUBLIC_S3_BUCKET_REGION: ${NEXT_PUBLIC_S3_BUCKET_REGION}
+        NEXT_PUBLIC_BUCKET_NAME: ${NEXT_PUBLIC_BUCKET_NAME}
     container_name: hohoja_frontend_container
     networks:
       - hohoja_network
