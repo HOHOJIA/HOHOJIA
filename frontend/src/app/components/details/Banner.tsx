@@ -1,7 +1,7 @@
 import useShowAlert from '@/hooks/useShowAlert'
 import { Button } from '@nextui-org/react'
 import Cookies from 'js-cookie'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaFolderPlus, FaThumbsUp } from 'react-icons/fa6'
 import { MdDownload, MdOutlineShare } from 'react-icons/md'
 
@@ -26,6 +26,21 @@ export default function Banner({
 }: BannerProps) {
     const showAlert = useShowAlert()
     const [newTotalLike, setNewTotalLike] = useState<number>(totalLike)
+    const [validImageUrl, setValidImageUrl] = useState(
+        imageUrl || '/images/details_banner_no_image.png'
+    )
+
+    useEffect(() => {
+        const img = new Image()
+        img.onload = () => setValidImageUrl(imageUrl)
+        img.onerror = () =>
+            setValidImageUrl('/images/details_banner_no_image.png')
+        if (imageUrl) {
+            img.src = imageUrl
+        } else {
+            setValidImageUrl('/images/details_banner_no_image.png')
+        }
+    }, [imageUrl])
 
     async function apiRequest(endpoint: string, method: string) {
         const token = Cookies.get('access_token')
@@ -87,11 +102,9 @@ export default function Banner({
 
     return (
         <div
-            className="w-full bg-cover rounded-xl lg:px-16 lg:py-16 px-6 py-8 bg-center lg:bg-left-top relative"
+            className={`w-full bg-cover rounded-xl lg:px-16 lg:py-16 px-6 py-8 bg-center lg:bg-left-top relative`}
             style={{
-                backgroundImage: `url(${
-                    imageUrl || '/images/details_banner_no_image.png'
-                })`,
+                backgroundImage: `url(${validImageUrl})`,
             }}
         >
             <div className="absolute top-0 left-0 z-0 w-full h-full bg-white bg-opacity-40 rounded-xl" />
