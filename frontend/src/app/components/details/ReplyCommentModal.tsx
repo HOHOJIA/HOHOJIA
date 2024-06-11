@@ -1,7 +1,6 @@
 import {
     Avatar,
     Button,
-    Divider,
     Modal,
     ModalBody,
     ModalContent,

@@ -206,7 +206,7 @@ export default function Comments({
                                         )
                                     }
                                 />
-                                <p className="text-xs lg:text-sm md:text-sm text-gray-500">
+                                <p className="text-xs lg:text-sm md:text-sm text-gray-500 text-nowrap mb-2">
                                     {comment.time.slice(0, 16)}
                                 </p>
                             </div>
