@@ -21,11 +21,13 @@ interface Recipe {
 }
 
 interface SearchResponse {
-    recipes: Recipe[]
+    data: {
+        recipes: Recipe[]
+    }
 }
 export default function ReciptList() {
     const searchParams = useSearchParams()
-    const [searchData, setSearchData] = useState<Recipe[] | null>(null)
+    const [searchData, setSearchData] = useState<SearchResponse>({ data: { recipes: [] } })
     const [hasRecipe, setHasRecipe] = useState(true)
     const tagKeyword = searchParams.get('tag')
     const titleKeyword = searchParams.get('title')
@@ -62,8 +64,10 @@ export default function ReciptList() {
                     <div>相關食譜</div>
                 </div>
                 <div className="flex flex-col items-center justify-center w-full 2xl:w-2/3 gap-8">
-                    {searchData && searchData.length > 0 ? (
-                        searchData?.map((recipe: any) => <RecipeListSquare key={recipe.recipeId} recipe={recipe} />)
+                    {searchData?.data?.recipes.length > 0 ? (
+                        searchData.data.recipes.map((recipe: any) => (
+                            <RecipeListSquare key={recipe.recipeId} recipe={recipe} />
+                        ))
                     ) : hasRecipe === true ? (
                         <RecipeListSkeleton />
                     ) : (
