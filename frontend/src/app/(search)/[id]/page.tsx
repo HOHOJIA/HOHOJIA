@@ -7,18 +7,25 @@ import RecipeListSkeleton from '../../components/search/RecipeListSkeleton'
 import Image from 'next/image'
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN
+interface Ingredient {
+    name: string
+    size: string
+}
 interface Recipe {
     recipeId: number
+    title: string
+    imgUrl: string
+    ingredients: Ingredient[]
+    userId: number
+    userName: string
 }
 
 interface SearchResponse {
-    data: {
-        recipes: Recipe[]
-    }
+    recipes: Recipe[]
 }
 export default function ReciptList() {
     const searchParams = useSearchParams()
-    const [searchData, setSearchData] = useState<SearchResponse>({ data: { recipes: [] } })
+    const [searchData, setSearchData] = useState<Recipe[] | null>(null)
     const [hasRecipe, setHasRecipe] = useState(true)
     const tagKeyword = searchParams.get('tag')
     const titleKeyword = searchParams.get('title')
@@ -49,16 +56,14 @@ export default function ReciptList() {
     return (
         <div className="w-full min-h-screen bg-gray-50 ">
             <Header />
-            <div className="flex flex-col justify-center w-full gap-8 px-10 py-24 bg-gray-50 md:px-72 itmes-center">
+            <div className="flex flex-col justify-center w-full gap-8 px-10 py-24 bg-gray-50  lg:px-44 xl:px-72 2xl:px-[400px] items-center">
                 <div className="flex flex-row w-full gap-2 text-lg">
                     <div className="font-bold">{tagKeyword ? tagKeyword : titleKeyword}</div>
                     <div>相關食譜</div>
                 </div>
-                <div className="flex flex-col items-center justify-center w-full gap-8">
-                    {searchData?.data?.recipes.length > 0 ? (
-                        searchData.data.recipes.map((recipe: any) => (
-                            <RecipeListSquare key={recipe.recipeId} recipe={recipe} />
-                        ))
+                <div className="flex flex-col items-center justify-center w-full 2xl:w-2/3 gap-8">
+                    {searchData && searchData.length > 0 ? (
+                        searchData?.map((recipe: any) => <RecipeListSquare key={recipe.recipeId} recipe={recipe} />)
                     ) : hasRecipe === true ? (
                         <RecipeListSkeleton />
                     ) : (
