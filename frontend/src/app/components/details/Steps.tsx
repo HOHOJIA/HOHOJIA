@@ -1,27 +1,53 @@
-import { Card, CardBody, Image as ImageUI } from '@nextui-org/react'
+import { useState, useEffect } from 'react'
+import { Card, CardBody, Image as ImageUI, Skeleton } from '@nextui-org/react'
+
+interface Step {
+    order: number
+    imageUrl: string
+    description: string
+    validImageUrl?: string | null
+}
 
 interface StepsProps {
-    steps: {
-        order: number
-        imageUrl: string
-        description: string
-        validImageUrl?: string
-    }[]
+    steps: Step[]
 }
 
 export default function Steps({ steps }: StepsProps) {
-    const processedSteps = steps?.map((step) => {
-        const img = new Image()
-        img.src = step.imageUrl
-        const validImageUrl =
-            img.complete && img.naturalWidth !== 0
-                ? step.imageUrl
-                : '/images/details_no_steps_img.webp'
-        return {
-            ...step,
-            validImageUrl,
+    const [processedSteps, setProcessedSteps] = useState<Step[]>(
+        steps.map((step) => ({ ...step, validImageUrl: null }))
+    )
+
+    useEffect(() => {
+        const checkImages = async () => {
+            const promises = steps.map((step, index) => {
+                return new Promise<void>((resolve) => {
+                    const img = new Image()
+                    img.onload = () => {
+                        setProcessedSteps((prev) => {
+                            const newSteps = [...prev]
+                            newSteps[index].validImageUrl = step.imageUrl
+                            return newSteps
+                        })
+                        resolve()
+                    }
+                    img.onerror = () => {
+                        setProcessedSteps((prev) => {
+                            const newSteps = [...prev]
+                            newSteps[index].validImageUrl =
+                                '/images/details_no_steps_img.webp'
+                            return newSteps
+                        })
+                        resolve()
+                    }
+                    img.src = step.imageUrl
+                })
+            })
+
+            await Promise.all(promises)
         }
-    })
+
+        checkImages()
+    }, [steps])
 
     return (
         <div className="flex flex-col w-full gap-9">
@@ -29,7 +55,7 @@ export default function Steps({ steps }: StepsProps) {
                 料理步驟
             </h4>
 
-            {processedSteps?.map((step, index) => (
+            {processedSteps.map((step, index) => (
                 <div
                     className="relative flex flex-col w-full gap-3 lg:items-stretch lg:justify-between lg:flex-row lg:gap-0"
                     key={index}
@@ -45,13 +71,16 @@ export default function Steps({ steps }: StepsProps) {
 
                     <div className="absolute left-0 right-0 z-0 hidden w-full transform -translate-y-1/2 border-gray-200 border-dashed top-1/2 border-t-1 lg:block" />
 
-                    <div className="relative w-full min-h-48 lg:min-h-32 md:min-h-72 lg:w-1/6 md:w-4/5 md:self-center aspect-w-16 aspect-h-9">
-                        <ImageUI
-                            className="z-10 object-cover w-full h-full rounded-2xl"
-                            src={step.validImageUrl}
-                            alt="step"
-                            sizes="100vw"
-                        />
+                    <div className="relative w-full lg:w-1/6 md:w-4/5 md:self-center">
+                        {step.validImageUrl ? (
+                            <ImageUI
+                                className="z-10 object-cover w-full h-full rounded-xl aspect-[3/2]"
+                                src={step.validImageUrl}
+                                alt="step"
+                            />
+                        ) : (
+                            <Skeleton className="w-full h-36 rounded-lg" />
+                        )}
                     </div>
                 </div>
             ))}

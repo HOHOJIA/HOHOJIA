@@ -32,7 +32,12 @@ const cacheTitle = async (req, res, next) => {
     try {
       const data = await redisClient.get(title);
       if (data) {
-        return res.send(JSON.parse(data));
+        let response = {
+          data: {
+            recipes: JSON.parse(data),
+          },
+        };
+        return res.send(response);
       }
       next();
     } catch (err) {
@@ -43,7 +48,12 @@ const cacheTitle = async (req, res, next) => {
     try {
       const data = await redisClient.get(tag);
       if (data) {
-        return res.send(JSON.parse(data));
+        let response = {
+          data: {
+            recipes: JSON.parse(data),
+          },
+        };
+        return res.send(response);
       }
       next();
     } catch (err) {
