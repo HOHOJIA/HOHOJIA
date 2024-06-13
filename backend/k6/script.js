@@ -7,8 +7,8 @@ export const options = {
 };
 
 export default function () {
-  // home page
-  let res = http.get("http://13.210.223.164/");
+  let res = http.get("http://localhost:3000/api/1.0/getAllRecipes?sort=time");
+  console.log(res);
   check(res, { "status was 200": (r) => r.status === 200 });
   sleep(1);
 }
