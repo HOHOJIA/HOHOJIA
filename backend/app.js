@@ -6,14 +6,13 @@ let logger = require("morgan");
 const s3Client = require("./utils/s3presign");
 const cors = require("cors");
 const version = process.env.HOHOJIA_VERSION || "version not found";
-const redisClient = require('./utils/cache').redisClient;
 let recipeRouter = require("./routes/recipe");
-let indexRouter = require("./routes/index");
 let usersRouter = require("./routes/users");
 let likeRouter = require("./routes/like");
 let commentRouter = require("./routes/comment");
 let searchRouter = require("./routes/search");
 let allRecipesRouter = require("./routes/allRecipes");
+const { rateLimiterRoute } = require('./utils/ratelimiter');
 
 // default port 3000 (settting in bin folder)
 let app = express();
@@ -25,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
+app.use('/api/1.0', rateLimiterRoute);
 app.use("/api/1.0/users", usersRouter);
 app.use("/api/1.0/like", likeRouter);
 app.use("/api/1.0/comment", commentRouter);
