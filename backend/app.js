@@ -6,7 +6,7 @@ let logger = require("morgan");
 const s3Client = require("./utils/s3presign");
 const cors = require("cors");
 const version = process.env.HOHOJIA_VERSION || "version not found";
-
+const redisClient = require('./utils/cache').redisClient;
 let recipeRouter = require("./routes/recipe");
 let indexRouter = require("./routes/index");
 let usersRouter = require("./routes/users");

@@ -10,20 +10,35 @@ const redisClient = redis.createClient({
       if (retries > 10) {
         return new Error("Retry limit exceeded");
       }
+      console.log(`Retrying in ${Math.min(retries * 50, 500)} ms`);
       return Math.min(retries * 50, 500);
     },
     connectTimeout: timeout,
   },
 });
 
-(async () => {
+redisClient.on('ready', () => {
+    console.log('Redis is ready');
+});
+
+redisClient.on('error', () => {
+    if (process.env.NODE_ENV == 'production') {
+        console.log('Error in Redis');
+    }
+});
+
+redisClient.on('end', () => {
+    console.log('Redis is disconnected');
+});
+async function connectRedis() {
   try {
     await redisClient.connect();
-    console.log(await redisClient.ping());
+    console.log("Connected to Redis");
   } catch (err) {
-    console.error("Error connecting to Redis", err);
+    console.error("Failed to connect to Redis:", err);
+    throw err;  // Optional: throw error to handle it in the caller
   }
-})();
+}
 
 // Middleware to check the cache before fetching data
 const cacheTitle = async (req, res, next) => {
@@ -37,6 +52,7 @@ const cacheTitle = async (req, res, next) => {
             recipes: JSON.parse(data),
           },
         };
+        console.error("Get from Redis: ", data);
         return res.send(response);
       }
       next();
@@ -53,6 +69,7 @@ const cacheTitle = async (req, res, next) => {
             recipes: JSON.parse(data),
           },
         };
+        console.error("Get from Redis: ", data);
         return res.send(response);
       }
       next();
@@ -65,4 +82,5 @@ const cacheTitle = async (req, res, next) => {
 module.exports = {
   redisClient,
   cacheTitle,
+  connectRedis
 };
