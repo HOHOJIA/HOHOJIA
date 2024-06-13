@@ -36,9 +36,9 @@ export default function NewRecipe({ recipe }: RecipeProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                     >
-                        <div className="absolute w-full h-full bg-black opacity-50 pointer-events-none rounded-xl" />
+                        <div className="z-10 absolute w-full h-full bg-black opacity-50 pointer-events-none rounded-xl" />
                         <motion.h1 className="" initial={{ y: 10 }} animate={{ y: 0 }} exit={{ y: 10 }}>
-                            <Button className="font-bold bg-white" onPress={handleClick}>
+                            <Button className="z-20 font-bold bg-white" onPress={handleClick}>
                                 查看更多
                             </Button>
                         </motion.h1>
@@ -62,7 +62,7 @@ export default function NewRecipe({ recipe }: RecipeProps) {
                 ) : (
                     <Image
                         alt="Card background"
-                        className="object-cover min-w-full rounded-xl h-[200px] "
+                        className="z-1 object-cover min-w-full rounded-xl h-[200px] "
                         src={recipe?.imgUrl}
                         width={300}
                         height={200}
